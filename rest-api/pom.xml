@@ -14,8 +14,67 @@
     <artifactId>isregatta-api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <springfox-swagger2.version>3.0.0</springfox-swagger2.version>
+        <jackson-databind-nullable.version>0.1.0</jackson-databind-nullable.version>
+        <openapi-generator-maven-plugin.version>4.3.1</openapi-generator-maven-plugin.version>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>${springfox-swagger2.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openapitools</groupId>
+            <artifactId>jackson-databind-nullable</artifactId>
+            <version>${jackson-databind-nullable.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>javax.validation</groupId>
+            <artifactId>validation-api</artifactId>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.openapitools</groupId>
+                <artifactId>openapi-generator-maven-plugin</artifactId>
+                <version>${openapi-generator-maven-plugin.version}</version>
+                <executions>
+                    <!-- User' module -->
+                    <execution>
+                        <id>user-module</id>
+                        <configuration>
+                            <apiPackage>com.xvanop01.isregatta.api.user</apiPackage>
+                            <generatorName>spring</generatorName>
+                            <library>spring-cloud</library>
+                            <configOptions>
+                                <interfaceOnly>true</interfaceOnly>
+                                <java8>true</java8>
+                                <sourceFolder>swagger</sourceFolder>
+                                <dateLibrary>java8.localdatetime</dateLibrary>
+                            </configOptions>
+                            <inputSpec>${project.basedir}/src/main/resources/rest-api-users.yml</inputSpec>
+                            <modelPackage>com.xvanop01.isregatta.api.dto</modelPackage>
+                            <typeMappings>
+                                <typeMapping>Float=java.math.BigDecimal</typeMapping>
+                            </typeMappings>
+                        </configuration>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
 
         </plugins>
     </build>

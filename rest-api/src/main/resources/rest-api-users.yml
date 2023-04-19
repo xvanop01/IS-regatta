@@ -1,0 +1,41 @@
+openapi: 3.0.0
+info:
+  title: IS Regatta Users REST API
+  description: REST API for Users' management
+  version: 0.0.1
+
+paths:
+  /users:
+    post:
+      tags:
+        - user-controller
+      summary: Create new user
+      operationId: createUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserDto'
+      responses:
+        201:
+          description: User successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetailDto'
+        400:
+          description: Bad request
+        500:
+          description: Internal server error
+
+components:
+  schemas:
+    CreateUserDto:
+      properties:
+        name:
+          type: string
+    UserDetailDto:
+      properties:
+        name:
+          type: string
