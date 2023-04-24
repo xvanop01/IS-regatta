@@ -17,6 +17,7 @@ public class RolePersistenceService {
     private RoleRepository repository;
 
     List<Role> getRolesByUserId(Integer userId) {
+        log.info("getRolesByUserId: {}", userId);
         if (userId != null) {
             return repository.findAllByUserId(userId);
         }

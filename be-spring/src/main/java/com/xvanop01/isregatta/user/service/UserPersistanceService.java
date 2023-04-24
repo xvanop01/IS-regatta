@@ -14,6 +14,7 @@ public class UserPersistanceService {
     private UserRepository repository;
 
     public User findByUsername(String username) {
+        log.info("findByUsername: {}", username);
         return repository.findByUsername(username).orElse(null);
     }
 }
