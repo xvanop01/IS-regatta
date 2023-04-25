@@ -2,11 +2,14 @@ package com.xvanop01.isregatta.user.service;
 
 import com.xvanop01.isregatta.base.exception.Http400ReturnCode;
 import com.xvanop01.isregatta.base.exception.HttpException;
+import com.xvanop01.isregatta.user.model.Role;
 import com.xvanop01.isregatta.user.model.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 @Slf4j
@@ -14,6 +17,9 @@ public class UserService {
 
     @Autowired
     private UserPersistanceService userPersistanceService;
+
+    @Autowired
+    private RolePersistenceService rolePersistenceService;
 
     public User getUserById(Integer userId) throws HttpException {
         log.info("getUserById: {}", userId);
@@ -58,5 +64,30 @@ public class UserService {
             user.setPassword(updateUser.getPassword());
         }
         return userPersistanceService.persist(user);
+    }
+
+    @Transactional(rollbackFor = HttpException.class)
+    public List<Role> setUsersRoles(Integer userId, List<Integer> rolesIds) throws HttpException {
+        log.info("setUserRoles: userId: {}, rolesIds: {}", userId, rolesIds);
+        User user = userId == null ? null : userPersistanceService.findById(userId);
+        if (user == null) {
+            throw new HttpException(Http400ReturnCode.NOT_FOUND, "User not found by id: " + userId);
+        }
+        List<Integer> userRolesIds = rolePersistenceService.getRolesByUserId(userId).stream().map(Role::getId).toList();
+        List<Integer> allRolesIds = rolePersistenceService.getAllRoles().stream().map(Role::getId).toList();
+        for (Integer id : userRolesIds) {
+            if (!rolesIds.contains(id)) {
+                rolePersistenceService.removeRoleFromUser(userId, id);
+            }
+        }
+        for (Integer id : rolesIds) {
+            if (!allRolesIds.contains(id)) {
+                throw new HttpException(Http400ReturnCode.NOT_FOUND, "Role not found by id: " + id);
+            }
+            if (!userRolesIds.contains(id)) {
+                rolePersistenceService.addRoleToUser(userId, id);
+            }
+        }
+        return rolePersistenceService.getRolesByUserId(userId);
     }
 }
