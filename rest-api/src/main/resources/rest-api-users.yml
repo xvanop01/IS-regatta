@@ -51,6 +51,10 @@ paths:
       responses:
         200:
           description: User's info retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetailDto'
         400:
           description: Bad request
         401:
@@ -83,6 +87,10 @@ paths:
       responses:
         200:
           description: User's info updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetailDto'
         400:
           description: Bad request
         401:
