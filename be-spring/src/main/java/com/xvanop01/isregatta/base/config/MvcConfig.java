@@ -1,4 +1,4 @@
-package com.xvanop01.isregatta.config;
+package com.xvanop01.isregatta.base.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;

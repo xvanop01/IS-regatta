@@ -1,4 +1,4 @@
-package com.xvanop01.isregatta.config;
+package com.xvanop01.isregatta.base.config;
 
 import com.xvanop01.isregatta.user.service.UserDetailsServiceImpl;
 import org.springframework.context.annotation.Bean;

@@ -9,7 +9,6 @@ import org.springframework.stereotype.Controller;
 @Controller
 public class UserController implements UserControllerApi {
 
-
     @Override
     public ResponseEntity<UserDetailDto> createUser(CreateUserDto createUserDto) {
         return ResponseEntity.badRequest().build();
