@@ -31,8 +31,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         log.info("loadUserByUsername: {}", username);
         User user = userPersistanceService.findByUsername(username);
         if (user != null) {
-            UserLogin userLogin = new UserLogin(user.getUsername(), user.getPassword(), true, true, true, true,
-                    getAuthorities(user.getId()));
+            Collection<? extends GrantedAuthority> authorities = getAuthorities(user.getId());
+            UserLogin userLogin = new UserLogin(user.getUsername(), user.getPassword(), !authorities.isEmpty(),
+                    true, true, true, authorities);
             userLogin.setId(user.getId());
             return userLogin;
         }
