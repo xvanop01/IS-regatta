@@ -11,6 +11,16 @@ public class UserController implements UserControllerApi {
 
     @Override
     public ResponseEntity<UserDetailDto> createUser(CreateUserDto createUserDto) {
-        return ResponseEntity.badRequest().build();
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<Void> getUser(Integer userId) {
+        return null;
+    }
+
+    @Override
+    public ResponseEntity<Void> updateUser(Integer userId, CreateUserDto createUserDto) {
+        return null;
     }
 }
