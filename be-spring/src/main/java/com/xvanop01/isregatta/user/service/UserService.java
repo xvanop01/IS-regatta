@@ -66,6 +66,15 @@ public class UserService {
         return userPersistanceService.persist(user);
     }
 
+    public List<Role> getUsersRoles(Integer userId) throws HttpException {
+        log.info("getUserRoles: {}", userId);
+        User user = userId == null ? null : userPersistanceService.findById(userId);
+        if (user == null) {
+            throw new HttpException(Http400ReturnCode.NOT_FOUND, "User not found by id: " + userId);
+        }
+        return rolePersistenceService.getRolesByUserId(userId);
+    }
+
     @Transactional(rollbackFor = HttpException.class)
     public List<Role> setUsersRoles(Integer userId, List<Integer> rolesIds) throws HttpException {
         log.info("setUserRoles: userId: {}, rolesIds: {}", userId, rolesIds);
