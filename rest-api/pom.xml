@@ -50,9 +50,11 @@
                 <artifactId>openapi-generator-maven-plugin</artifactId>
                 <version>${openapi-generator-maven-plugin.version}</version>
                 <executions>
-                    <!-- User' module -->
                     <execution>
                         <id>user-module</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
                         <configuration>
                             <apiPackage>com.xvanop01.isregatta.api.user</apiPackage>
                             <generatorName>spring</generatorName>
@@ -69,13 +71,9 @@
                                 <typeMapping>Float=java.math.BigDecimal</typeMapping>
                             </typeMappings>
                         </configuration>
-                        <goals>
-                            <goal>generate</goal>
-                        </goals>
                     </execution>
                 </executions>
             </plugin>
-
         </plugins>
     </build>
 
