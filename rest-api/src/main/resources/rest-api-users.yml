@@ -134,7 +134,7 @@ paths:
           description: User not found
         500:
           description: Internal server error
-    patch:
+    put:
       tags:
         - user-controller
       summary: Update user's roles

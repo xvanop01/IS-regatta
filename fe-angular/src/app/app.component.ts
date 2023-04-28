@@ -16,7 +16,7 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-      this.service.getUserRoles().subscribe(
+      this.service.getAllRoles().subscribe(
         result => {
           this.roles = result;
         },
