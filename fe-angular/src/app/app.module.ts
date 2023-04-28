@@ -5,6 +5,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { LoggedUserService } from './users/logged-user.service';
 import { UsersService } from './users/users.service';
 
 @NgModule({
@@ -19,6 +20,7 @@ import { UsersService } from './users/users.service';
   ],
   providers: [
     UsersService,
+    LoggedUserService,
     HttpClient
   ],
   bootstrap: [AppComponent]
