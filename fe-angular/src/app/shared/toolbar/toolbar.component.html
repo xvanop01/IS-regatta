@@ -1,0 +1,17 @@
+<div class="toolbar" role="banner">
+  <div class="home-button">
+    <a href="index.html">
+      Home
+    </a>
+  </div>
+  <div class="username" *ngIf="authenticated">
+    <a href="http://localhost:4200/home">
+      {{ user?.username }}
+    </a>
+  </div>
+  <div class="login" *ngIf="!authenticated">
+    <a href="http://localhost:8080/login">
+      Log In
+    </a>
+  </div>
+</div>

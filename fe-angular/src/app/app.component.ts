@@ -11,9 +11,11 @@ import { UsersService } from './users/users.service';
 export class AppComponent implements OnInit {
   title = 'my-project';
 
-  user: any;
+  public user: any;
 
-  roles: any;
+  public authenticated: boolean = false;
+
+  protected roles: any;
 
   constructor(protected userService: UsersService, protected loggedUserService: LoggedUserService) {
 
@@ -23,16 +25,7 @@ export class AppComponent implements OnInit {
     this.loggedUserService.getLoggedUser().subscribe(
       result => {
         this.user = result;
-        this.userService.getUserRoles(this.user.id).subscribe(
-          result => {
-            this.roles = result;
-          });
-      },
-      error => {
-        console.log(error)
-        if (error.status == 401) {
-          window.location.href = `http://localhost:8080/login`;
-        }
+        this.authenticated = true;
       });
   }
 }
