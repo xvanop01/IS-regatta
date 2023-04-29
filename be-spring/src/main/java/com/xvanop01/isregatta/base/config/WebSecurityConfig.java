@@ -43,7 +43,6 @@ public class WebSecurityConfig {
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login")
                 .defaultSuccessUrl("http://localhost:4200/", true)
                 .permitAll()
                 .and()

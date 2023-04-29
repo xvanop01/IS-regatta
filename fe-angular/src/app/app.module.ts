@@ -10,13 +10,15 @@ import { UserScreenComponent } from './users/user-screen/user-screen.component';
 import { LoggedUserService } from './users/logged-user.service';
 import { UsersService } from './users/users.service';
 import { RegisterScreenComponent } from './users/register-screen/register-screen.component';
+import { LoginScreenComponent } from './users/login-screen/login-screen.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ToolbarComponent,
     UserScreenComponent,
-    RegisterScreenComponent
+    RegisterScreenComponent,
+    LoginScreenComponent
   ],
   imports: [
     CommonModule,
@@ -25,7 +27,8 @@ import { RegisterScreenComponent } from './users/register-screen/register-screen
     HttpClientModule,
     RouterModule.forRoot([
       {path: 'home', component: UserScreenComponent},
-      {path: 'register', component: RegisterScreenComponent}
+      {path: 'register', component: RegisterScreenComponent},
+      {path: 'login', component: LoginScreenComponent}
     ]),
   ],
   providers: [
