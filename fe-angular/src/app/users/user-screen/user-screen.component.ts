@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnInit } from "@angular/core";
 import { LoggedUserService } from "../logged-user.service";
+import { UsersService } from "../users.service";
 
 @Component({
-  selector: 'user-screen',
+  selector: 'app-user',
   templateUrl: './user-screen.component.html',
   styleUrls: ['./user-screen.component.css']
 })
@@ -10,9 +11,11 @@ export class UserScreenComponent implements OnInit {
 
   public user: any;
 
+  public roles: any;
+
   public authenticated: boolean = false;
 
-  constructor(protected loggedUserService: LoggedUserService) {
+  constructor(protected loggedUserService: LoggedUserService, protected usersService: UsersService) {
 
   }
 
@@ -21,6 +24,10 @@ export class UserScreenComponent implements OnInit {
       result => {
         this.user = result;
         this.authenticated = true;
+        this.usersService.getUserRoles(this.user.id).subscribe(
+          result => {
+            this.roles = result.roles;
+          })
       });
   }
 }

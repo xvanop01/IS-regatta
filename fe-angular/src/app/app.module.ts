@@ -11,6 +11,8 @@ import { LoggedUserService } from './users/logged-user.service';
 import { UsersService } from './users/users.service';
 import { RegisterScreenComponent } from './users/register-screen/register-screen.component';
 import { LoginScreenComponent } from './users/login-screen/login-screen.component';
+import { UserUpdateScreenComponent } from './users/user-update-screen/user-update-screen.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -18,17 +20,21 @@ import { LoginScreenComponent } from './users/login-screen/login-screen.componen
     ToolbarComponent,
     UserScreenComponent,
     RegisterScreenComponent,
-    LoginScreenComponent
+    LoginScreenComponent,
+    UserUpdateScreenComponent
   ],
   imports: [
     CommonModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
     RouterModule.forRoot([
       {path: 'home', component: UserScreenComponent},
       {path: 'register', component: RegisterScreenComponent},
-      {path: 'login', component: LoginScreenComponent}
+      {path: 'login', component: LoginScreenComponent},
+      {path: 'user/:userId/update', component: UserUpdateScreenComponent}
     ]),
   ],
   providers: [

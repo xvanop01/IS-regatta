@@ -1,1 +1,16 @@
-<div style="top:60px; position:absolute;">User</div>
+<div style="top:60px; position:absolute;">
+  <div>
+    User {{ user.username }}
+  </div>
+  <div>
+    <p>Username: {{ user.username }}</p>
+  </div>
+  <div *ngFor="let role of roles">
+    <p>{{ role.role }}</p>
+  </div>
+  <div>
+    <a [routerLink]="['/user', user.id, 'update']">
+      Update user info
+    </a>
+  </div>
+</div>

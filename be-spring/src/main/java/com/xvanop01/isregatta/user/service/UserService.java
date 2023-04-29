@@ -66,7 +66,7 @@ public class UserService {
         }
         if (updateUser.getUsername() != null && !updateUser.getUsername().isEmpty()) {
             User userByUsername = userPersistanceService.findByUsername(updateUser.getUsername());
-            if (userByUsername != null) {
+            if (userByUsername != null && !userByUsername.getId().equals(userId)) {
                 throw new HttpException(Http400ReturnCode.CONFLICT,
                         String.format("User with username '%s' already exists.", updateUser.getUsername()));
             }
