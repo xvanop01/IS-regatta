@@ -43,7 +43,14 @@ public class UserService {
                 || user.getPassword().isEmpty()) {
             throw new HttpException(Http400ReturnCode.BAD_REQUEST, "User must have username and password defined.");
         }
+        User existingUser = userPersistanceService.findByUsername(user.getUsername());
+        if (existingUser != null) {
+            throw new HttpException(Http400ReturnCode.CONFLICT,
+                    String.format("User with username '%s' already exists", existingUser.getUsername()));
+        }
+        log.info(user.getPassword());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        log.info(user.getPassword());
         return userPersistanceService.persist(user);
     }
 

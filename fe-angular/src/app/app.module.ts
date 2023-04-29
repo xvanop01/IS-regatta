@@ -9,12 +9,14 @@ import { ToolbarComponent } from './shared/toolbar/toolbar.component';
 import { UserScreenComponent } from './users/user-screen/user-screen.component';
 import { LoggedUserService } from './users/logged-user.service';
 import { UsersService } from './users/users.service';
+import { RegisterScreenComponent } from './users/register-screen/register-screen.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ToolbarComponent,
-    UserScreenComponent
+    UserScreenComponent,
+    RegisterScreenComponent
   ],
   imports: [
     CommonModule,
@@ -22,7 +24,8 @@ import { UsersService } from './users/users.service';
     AppRoutingModule,
     HttpClientModule,
     RouterModule.forRoot([
-      {path: 'home', component: UserScreenComponent}
+      {path: 'home', component: UserScreenComponent},
+      {path: 'register', component: RegisterScreenComponent}
     ]),
   ],
   providers: [
