@@ -306,18 +306,4 @@
 <div class="toolbar" role="banner">
   <app-toolbar [authenticated]="authenticated" [user]="user"></app-toolbar>
 </div>
-
-<div class="content" role="main">
-  <div *ngIf="authenticated">Prihlaseny</div>
-  <div *ngIf="authenticated == false">Anonym</div>
-</div>
-
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * The content above * * * * * * * * * * * -->
-<!-- * * * * * * * * * * is only a placeholder * * * * * * * * * * -->
-<!-- * * * * * * * * * * and can be replaced. * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-<!-- * * * * * * * * * * End of Placeholder * * * * * * * * * * * -->
-<!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
-
 <router-outlet></router-outlet>

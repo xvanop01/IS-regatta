@@ -6,6 +6,7 @@ import com.xvanop01.isregatta.user.model.Role;
 import com.xvanop01.isregatta.user.model.User;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +21,9 @@ public class UserService {
 
     @Autowired
     private RolePersistenceService rolePersistenceService;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     public User getUserById(Integer userId) throws HttpException {
         log.info("getUserById: {}", userId);
@@ -39,6 +43,7 @@ public class UserService {
                 || user.getPassword().isEmpty()) {
             throw new HttpException(Http400ReturnCode.BAD_REQUEST, "User must have username and password defined.");
         }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userPersistanceService.persist(user);
     }
 
@@ -61,7 +66,7 @@ public class UserService {
             user.setUsername(updateUser.getUsername());
         }
         if (updateUser.getPassword() != null && !updateUser.getPassword().isEmpty()) {
-            user.setPassword(updateUser.getPassword());
+            user.setPassword(passwordEncoder.encode(updateUser.getPassword()));
         }
         return userPersistanceService.persist(user);
     }

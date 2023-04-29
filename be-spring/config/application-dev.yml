@@ -22,7 +22,7 @@ server:
   servlet:
     session:
       persistent: true
-      timeout: 300
+      timeout: 3600
       store-dir: ${dev.tempDir}/server
   error:
     include-message: always

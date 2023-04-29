@@ -15,9 +15,7 @@ export class AppComponent implements OnInit {
 
   public authenticated: boolean = false;
 
-  protected roles: any;
-
-  constructor(protected userService: UsersService, protected loggedUserService: LoggedUserService) {
+  constructor(protected loggedUserService: LoggedUserService) {
 
   }
 

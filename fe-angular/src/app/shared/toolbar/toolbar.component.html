@@ -4,14 +4,18 @@
       Home
     </a>
   </div>
-  <div class="username" *ngIf="authenticated">
+  <ng-container *ngIf="authenticated; else loginLink">
     <a href="http://localhost:4200/home">
       {{ user?.username }}
     </a>
-  </div>
-  <div class="login" *ngIf="!authenticated">
+  </ng-container>
+  <ng-template #loginLink>
     <a href="http://localhost:8080/login">
       Log In
     </a>
-  </div>
+    |
+    <a href="http://localhost:4200/register">
+      Register
+    </a>
+  </ng-template>
 </div>

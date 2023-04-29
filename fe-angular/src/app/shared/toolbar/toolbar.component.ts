@@ -5,8 +5,7 @@ import { UserDetailDto } from "src/app/users/users.model";
 @Component({
   selector: 'app-toolbar',
   templateUrl: './toolbar.component.html',
-  styleUrls: ['./toolbar.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./toolbar.component.css']
 })
 export class ToolbarComponent implements OnInit {
 
@@ -22,6 +21,5 @@ export class ToolbarComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
 
 }
