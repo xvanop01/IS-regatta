@@ -1,0 +1,31 @@
+dev:
+  tempDir: "dev-tmp"
+
+public-url: https://localhost:8080
+
+spring:
+  datasource:
+    url: #
+    username: #
+    password: #
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+  thymeleaf:
+    prefix: file:./src/main/resources/templates/
+    cache: false
+  flyway:
+    enabled: false
+
+server:
+  servlet:
+    session:
+      persistent: true
+      timeout: 3600
+      store-dir: ${dev.tempDir}/server
+  error:
+    include-message: always
+    include-binding-errors: always
+    include-exception: true
+    include-stacktrace: always

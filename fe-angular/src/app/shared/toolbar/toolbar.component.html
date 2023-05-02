@@ -1,0 +1,25 @@
+<div class="toolbar">
+  <div class="home-button">
+    <a href="index.html">
+      Home
+    </a>
+  </div>
+  <ng-container *ngIf="authenticated; else loginLink">
+    <a href="http://localhost:4200/home">
+      {{ user?.username }}
+    </a>
+    |
+    <a href="http://localhost:8080/logout">
+      Log Out
+    </a>
+  </ng-container>
+  <ng-template #loginLink>
+    <a href="http://localhost:4200/login">
+      Log In
+    </a>
+    |
+    <a href="http://localhost:4200/register">
+      Register
+    </a>
+  </ng-template>
+</div>

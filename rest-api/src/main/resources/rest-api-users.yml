@@ -1,0 +1,226 @@
+openapi: 3.0.0
+info:
+  title: IS Regatta Users REST API
+  description: REST API for Users' management
+  version: 0.0.1
+
+paths:
+  /users:
+    post:
+      tags:
+        - user-controller
+      summary: Create new user
+      operationId: createUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserDto'
+      responses:
+        201:
+          description: User successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetailDto'
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        409:
+          description: Conflict
+        500:
+          description: Internal server error
+  /users/user/{userId}:
+    get:
+      tags:
+        - user-controller
+      summary: Get user's info
+      operationId: getUser
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: User's ID
+          schema:
+            type: integer
+            format: int32
+      responses:
+        200:
+          description: User's info retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetailDto'
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        404:
+          description: User not found
+        500:
+          description: Internal server error
+    patch:
+      tags:
+        - user-controller
+      summary: Update user's info
+      operationId: updateUser
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: User's ID
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserDto'
+      responses:
+        200:
+          description: User's info updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetailDto'
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        404:
+          description: User not found
+        409:
+          description: Conflict
+        500:
+          description: Internal server error
+  /users/user/{userId}/roles:
+    get:
+      tags:
+        - user-controller
+      summary: Get user's roles
+      operationId: getUserRoles
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: User's ID
+          schema:
+            type: integer
+            format: int32
+      responses:
+        200:
+          description: User's roles retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleListDto'
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        404:
+          description: User not found
+        500:
+          description: Internal server error
+    put:
+      tags:
+        - user-controller
+      summary: Update user's roles
+      operationId: updateUserRoles
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          description: User's ID
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RoleListDto'
+      responses:
+        200:
+          description: User's info updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleListDto'
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        404:
+          description: User not found
+        409:
+          description: Conflict
+        500:
+          description: Internal server error
+  /users/roles:
+    get:
+      tags:
+        - user-controller
+      summary: Get all roles
+      operationId: getRoles
+      responses:
+        200:
+          description: Roles retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RoleListDto'
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        404:
+          description: User not found
+        500:
+          description: Internal server error
+
+components:
+  schemas:
+    CreateUserDto:
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    UserDetailDto:
+      properties:
+        id:
+          type: integer
+          format: int32
+        username:
+          type: string
+    RoleDto:
+      properties:
+        id:
+          type: integer
+          format: int32
+        role:
+          type: string
+    RoleListDto:
+      properties:
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoleDto'
