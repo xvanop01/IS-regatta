@@ -4,13 +4,18 @@
   </div>
   <div>
     <p>Username: {{ user.username }}</p>
+    <div>
+      <a [routerLink]="['/user', user.id, 'update']">
+        Update user info
+      </a>
+    </div>
   </div>
   <div *ngFor="let role of roles">
     <p>{{ role.role }}</p>
   </div>
-  <div>
-    <a [routerLink]="['/user', user.id, 'update']">
-      Update user info
+  <div *ngIf="isAdmin">
+    <a [routerLink]="['/user', user.id, 'roles', 'update']">
+      Update roles
     </a>
   </div>
 </div>

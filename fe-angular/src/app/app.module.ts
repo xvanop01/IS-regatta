@@ -13,6 +13,7 @@ import { RegisterScreenComponent } from './users/register-screen/register-screen
 import { LoginScreenComponent } from './users/login-screen/login-screen.component';
 import { UserUpdateScreenComponent } from './users/user-update-screen/user-update-screen.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RolesUpdateScreenComponent } from './users/roles-update-screen/roles-update-screen.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     UserScreenComponent,
     RegisterScreenComponent,
     LoginScreenComponent,
-    UserUpdateScreenComponent
+    UserUpdateScreenComponent,
+    RolesUpdateScreenComponent
   ],
   imports: [
     CommonModule,
@@ -34,7 +36,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
       {path: 'home', component: UserScreenComponent},
       {path: 'register', component: RegisterScreenComponent},
       {path: 'login', component: LoginScreenComponent},
-      {path: 'user/:userId/update', component: UserUpdateScreenComponent}
+      {path: 'user/:userId/update', component: UserUpdateScreenComponent},
+      {path: 'user/:userId/roles/update', component: RolesUpdateScreenComponent}
     ]),
   ],
   providers: [

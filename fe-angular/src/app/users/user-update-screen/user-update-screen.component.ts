@@ -49,9 +49,6 @@ export class UserUpdateScreenComponent implements OnInit {
       username: username,
       password: password
     };
-    this.usersService.updateUser(this.user.id, updateUser).subscribe(
-      result => {
-        console.log("success");
-      })
+    this.usersService.updateUser(this.user.id, updateUser).subscribe();
   }
 }

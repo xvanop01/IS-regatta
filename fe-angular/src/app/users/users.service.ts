@@ -36,7 +36,7 @@ export class UsersService {
     return this.http.put<RoleListDto>(`${this.apiUrl}/user/${userId}/roles`, roleListDto, {withCredentials: true});
   }
 
-  public getAllRoles(): Observable<UserDetailDto> {
-    return this.http.get<UserDetailDto>(`${this.apiUrl}/roles`, { withCredentials: true });
+  public getAllRoles(): Observable<RoleListDto> {
+    return this.http.get<RoleListDto>(`${this.apiUrl}/roles`, { withCredentials: true });
   }
 }
