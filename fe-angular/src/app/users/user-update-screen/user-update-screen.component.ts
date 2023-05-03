@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder } from "@angular/forms";
 import { ActivatedRoute } from "@angular/router";
+import { LoggedUserService } from "../logged-user.service";
 import { CreateUserDto, UserDetailDto } from "../users.model";
 import { UsersService } from "../users.service";
 
@@ -12,6 +13,8 @@ import { UsersService } from "../users.service";
 export class UserUpdateScreenComponent implements OnInit {
 
   protected user: any;
+  
+  protected activeUser: any;
 
   updateForm = this.formBuilder.group({
     username: '',
@@ -20,6 +23,7 @@ export class UserUpdateScreenComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
               private usersService: UsersService,
+              private loggedUserService: LoggedUserService,
               private formBuilder: FormBuilder) {
 
   }
@@ -34,6 +38,10 @@ export class UserUpdateScreenComponent implements OnInit {
           username: this.user.username
         })
       });
+    this.loggedUserService.getLoggedUser().subscribe(
+      result => {
+        this.activeUser = result;
+    })
   }
 
   onSubmit(): void {

@@ -1,6 +1,6 @@
 <h1>Update Info</h1>
 <form [formGroup]="updateForm" (ngSubmit)="onSubmit()">
-  <div>
+  <div *ngIf="activeUser.id == user.id">
     <label for="username">Username</label>
     <input id="username" type="text" formControlName="username">
   </div>

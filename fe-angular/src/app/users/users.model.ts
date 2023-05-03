@@ -8,6 +8,10 @@ export interface UserDetailDto {
   username: string;
 }
 
+export interface UserDetailListDto {
+  users: Array<UserDetailDto>;
+}
+
 export interface RoleDto {
   id: number;
   role: string;

@@ -15,6 +15,7 @@ import { UserUpdateScreenComponent } from './users/user-update-screen/user-updat
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RolesUpdateScreenComponent } from './users/roles-update-screen/roles-update-screen.component';
 import { IndexComponent } from './core/index/index.component';
+import { UsersManagementScreenComponent } from './users/users-management-screen/users-management-screen.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { IndexComponent } from './core/index/index.component';
     RegisterScreenComponent,
     LoginScreenComponent,
     UserUpdateScreenComponent,
-    RolesUpdateScreenComponent
+    RolesUpdateScreenComponent,
+    UsersManagementScreenComponent
   ],
   imports: [
     CommonModule,
@@ -40,7 +42,8 @@ import { IndexComponent } from './core/index/index.component';
       {path: 'register', component: RegisterScreenComponent},
       {path: 'login', component: LoginScreenComponent},
       {path: 'user/:userId/update', component: UserUpdateScreenComponent},
-      {path: 'user/:userId/roles/update', component: RolesUpdateScreenComponent}
+      {path: 'user/:userId/roles/update', component: RolesUpdateScreenComponent},
+      {path: 'users', component: UsersManagementScreenComponent}
     ]),
   ],
   providers: [

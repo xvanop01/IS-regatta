@@ -4,7 +4,8 @@ import { Observable } from 'rxjs';
 import {
   CreateUserDto,
   RoleListDto,
-  UserDetailDto
+  UserDetailDto,
+  UserDetailListDto
 } from './users.model';
 
 @Injectable()
@@ -22,6 +23,10 @@ export class UsersService {
 
   public getUser(userId: number): Observable<UserDetailDto> {
     return this.http.get<UserDetailDto>(`${this.apiUrl}/user/${userId}`, {withCredentials: true});
+  }
+
+  public getAllUsers(): Observable<UserDetailListDto> {
+    return this.http.get<UserDetailListDto>(`${this.apiUrl}`, {withCredentials: true});
   }
 
   public updateUser(userId: number, updateUserDto: CreateUserDto): Observable<UserDetailDto> {

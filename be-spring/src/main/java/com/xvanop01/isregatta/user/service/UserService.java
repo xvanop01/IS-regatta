@@ -36,6 +36,11 @@ public class UserService {
         throw new HttpException(Http400ReturnCode.NOT_FOUND, "User not found by id: " + userId);
     }
 
+    public List<User> getAllUsers() {
+        log.info("getAllUsers");
+        return userPersistanceService.findAllUsers();
+    }
+
     @Transactional(rollbackFor = HttpException.class)
     public User createUser(User user) throws HttpException {
         log.info("createUser: {}", user);
