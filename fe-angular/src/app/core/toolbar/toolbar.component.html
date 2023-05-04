@@ -6,7 +6,9 @@
   </div>
   <ng-container *ngIf="authenticated; else loginLink">
     <a href="http://localhost:4200/home">
-      {{ user?.username }}
+      <ng-container *ngIf="user">
+        {{ user?.username }}
+      </ng-container>
     </a>
     |
     <a href="http://localhost:8080/logout">

@@ -1,14 +1,16 @@
 <h1>Update Info</h1>
-<form [formGroup]="updateForm" (ngSubmit)="onSubmit()">
-  <div *ngIf="activeUser.id == user.id">
-    <label for="username">Username</label>
-    <input id="username" type="text" formControlName="username">
-  </div>
-  <div>
-    <label for="password">Password</label>
-    <input id="password" type="text" formControlName="password">
-  </div>
-  <div>
-    <button class="button" type="submit">Save</button>
-  </div>
-</form>
+<ng-container *ngIf="activeUser && user">
+  <form [formGroup]="updateForm" (ngSubmit)="onSubmit()">
+    <div *ngIf="activeUser.id == user.id">
+      <label for="username">Username</label>
+      <input id="username" type="text" formControlName="username">
+    </div>
+    <div>
+      <label for="password">Password</label>
+      <input id="password" type="text" formControlName="password">
+    </div>
+    <div>
+      <button class="button" type="submit">Save</button>
+    </div>
+  </form>
+</ng-container>
