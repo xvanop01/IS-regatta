@@ -3,6 +3,7 @@ package com.xvanop01.isregatta.user.controller;
 import com.xvanop01.isregatta.api.dto.CreateUserDto;
 import com.xvanop01.isregatta.api.dto.RoleListDto;
 import com.xvanop01.isregatta.api.dto.UserDetailDto;
+import com.xvanop01.isregatta.api.dto.UserDetailListDto;
 import com.xvanop01.isregatta.api.user.UserControllerApi;
 import com.xvanop01.isregatta.base.exception.HttpException;
 import com.xvanop01.isregatta.base.exception.HttpExceptionHandler;
@@ -50,6 +51,15 @@ public class UserController implements UserControllerApi {
             return httpExceptionHandler.resolve(e);
         }
         return ResponseEntity.status(201).body(userMapper.map(user));
+    }
+
+    @Override
+    public ResponseEntity<UserDetailListDto> getAllUsers() {
+        log.info("getAllUsers");
+        List<User> users = userService.getAllUsers();
+        UserDetailListDto dto = new UserDetailListDto();
+        dto.setUsers(userMapper.map(users));
+        return ResponseEntity.ok(dto);
     }
 
     @Override

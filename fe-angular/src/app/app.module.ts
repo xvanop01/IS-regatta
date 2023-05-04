@@ -5,7 +5,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { ToolbarComponent } from './shared/toolbar/toolbar.component';
+import { ToolbarComponent } from './core/toolbar/toolbar.component';
 import { UserScreenComponent } from './users/user-screen/user-screen.component';
 import { LoggedUserService } from './users/logged-user.service';
 import { UsersService } from './users/users.service';
@@ -14,16 +14,20 @@ import { LoginScreenComponent } from './users/login-screen/login-screen.componen
 import { UserUpdateScreenComponent } from './users/user-update-screen/user-update-screen.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RolesUpdateScreenComponent } from './users/roles-update-screen/roles-update-screen.component';
+import { IndexComponent } from './core/index/index.component';
+import { UsersManagementScreenComponent } from './users/users-management-screen/users-management-screen.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ToolbarComponent,
+    IndexComponent,
     UserScreenComponent,
     RegisterScreenComponent,
     LoginScreenComponent,
     UserUpdateScreenComponent,
-    RolesUpdateScreenComponent
+    RolesUpdateScreenComponent,
+    UsersManagementScreenComponent
   ],
   imports: [
     CommonModule,
@@ -33,11 +37,13 @@ import { RolesUpdateScreenComponent } from './users/roles-update-screen/roles-up
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forRoot([
+      {path: '', component: IndexComponent},
       {path: 'home', component: UserScreenComponent},
       {path: 'register', component: RegisterScreenComponent},
       {path: 'login', component: LoginScreenComponent},
       {path: 'user/:userId/update', component: UserUpdateScreenComponent},
-      {path: 'user/:userId/roles/update', component: RolesUpdateScreenComponent}
+      {path: 'user/:userId/roles/update', component: RolesUpdateScreenComponent},
+      {path: 'users', component: UsersManagementScreenComponent}
     ]),
   ],
   providers: [

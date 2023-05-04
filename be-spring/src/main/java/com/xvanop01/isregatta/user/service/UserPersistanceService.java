@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Slf4j
 public class UserPersistanceService {
@@ -28,5 +30,10 @@ public class UserPersistanceService {
     public User findByUsername(String username) {
         log.info("findByUsername: {}", username);
         return repository.findByUsername(username).orElse(null);
+    }
+
+    public List<User> findAllUsers() {
+        log.info("findAllUsers");
+        return repository.findAll();
     }
 }

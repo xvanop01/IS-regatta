@@ -6,6 +6,26 @@ info:
 
 paths:
   /users:
+    get:
+      tags:
+        - user-controller
+      summary: Get all users
+      operationId: getAllUsers
+      responses:
+        200:
+          description: Users successfully retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetailListDto'
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        500:
+          description: Internal server error
     post:
       tags:
         - user-controller
@@ -211,6 +231,12 @@ components:
           format: int32
         username:
           type: string
+    UserDetailListDto:
+      properties:
+        users:
+          type: array
+          items:
+            $ref: '#/components/schemas/UserDetailDto'
     RoleDto:
       properties:
         id:
