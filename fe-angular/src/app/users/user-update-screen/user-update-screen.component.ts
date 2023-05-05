@@ -37,7 +37,9 @@ export class UserUpdateScreenComponent implements OnInit {
       result => {
         this.user = result;
         this.updateForm.patchValue({
-          username: this.user.username
+          username: this.user.username,
+          email: this.user.email,
+          fullName: this.user.fullName
         })
       });
     this.loggedUserService.getLoggedUser().subscribe(
