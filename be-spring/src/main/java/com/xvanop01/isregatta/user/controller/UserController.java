@@ -1,9 +1,6 @@
 package com.xvanop01.isregatta.user.controller;
 
-import com.xvanop01.isregatta.api.dto.CreateUserDto;
-import com.xvanop01.isregatta.api.dto.RoleListDto;
-import com.xvanop01.isregatta.api.dto.UserDetailDto;
-import com.xvanop01.isregatta.api.dto.UserDetailListDto;
+import com.xvanop01.isregatta.api.dto.*;
 import com.xvanop01.isregatta.api.user.UserControllerApi;
 import com.xvanop01.isregatta.base.exception.HttpException;
 import com.xvanop01.isregatta.base.exception.HttpExceptionHandler;
@@ -96,9 +93,9 @@ public class UserController implements UserControllerApi {
     }
 
     @Override
-    public ResponseEntity<UserDetailDto> updateUser(Integer userId, CreateUserDto createUserDto) {
-        log.info("updateUser: userId: {}, createUserDto: {}", userId, createUserDto);
-        User user = userMapper.map(createUserDto);
+    public ResponseEntity<UserDetailDto> updateUser(Integer userId, UpdateUserDto updateUserDto) {
+        log.info("updateUser: userId: {}, createUserDto: {}", userId, updateUserDto);
+        User user = userMapper.map(updateUserDto);
         try {
             user = userService.updateUser(userId, user);
         } catch (HttpException e) {

@@ -78,6 +78,12 @@ public class UserService {
         if (updateUser.getPassword() != null && !updateUser.getPassword().isEmpty()) {
             user.setPassword(passwordEncoder.encode(updateUser.getPassword()));
         }
+        if (updateUser.getEmail() != null && !updateUser.getEmail().isEmpty()) {
+            user.setEmail(updateUser.getEmail());
+        }
+        if (updateUser.getFullName() != null && !updateUser.getFullName().isEmpty()) {
+            user.setFullName(updateUser.getFullName());
+        }
         return userPersistanceService.persist(user);
     }
 

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import {
   CreateUserDto,
   RoleListDto,
+  UpdateUserDto,
   UserDetailDto,
   UserDetailListDto
 } from './users.model';
@@ -29,7 +30,7 @@ export class UsersService {
     return this.http.get<UserDetailListDto>(`${this.apiUrl}`, {withCredentials: true});
   }
 
-  public updateUser(userId: number, updateUserDto: CreateUserDto): Observable<UserDetailDto> {
+  public updateUser(userId: number, updateUserDto: UpdateUserDto): Observable<UserDetailDto> {
     return this.http.patch<UserDetailDto>(`${this.apiUrl}/user/${userId}`, updateUserDto, {withCredentials: true});
   }
 
