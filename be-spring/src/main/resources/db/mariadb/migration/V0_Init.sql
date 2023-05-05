@@ -2,6 +2,8 @@ CREATE TABLE user_user (
     `id` int(10) NOT NULL AUTO_INCREMENT,
     `username` varchar(50) NOT NULL,
     `password` varchar(255) DEFAULT NULL,
+    `email` varchar(255) DEFAULT NULL,
+    `full_name` varchar(255) DEFAULT NULL,
     CONSTRAINT PK_user_user_id PRIMARY KEY (`id`),
     UNIQUE KEY UK_user_user_username (`username`)
 ) ENGINE = InnoDB
