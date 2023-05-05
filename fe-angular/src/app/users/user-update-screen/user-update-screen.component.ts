@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { FormBuilder } from "@angular/forms";
 import { ActivatedRoute } from "@angular/router";
 import { LoggedUserService } from "../logged-user.service";
-import { CreateUserDto, UserDetailDto } from "../users.model";
+import { CreateUserDto, UpdateUserDto, UserDetailDto } from "../users.model";
 import { UsersService } from "../users.service";
 
 @Component({
@@ -18,7 +18,9 @@ export class UserUpdateScreenComponent implements OnInit {
 
   updateForm = this.formBuilder.group({
     username: '',
-    password: ''
+    password: '',
+    email: '',
+    fullName: ''
   });
 
   constructor(private route: ActivatedRoute,
@@ -47,15 +49,25 @@ export class UserUpdateScreenComponent implements OnInit {
   onSubmit(): void {
     var username: string = '';
     var password: string = '';
+    var email: string = '';
+    var fullName: string = '';
     if (this.updateForm.value.username !== undefined && this.updateForm.value.username !== null) {
       username = this.updateForm.value.username;
     }
     if (this.updateForm.value.password !== undefined && this.updateForm.value.password !== null) {
       password = this.updateForm.value.password;
     }
-    const updateUser: CreateUserDto = {
+    if (this.updateForm.value.email !== undefined && this.updateForm.value.email !== null) {
+      email = this.updateForm.value.email;
+    }
+    if (this.updateForm.value.fullName !== undefined && this.updateForm.value.fullName !== null) {
+      fullName = this.updateForm.value.fullName;
+    }
+    const updateUser: UpdateUserDto = {
       username: username,
-      password: password
+      password: password,
+      email: email,
+      fullName: fullName
     };
     this.usersService.updateUser(this.user.id, updateUser).subscribe();
   }

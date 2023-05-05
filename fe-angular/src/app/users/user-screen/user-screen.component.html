@@ -5,6 +5,8 @@
     </div>
     <div>
       <p>Username: {{ user.username }}</p>
+      <p>E-mail: {{ user.email }}</p>
+      <p>Name: {{ user.fullName }}</p>
       <div>
         <a [routerLink]="['/user', user.id, 'update']">
           Update user info

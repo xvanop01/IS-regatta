@@ -3,9 +3,18 @@ export interface CreateUserDto {
   password: string;
 }
 
+export interface UpdateUserDto {
+  username: string;
+  password: string;
+  email: string;
+  fullName: string;
+}
+
 export interface UserDetailDto {
   id: number;
   username: string;
+  email: string;
+  fullName: string;
 }
 
 export interface UserDetailListDto {
