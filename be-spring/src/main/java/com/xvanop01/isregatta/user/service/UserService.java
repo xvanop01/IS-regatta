@@ -2,6 +2,7 @@ package com.xvanop01.isregatta.user.service;
 
 import com.xvanop01.isregatta.base.exception.Http400ReturnCode;
 import com.xvanop01.isregatta.base.exception.HttpException;
+import com.xvanop01.isregatta.base.security.PrincipalService;
 import com.xvanop01.isregatta.user.model.Role;
 import com.xvanop01.isregatta.user.model.User;
 import lombok.extern.slf4j.Slf4j;
@@ -72,6 +73,10 @@ public class UserService {
             if (userByUsername != null && !userByUsername.getId().equals(userId)) {
                 throw new HttpException(Http400ReturnCode.CONFLICT,
                         String.format("User with username '%s' already exists.", updateUser.getUsername()));
+            }
+            if (!PrincipalService.getPrincipalId().equals(userId)
+                    && !updateUser.getUsername().equals(user.getUsername())) {
+                throw new HttpException(Http400ReturnCode.CONFLICT, "Only user can change his own username.");
             }
             user.setUsername(updateUser.getUsername());
         }

@@ -2,8 +2,10 @@ package com.xvanop01.isregatta.user.controller;
 
 import com.xvanop01.isregatta.api.dto.*;
 import com.xvanop01.isregatta.api.user.UserControllerApi;
+import com.xvanop01.isregatta.base.exception.Http400ReturnCode;
 import com.xvanop01.isregatta.base.exception.HttpException;
 import com.xvanop01.isregatta.base.exception.HttpExceptionHandler;
+import com.xvanop01.isregatta.base.security.SecurityService;
 import com.xvanop01.isregatta.user.mapper.RoleMapper;
 import com.xvanop01.isregatta.user.mapper.UserMapper;
 import com.xvanop01.isregatta.user.model.Role;
@@ -30,6 +32,9 @@ public class UserController implements UserControllerApi {
     public RolePersistenceService rolePersistenceService;
 
     @Autowired
+    public SecurityService securityService;
+
+    @Autowired
     public HttpExceptionHandler httpExceptionHandler;
 
     @Autowired
@@ -53,6 +58,13 @@ public class UserController implements UserControllerApi {
     @Override
     public ResponseEntity<UserDetailListDto> getAllUsers() {
         log.info("getAllUsers");
+        try {
+            if (!securityService.hasRole(SecurityService.ROLE_ADMIN)) {
+                throw new HttpException(Http400ReturnCode.FORBIDDEN, "You don't have permission for the resource.");
+            }
+        } catch (HttpException e) {
+            return httpExceptionHandler.resolve(e);
+        }
         List<User> users = userService.getAllUsers();
         UserDetailListDto dto = new UserDetailListDto();
         dto.setUsers(userMapper.map(users));
@@ -62,6 +74,13 @@ public class UserController implements UserControllerApi {
     @Override
     public ResponseEntity<RoleListDto> getRoles() {
         log.info("getRoles");
+        try {
+            if (!securityService.hasRole(SecurityService.ROLE_ADMIN)) {
+                throw new HttpException(Http400ReturnCode.FORBIDDEN, "You don't have permission for the resource.");
+            }
+        } catch (HttpException e) {
+            return httpExceptionHandler.resolve(e);
+        }
         List<Role> roles = rolePersistenceService.getAllRoles();
         RoleListDto dto = roleMapper.mapRoleList(roles);
         return ResponseEntity.ok(dto);
@@ -72,6 +91,9 @@ public class UserController implements UserControllerApi {
         log.info("getUser: {}", userId);
         User user;
         try {
+            if (!securityService.hasRoleOrIsUser(userId, SecurityService.ROLE_ADMIN)) {
+                throw new HttpException(Http400ReturnCode.FORBIDDEN, "You don't have permission for the resource.");
+            }
             user = userService.getUserById(userId);
         } catch (HttpException e) {
             return httpExceptionHandler.resolve(e);
@@ -84,6 +106,9 @@ public class UserController implements UserControllerApi {
         log.info("getUserRoles: {}", userId);
         List<Role> roles;
         try {
+            if (!securityService.hasRoleOrIsUser(userId, SecurityService.ROLE_ADMIN)) {
+                throw new HttpException(Http400ReturnCode.FORBIDDEN, "You don't have permission for the resource.");
+            }
             roles = userService.getUsersRoles(userId);
         } catch (HttpException e) {
             return httpExceptionHandler.resolve(e);
@@ -97,6 +122,9 @@ public class UserController implements UserControllerApi {
         log.info("updateUser: userId: {}, createUserDto: {}", userId, updateUserDto);
         User user = userMapper.map(updateUserDto);
         try {
+            if (!securityService.hasRoleOrIsUser(userId, SecurityService.ROLE_ADMIN)) {
+                throw new HttpException(Http400ReturnCode.FORBIDDEN, "You don't have permission for the resource.");
+            }
             user = userService.updateUser(userId, user);
         } catch (HttpException e) {
             return httpExceptionHandler.resolve(e);
@@ -110,6 +138,9 @@ public class UserController implements UserControllerApi {
         List<Integer> rolesIds = roleMapper.map(roleListDto);
         List<Role> roles;
         try {
+            if (!securityService.hasRole(SecurityService.ROLE_ADMIN)) {
+                throw new HttpException(Http400ReturnCode.FORBIDDEN, "You don't have permission for the resource.");
+            }
             roles = userService.setUsersRoles(userId, rolesIds);
         } catch (HttpException e) {
             return httpExceptionHandler.resolve(e);
