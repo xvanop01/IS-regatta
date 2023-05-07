@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder } from "@angular/forms";
-import { ActivatedRoute } from "@angular/router";
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { ActivatedRoute, Router } from "@angular/router";
 import { LoggedUserService } from "../logged-user.service";
 import { CreateUserDto, UpdateUserDto, UserDetailDto } from "../users.model";
 import { UsersService } from "../users.service";
@@ -13,7 +14,7 @@ import { UsersService } from "../users.service";
 export class UserUpdateScreenComponent implements OnInit {
 
   protected user: any;
-  
+
   protected activeUser: any;
 
   updateForm = this.formBuilder.group({
@@ -24,9 +25,11 @@ export class UserUpdateScreenComponent implements OnInit {
   });
 
   constructor(private route: ActivatedRoute,
+              private router: Router,
               private usersService: UsersService,
               private loggedUserService: LoggedUserService,
-              private formBuilder: FormBuilder) {
+              private formBuilder: FormBuilder,
+              private snackBar: MatSnackBar) {
 
   }
 
@@ -41,11 +44,24 @@ export class UserUpdateScreenComponent implements OnInit {
           email: this.user.email,
           fullName: this.user.fullName
         })
+      },
+      error => {
+        if (error.status === 401) {
+          let snackBarRef = this.snackBar.open('User unauthorised', 'Log In');
+          snackBarRef.afterDismissed().subscribe(
+            () => this.router.navigate(['/login'])
+          );
+        } else {
+          let snackBarRef = this.snackBar.open(error.status + ': ' + error.error, 'X');
+        }
       });
     this.loggedUserService.getLoggedUser().subscribe(
       result => {
         this.activeUser = result;
-    })
+      },
+      error => {
+        let snackBarRef = this.snackBar.open(error.status + ': ' + error.error, 'X');
+      });
   }
 
   onSubmit(): void {
@@ -71,6 +87,13 @@ export class UserUpdateScreenComponent implements OnInit {
       email: email,
       fullName: fullName
     };
-    this.usersService.updateUser(this.user.id, updateUser).subscribe();
+    this.usersService.updateUser(this.user.id, updateUser).subscribe(
+      result => {
+        this.router.navigate(['/user', this.user.id]);
+      },
+      error => {
+        console.log(error);
+        let snackBarRef = this.snackBar.open(error.status + ': ' + error.error, 'X');
+      });
   }
 }
