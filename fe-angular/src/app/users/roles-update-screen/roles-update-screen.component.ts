@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import {FormArray, FormBuilder } from "@angular/forms";
-import { ActivatedRoute } from "@angular/router";
+import { MatSnackBar } from "@angular/material/snack-bar";
+import { ActivatedRoute, Router } from "@angular/router";
 import { CreateUserDto, RoleDto, RoleListDto, UserDetailDto } from "../users.model";
 import { UsersService } from "../users.service";
 
@@ -20,8 +21,10 @@ export class RolesUpdateScreenComponent implements OnInit {
   protected roles: RoleDto[] = [];
 
   constructor(private route: ActivatedRoute,
+              private router: Router,
               private usersService: UsersService,
-              private formBuilder: FormBuilder) {
+              private formBuilder: FormBuilder,
+              private snackBar: MatSnackBar) {
     const routeParams = this.route.snapshot.paramMap;
     this.userId = Number(routeParams.get('userId'));
   }
@@ -51,6 +54,9 @@ export class RolesUpdateScreenComponent implements OnInit {
     this.usersService.getAllRoles().subscribe(
       result => {
         this.allRoles = result.roles;
+      },
+      error => {
+        let snackBarRef = this.snackBar.open(error.status + ': ' + error.error, 'X');
       });
     this.usersService.getUser(this.userId).subscribe(
       result => {
@@ -58,7 +64,20 @@ export class RolesUpdateScreenComponent implements OnInit {
         this.usersService.getUserRoles(this.userId).subscribe(
           result => {
             this.roles = result.roles;
+          },
+          error => {
+            let snackBarRef = this.snackBar.open(error.status + ': ' + error.error, 'X');
           });
+      },
+      error => {
+        if (error.status === 401) {
+          let snackBarRef = this.snackBar.open('User unauthorised', 'Log In');
+          snackBarRef.afterDismissed().subscribe(
+            () => this.router.navigate(['/login'])
+          );
+        } else {
+          let snackBarRef = this.snackBar.open(error.status + ': ' + error.error, 'X');
+        }
       });
   }
 
@@ -66,6 +85,12 @@ export class RolesUpdateScreenComponent implements OnInit {
     const roleList: RoleListDto = {
       roles: this.roles
     }
-    this.usersService.updateUserRoles(this.userId, roleList).subscribe();
+    this.usersService.updateUserRoles(this.userId, roleList).subscribe(
+      result => {
+        this.router.navigate(['/user', this.user.id]);
+      },
+      error => {
+        let snackBarRef = this.snackBar.open(error.status + ': ' + error.error, 'X');
+      });
   }
 }
