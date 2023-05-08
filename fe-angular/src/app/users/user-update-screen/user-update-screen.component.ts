@@ -92,6 +92,7 @@ export class UserUpdateScreenComponent implements OnInit {
         this.router.navigate(['/user', this.user.id]);
       },
       error => {
+        console.log(error);
         let snackBarRef = this.snackBar.open(error.status + ': ' + error.error, 'X');
       });
   }

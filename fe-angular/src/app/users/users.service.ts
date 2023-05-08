@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
@@ -16,10 +16,6 @@ export class UsersService {
 
   constructor(protected http: HttpClient) {
     this.apiUrl = 'http://localhost:8080/api/users';
-  }
-
-  public login(credentials: any): Observable<UserDetailDto> {
-    return this.http.post<UserDetailDto>(`http://localhost:8080/login`, credentials, {headers: {'Content-Type': 'application/x-www-form-urlencoded'}});
   }
 
   public createUser(createUserDto: CreateUserDto): Observable<UserDetailDto> {
