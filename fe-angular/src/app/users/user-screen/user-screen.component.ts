@@ -15,7 +15,7 @@ export class UserScreenComponent implements OnInit {
 
   public roles: any;
 
-  public isAdmin: boolean = false;
+  public isActiveAdmin: boolean = false;
 
   constructor(private route: ActivatedRoute,
               protected loggedUserService: LoggedUserService,
@@ -26,32 +26,30 @@ export class UserScreenComponent implements OnInit {
   ngOnInit(): void {
     const routeParams = this.route.snapshot.paramMap;
     const userId = routeParams.get('userId');
-    if (userId == null) {
-      this.loggedUserService.getLoggedUser().subscribe(
-        result => {
+    this.loggedUserService.getLoggedUser().subscribe(
+      result => {
+        if (userId == null) {
           this.user = result;
-          this.usersService.getUserRoles(this.user.id).subscribe(
-            result => {
+        }
+        this.usersService.getUserRoles(result.id).subscribe(
+          result => {
+            if (userId == null) {
               this.roles = result.roles;
-              for (let i = 0; i < result.roles.length; i++) {
-                if (result.roles.at(i)?.role == 'ADMIN') {
-                  this.isAdmin = true;
-                }
+            }
+            for (let i = 0; i < result.roles.length; i++) {
+              if (result.roles.at(i)?.role == 'ADMIN') {
+                this.isActiveAdmin = true;
               }
-            })
-        });
-    } else {
+            }
+          })
+      });
+    if (userId != null) {
       this.usersService.getUser(Number(userId)).subscribe(
         result => {
           this.user = result;
           this.usersService.getUserRoles(this.user.id).subscribe(
             result => {
               this.roles = result.roles;
-              for (let i = 0; i < result.roles.length; i++) {
-                if (result.roles.at(i)?.role == 'ADMIN') {
-                  this.isAdmin = true;
-                }
-              }
             })
         });
     }
