@@ -16,6 +16,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RolesUpdateScreenComponent } from './users/roles-update-screen/roles-update-screen.component';
 import { IndexComponent } from './core/index/index.component';
 import { UsersManagementScreenComponent } from './users/users-management-screen/users-management-screen.component';
+import { MatSnackBarModule, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -36,11 +38,14 @@ import { UsersManagementScreenComponent } from './users/users-management-screen/
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    MatSnackBarModule,
+    BrowserAnimationsModule,
     RouterModule.forRoot([
       {path: '', component: IndexComponent},
       {path: 'home', component: UserScreenComponent},
       {path: 'register', component: RegisterScreenComponent},
       {path: 'login', component: LoginScreenComponent},
+      {path: 'user/:userId', component: UserScreenComponent},
       {path: 'user/:userId/update', component: UserUpdateScreenComponent},
       {path: 'user/:userId/roles/update', component: RolesUpdateScreenComponent},
       {path: 'users', component: UsersManagementScreenComponent}
@@ -49,7 +54,13 @@ import { UsersManagementScreenComponent } from './users/users-management-screen/
   providers: [
     UsersService,
     LoggedUserService,
-    HttpClient
+    HttpClient,
+    { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {
+      panelClass: ['background-red'],
+      verticalPosition: 'top',
+      horizontalPosition: 'right',
+      duration: 50000
+    }}
   ],
   bootstrap: [AppComponent]
 })

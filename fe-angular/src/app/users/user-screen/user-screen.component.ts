@@ -1,4 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from "@angular/core";
+import { MatSnackBar } from "@angular/material/snack-bar";
+import { ActivatedRoute, Router } from "@angular/router";
 import { LoggedUserService } from "../logged-user.service";
 import { RoleDto } from "../users.model";
 import { UsersService } from "../users.service";
@@ -14,28 +16,68 @@ export class UserScreenComponent implements OnInit {
 
   public roles: any;
 
-  public authenticated: boolean = false;
+  public isActiveAdmin: boolean = false;
 
-  public isAdmin: boolean = false;
-
-  constructor(protected loggedUserService: LoggedUserService, protected usersService: UsersService) {
+  constructor(private route: ActivatedRoute,
+              private router: Router,
+              protected loggedUserService: LoggedUserService,
+              protected usersService: UsersService,
+              private snackBar: MatSnackBar) {
 
   }
 
   ngOnInit(): void {
+    const routeParams = this.route.snapshot.paramMap;
+    const userId = routeParams.get('userId');
     this.loggedUserService.getLoggedUser().subscribe(
       result => {
-        this.user = result;
-        this.authenticated = true;
-        this.usersService.getUserRoles(this.user.id).subscribe(
-          result => {
-            this.roles = result.roles;
-            for (let i = 0; i < result.roles.length; i++) {
-              if (result.roles.at(i)?.role == 'ADMIN') {
-                this.isAdmin = true;
+        if (result == null) {
+          let snackBarRef = this.snackBar.open('User unauthorised', 'Log In');
+          snackBarRef.afterDismissed().subscribe(
+            () => this.router.navigate(['/login'])
+          );
+        } else {
+          if (userId == null) {
+            this.user = result;
+          }
+          this.usersService.getUserRoles(result.id).subscribe(
+            result => {
+              if (userId == null) {
+                this.roles = result.roles;
               }
-            }
-          })
+              for (let i = 0; i < result.roles.length; i++) {
+                if (result.roles.at(i)?.role == 'ADMIN') {
+                  this.isActiveAdmin = true;
+                }
+              }
+            },
+            error => {
+              let snackBarRef = this.snackBar.open(error.status + ': ' + error.error, 'X');
+            });
+        }
+      },
+      error => {
+        let snackBarRef = this.snackBar.open(error.status + ': ' + error.error, 'X');
       });
+    if (userId != null) {
+      this.usersService.getUser(Number(userId)).subscribe(
+        result => {
+          this.user = result;
+          this.usersService.getUserRoles(this.user.id).subscribe(
+            result => {
+              this.roles = result.roles;
+            })
+        },
+        error => {
+          if (error.status === 401) {
+            let snackBarRef = this.snackBar.open('User unauthorised', 'Log In');
+            snackBarRef.afterDismissed().subscribe(
+              () => this.router.navigate(['/login'])
+            );
+          } else {
+            let snackBarRef = this.snackBar.open(error.status + ': ' + error.error, 'X');
+          }
+        });
+    }
   }
 }

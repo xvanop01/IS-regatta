@@ -22,16 +22,18 @@ export class IndexComponent implements OnInit {
   ngOnInit(): void {
     this.loggedUserService.getLoggedUser().subscribe(
       result => {
-        this.user = result;
-        this.usersService.getUserRoles(this.user.id).subscribe(
-          result => {
-            this.roles = result.roles;
-            for (const role of this.roles) {
-              if (role.role == 'ADMIN') {
-                this.isAdmin = true;
+        if (result != null) {
+          this.user = result;
+          this.usersService.getUserRoles(this.user.id).subscribe(
+            result => {
+              this.roles = result.roles;
+              for (const role of this.roles) {
+                if (role.role == 'ADMIN') {
+                  this.isAdmin = true;
+                }
               }
-            }
-          });
+            });
+        }
       });
   }
 

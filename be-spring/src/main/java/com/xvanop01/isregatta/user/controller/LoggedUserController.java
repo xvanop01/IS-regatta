@@ -28,6 +28,9 @@ public class LoggedUserController {
     @ResponseBody
     public ResponseEntity<UserDetailDto> currentUserDetail(Principal principal) {
         log.info("currentUserDetail");
+        if (principal == null) {
+            return ResponseEntity.ok(null);
+        }
         return ResponseEntity.ok(userMapper.map(userPersistanceService.findByUsername(principal.getName())));
     }
 }

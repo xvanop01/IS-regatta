@@ -19,7 +19,7 @@
     <p>{{ role.role }}</p>
   </div>
   </ng-container>
-  <div *ngIf="isAdmin">
+  <div *ngIf="isActiveAdmin">
     <a [routerLink]="['/user', user.id, 'roles', 'update']">
       Update roles
     </a>
