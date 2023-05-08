@@ -1,14 +1,14 @@
 <h1>Register Page</h1>
-<form ngNoForm action="http://localhost:8080/register" method="post">
+<form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
   <div>
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="username" />
+    <label for="username">Username</label>
+    <input id="username" type="text" formControlName="username">
   </div>
   <div>
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password" />
+    <label for="password">Password</label>
+    <input id="password" type="text" formControlName="password">
   </div>
   <div>
-    <button type="submit">Register</button>
+    <button class="button" type="submit">Register</button>
   </div>
 </form>

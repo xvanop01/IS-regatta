@@ -6,3 +6,9 @@
   --mdc-snackbar-container-color: darkred;
   --mdc-snackbar-supporting-text-color: white;
 }
+
+.success-snack {
+  --mat-mdc-snack-bar-button-color: white;
+  --mdc-snackbar-container-color: green;
+  --mdc-snackbar-supporting-text-color: white;
+}
