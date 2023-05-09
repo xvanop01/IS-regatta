@@ -39,7 +39,7 @@ public class UserService {
 
     public List<User> getAllUsers() {
         log.info("getAllUsers");
-        return userPersistenceService.findAllUsers();
+        return userPersistenceService.findAll();
     }
 
     @Transactional(rollbackFor = HttpException.class)
