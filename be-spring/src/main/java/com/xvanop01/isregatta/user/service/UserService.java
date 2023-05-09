@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -45,6 +46,9 @@ public class UserService {
     @Transactional(rollbackFor = HttpException.class)
     public User createUser(User user) throws HttpException {
         log.info("createUser: {}", user);
+        if (user == null) {
+            throw new HttpException(Http400ReturnCode.BAD_REQUEST, "User is not defined.");
+        }
         if (user.getUsername() == null || user.getUsername().isEmpty() || user.getPassword() == null
                 || user.getPassword().isEmpty()) {
             throw new HttpException(Http400ReturnCode.BAD_REQUEST, "User must have username and password defined.");
@@ -104,6 +108,9 @@ public class UserService {
     @Transactional(rollbackFor = HttpException.class)
     public List<Role> setUsersRoles(Integer userId, List<Integer> rolesIds) throws HttpException {
         log.info("setUserRoles: userId: {}, rolesIds: {}", userId, rolesIds);
+        if (rolesIds == null) {
+            rolesIds = new ArrayList<>();
+        }
         User user = userId == null ? null : userPersistenceService.findById(userId);
         if (user == null) {
             throw new HttpException(Http400ReturnCode.NOT_FOUND, "User not found by id: " + userId);
