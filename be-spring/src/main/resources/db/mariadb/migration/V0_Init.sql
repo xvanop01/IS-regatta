@@ -28,3 +28,15 @@ CREATE TABLE user_user_role (
     CONSTRAINT FK_user_user_role__role_id FOREIGN KEY (`role_id`) REFERENCES `user_role` (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
+
+CREATE TABLE race_race (
+    `id` int(10) NOT NULL AUTO_INCREMENT,
+    `name` varchar(50) NOT NULL,
+    `location` varchar(50) DEFAULT NULL,
+    `date` date DEFAULT NULL,
+    `sign_up_until` date DEFAULT NULL,
+    `description` varchar(255) DEFAULT NULL,
+    `is_public` bit(1) NOT NULL,
+    CONSTRAINT PK_race_race_id PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4;
