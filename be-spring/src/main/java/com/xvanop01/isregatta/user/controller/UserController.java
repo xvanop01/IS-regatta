@@ -6,7 +6,6 @@ import com.xvanop01.isregatta.api.user.model.UpdateUserDto;
 import com.xvanop01.isregatta.api.user.model.UserDetailDto;
 import com.xvanop01.isregatta.api.user.model.UserDetailListDto;
 import com.xvanop01.isregatta.api.user.UserControllerApi;
-import com.xvanop01.isregatta.base.exception.Http400ReturnCode;
 import com.xvanop01.isregatta.base.exception.HttpException;
 import com.xvanop01.isregatta.base.exception.HttpExceptionHandler;
 import com.xvanop01.isregatta.base.security.SecurityService;
@@ -63,9 +62,7 @@ public class UserController implements UserControllerApi {
     public ResponseEntity<UserDetailListDto> getAllUsers() {
         log.info("getAllUsers");
         try {
-            if (!securityService.hasRole(SecurityService.ROLE_ADMIN)) {
-                throw new HttpException(Http400ReturnCode.FORBIDDEN, "You don't have permission for the resource.");
-            }
+            securityService.hasRole(SecurityService.ROLE_ADMIN);
         } catch (HttpException e) {
             return httpExceptionHandler.resolve(e);
         }
@@ -79,9 +76,7 @@ public class UserController implements UserControllerApi {
     public ResponseEntity<RoleListDto> getRoles() {
         log.info("getRoles");
         try {
-            if (!securityService.hasRole(SecurityService.ROLE_ADMIN)) {
-                throw new HttpException(Http400ReturnCode.FORBIDDEN, "You don't have permission for the resource.");
-            }
+            securityService.hasRole(SecurityService.ROLE_ADMIN);
         } catch (HttpException e) {
             return httpExceptionHandler.resolve(e);
         }
@@ -95,9 +90,7 @@ public class UserController implements UserControllerApi {
         log.info("getUser: {}", userId);
         User user;
         try {
-            if (!securityService.hasRoleOrIsUser(userId, SecurityService.ROLE_ADMIN)) {
-                throw new HttpException(Http400ReturnCode.FORBIDDEN, "You don't have permission for the resource.");
-            }
+            securityService.hasRoleOrIsUser(userId, SecurityService.ROLE_ADMIN);
             user = userService.getUserById(userId);
         } catch (HttpException e) {
             return httpExceptionHandler.resolve(e);
@@ -110,9 +103,7 @@ public class UserController implements UserControllerApi {
         log.info("getUserRoles: {}", userId);
         List<Role> roles;
         try {
-            if (!securityService.hasRoleOrIsUser(userId, SecurityService.ROLE_ADMIN)) {
-                throw new HttpException(Http400ReturnCode.FORBIDDEN, "You don't have permission for the resource.");
-            }
+            securityService.hasRoleOrIsUser(userId, SecurityService.ROLE_ADMIN);
             roles = userService.getUsersRoles(userId);
         } catch (HttpException e) {
             return httpExceptionHandler.resolve(e);
@@ -126,9 +117,7 @@ public class UserController implements UserControllerApi {
         log.info("updateUser: userId: {}, createUserDto: {}", userId, updateUserDto);
         User user = userMapper.map(updateUserDto);
         try {
-            if (!securityService.hasRoleOrIsUser(userId, SecurityService.ROLE_ADMIN)) {
-                throw new HttpException(Http400ReturnCode.FORBIDDEN, "You don't have permission for the resource.");
-            }
+            securityService.hasRoleOrIsUser(userId, SecurityService.ROLE_ADMIN);
             user = userService.updateUser(userId, user);
         } catch (HttpException e) {
             return httpExceptionHandler.resolve(e);
@@ -142,9 +131,7 @@ public class UserController implements UserControllerApi {
         List<Integer> rolesIds = roleMapper.map(roleListDto);
         List<Role> roles;
         try {
-            if (!securityService.hasRole(SecurityService.ROLE_ADMIN)) {
-                throw new HttpException(Http400ReturnCode.FORBIDDEN, "You don't have permission for the resource.");
-            }
+            securityService.hasRole(SecurityService.ROLE_ADMIN);
             roles = userService.setUsersRoles(userId, rolesIds);
         } catch (HttpException e) {
             return httpExceptionHandler.resolve(e);
