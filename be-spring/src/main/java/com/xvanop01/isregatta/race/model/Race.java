@@ -31,4 +31,6 @@ public class Race {
     private LocalDate signUpUntil;
 
     private String description;
+
+    private Boolean isPublic;
 }
