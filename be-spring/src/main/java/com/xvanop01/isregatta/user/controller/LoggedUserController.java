@@ -2,7 +2,7 @@ package com.xvanop01.isregatta.user.controller;
 
 import com.xvanop01.isregatta.api.user.model.UserDetailDto;
 import com.xvanop01.isregatta.user.mapper.UserMapper;
-import com.xvanop01.isregatta.user.service.UserPersistanceService;
+import com.xvanop01.isregatta.user.service.UserPersistenceService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +19,7 @@ import java.security.Principal;
 public class LoggedUserController {
 
     @Autowired
-    private UserPersistanceService userPersistanceService;
+    private UserPersistenceService userPersistenceService;
 
     @Autowired
     private UserMapper userMapper;
@@ -31,6 +31,6 @@ public class LoggedUserController {
         if (principal == null) {
             return ResponseEntity.ok(null);
         }
-        return ResponseEntity.ok(userMapper.map(userPersistanceService.findByUsername(principal.getName())));
+        return ResponseEntity.ok(userMapper.map(userPersistenceService.findByUsername(principal.getName())));
     }
 }

@@ -11,7 +11,7 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class UserPersistanceService {
+public class UserPersistenceService {
 
     @Autowired
     private UserRepository repository;

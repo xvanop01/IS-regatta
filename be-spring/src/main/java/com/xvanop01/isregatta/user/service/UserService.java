@@ -18,7 +18,7 @@ import java.util.List;
 public class UserService {
 
     @Autowired
-    private UserPersistanceService userPersistanceService;
+    private UserPersistenceService userPersistenceService;
 
     @Autowired
     private RolePersistenceService rolePersistenceService;
@@ -29,7 +29,7 @@ public class UserService {
     public User getUserById(Integer userId) throws HttpException {
         log.info("getUserById: {}", userId);
         if (userId != null) {
-            User user = userPersistanceService.findById(userId);
+            User user = userPersistenceService.findById(userId);
             if (user != null) {
                 return user;
             }
@@ -39,7 +39,7 @@ public class UserService {
 
     public List<User> getAllUsers() {
         log.info("getAllUsers");
-        return userPersistanceService.findAllUsers();
+        return userPersistenceService.findAllUsers();
     }
 
     @Transactional(rollbackFor = HttpException.class)
@@ -49,13 +49,13 @@ public class UserService {
                 || user.getPassword().isEmpty()) {
             throw new HttpException(Http400ReturnCode.BAD_REQUEST, "User must have username and password defined.");
         }
-        User existingUser = userPersistanceService.findByUsername(user.getUsername());
+        User existingUser = userPersistenceService.findByUsername(user.getUsername());
         if (existingUser != null) {
             throw new HttpException(Http400ReturnCode.CONFLICT,
                     String.format("User with username '%s' already exists", existingUser.getUsername()));
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userPersistanceService.persist(user);
+        return userPersistenceService.persist(user);
     }
 
     @Transactional(rollbackFor = HttpException.class)
@@ -64,12 +64,12 @@ public class UserService {
         if (userId == null || updateUser == null) {
             throw new HttpException(Http400ReturnCode.BAD_REQUEST, "Missing update user's info.");
         }
-        User user = userPersistanceService.findById(userId);
+        User user = userPersistenceService.findById(userId);
         if (user == null) {
             throw new HttpException(Http400ReturnCode.NOT_FOUND, "User not found by id: " + userId);
         }
         if (updateUser.getUsername() != null && !updateUser.getUsername().isEmpty()) {
-            User userByUsername = userPersistanceService.findByUsername(updateUser.getUsername());
+            User userByUsername = userPersistenceService.findByUsername(updateUser.getUsername());
             if (userByUsername != null && !userByUsername.getId().equals(userId)) {
                 throw new HttpException(Http400ReturnCode.CONFLICT,
                         String.format("User with username '%s' already exists.", updateUser.getUsername()));
@@ -89,12 +89,12 @@ public class UserService {
         if (updateUser.getFullName() != null && !updateUser.getFullName().isEmpty()) {
             user.setFullName(updateUser.getFullName());
         }
-        return userPersistanceService.persist(user);
+        return userPersistenceService.persist(user);
     }
 
     public List<Role> getUsersRoles(Integer userId) throws HttpException {
         log.info("getUserRoles: {}", userId);
-        User user = userId == null ? null : userPersistanceService.findById(userId);
+        User user = userId == null ? null : userPersistenceService.findById(userId);
         if (user == null) {
             throw new HttpException(Http400ReturnCode.NOT_FOUND, "User not found by id: " + userId);
         }
@@ -104,7 +104,7 @@ public class UserService {
     @Transactional(rollbackFor = HttpException.class)
     public List<Role> setUsersRoles(Integer userId, List<Integer> rolesIds) throws HttpException {
         log.info("setUserRoles: userId: {}, rolesIds: {}", userId, rolesIds);
-        User user = userId == null ? null : userPersistanceService.findById(userId);
+        User user = userId == null ? null : userPersistenceService.findById(userId);
         if (user == null) {
             throw new HttpException(Http400ReturnCode.NOT_FOUND, "User not found by id: " + userId);
         }
