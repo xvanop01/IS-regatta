@@ -12,6 +12,7 @@ import java.util.List;
 @Slf4j
 public class PersistenceService<E, R extends JpaRepository<E, Integer> & JpaSpecificationExecutor<E>> {
 
+    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     protected final R repository;
 
     @Transactional
