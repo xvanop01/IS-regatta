@@ -1,8 +1,8 @@
 package com.xvanop01.isregatta.user.mapper;
 
-import com.xvanop01.isregatta.api.dto.CreateUserDto;
-import com.xvanop01.isregatta.api.dto.UpdateUserDto;
-import com.xvanop01.isregatta.api.dto.UserDetailDto;
+import com.xvanop01.isregatta.api.user.model.CreateUserDto;
+import com.xvanop01.isregatta.api.user.model.UpdateUserDto;
+import com.xvanop01.isregatta.api.user.model.UserDetailDto;
 import com.xvanop01.isregatta.user.model.User;
 import org.mapstruct.Mapper;
 

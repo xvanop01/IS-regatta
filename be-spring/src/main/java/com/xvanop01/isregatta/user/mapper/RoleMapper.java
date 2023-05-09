@@ -1,7 +1,7 @@
 package com.xvanop01.isregatta.user.mapper;
 
-import com.xvanop01.isregatta.api.dto.RoleDto;
-import com.xvanop01.isregatta.api.dto.RoleListDto;
+import com.xvanop01.isregatta.api.user.model.RoleDto;
+import com.xvanop01.isregatta.api.user.model.RoleListDto;
 import com.xvanop01.isregatta.user.model.Role;
 import org.mapstruct.Mapper;
 

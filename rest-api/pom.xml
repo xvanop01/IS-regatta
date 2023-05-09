@@ -56,17 +56,16 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <apiPackage>com.xvanop01.isregatta.api.user</apiPackage>
+                            <inputSpec>${project.basedir}/src/main/resources/rest-api-users.yml</inputSpec>
                             <generatorName>spring</generatorName>
                             <library>spring-cloud</library>
+                            <apiPackage>com.xvanop01.isregatta.api.user</apiPackage>
+                            <modelPackage>com.xvanop01.isregatta.api.user.model</modelPackage>
+                            <output>${project.build.directory}/generated-sources/spring/users</output>
                             <configOptions>
-                                <interfaceOnly>true</interfaceOnly>
                                 <java8>true</java8>
-                                <sourceFolder>swagger</sourceFolder>
-                                <dateLibrary>java8.localdatetime</dateLibrary>
+                                <interfaceOnly>true</interfaceOnly>
                             </configOptions>
-                            <inputSpec>${project.basedir}/src/main/resources/rest-api-users.yml</inputSpec>
-                            <modelPackage>com.xvanop01.isregatta.api.dto</modelPackage>
                             <typeMappings>
                                 <typeMapping>Float=java.math.BigDecimal</typeMapping>
                             </typeMappings>

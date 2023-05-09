@@ -1,6 +1,10 @@
 package com.xvanop01.isregatta.user.controller;
 
-import com.xvanop01.isregatta.api.dto.*;
+import com.xvanop01.isregatta.api.user.model.CreateUserDto;
+import com.xvanop01.isregatta.api.user.model.RoleListDto;
+import com.xvanop01.isregatta.api.user.model.UpdateUserDto;
+import com.xvanop01.isregatta.api.user.model.UserDetailDto;
+import com.xvanop01.isregatta.api.user.model.UserDetailListDto;
 import com.xvanop01.isregatta.api.user.UserControllerApi;
 import com.xvanop01.isregatta.base.exception.Http400ReturnCode;
 import com.xvanop01.isregatta.base.exception.HttpException;

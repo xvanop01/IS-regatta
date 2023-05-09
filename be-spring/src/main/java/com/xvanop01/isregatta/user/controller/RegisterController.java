@@ -1,7 +1,6 @@
 package com.xvanop01.isregatta.user.controller;
 
-import com.xvanop01.isregatta.api.dto.CreateUserDto;
-import com.xvanop01.isregatta.api.dto.UserDetailDto;
+import com.xvanop01.isregatta.api.user.model.UserDetailDto;
 import com.xvanop01.isregatta.base.exception.HttpException;
 import com.xvanop01.isregatta.base.exception.HttpExceptionHandler;
 import com.xvanop01.isregatta.user.mapper.UserMapper;
@@ -12,9 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import javax.validation.Valid;
 
 @Controller
 @Slf4j

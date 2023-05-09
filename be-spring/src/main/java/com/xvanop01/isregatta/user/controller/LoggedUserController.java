@@ -1,6 +1,6 @@
 package com.xvanop01.isregatta.user.controller;
 
-import com.xvanop01.isregatta.api.dto.UserDetailDto;
+import com.xvanop01.isregatta.api.user.model.UserDetailDto;
 import com.xvanop01.isregatta.user.mapper.UserMapper;
 import com.xvanop01.isregatta.user.service.UserPersistanceService;
 import lombok.extern.slf4j.Slf4j;

@@ -4,6 +4,12 @@ info:
   description: REST API for Users' management
   version: 0.0.1
 
+servers:
+  - url: '{server}/api'
+    variables:
+      server:
+        default: 'http://localhost:8080'
+
 paths:
   /users:
     get:
