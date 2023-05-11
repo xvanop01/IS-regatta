@@ -37,6 +37,8 @@ CREATE TABLE race_race (
     `sign_up_until` date DEFAULT NULL,
     `description` varchar(255) DEFAULT NULL,
     `is_public` bit(1) NOT NULL,
-    CONSTRAINT PK_race_race_id PRIMARY KEY (`id`)
+    `organizer_id` int(10) NOT NULL,
+    CONSTRAINT PK_race_race_id PRIMARY KEY (`id`),
+    CONSTRAINT FK_race_race__organizer_id FOREIGN KEY (`organizer_id`) REFERENCES `user_user` (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;

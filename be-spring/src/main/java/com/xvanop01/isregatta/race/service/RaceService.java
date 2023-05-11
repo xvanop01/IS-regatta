@@ -2,7 +2,10 @@ package com.xvanop01.isregatta.race.service;
 
 import com.xvanop01.isregatta.base.exception.Http400ReturnCode;
 import com.xvanop01.isregatta.base.exception.HttpException;
+import com.xvanop01.isregatta.base.security.PrincipalService;
 import com.xvanop01.isregatta.race.model.Race;
+import com.xvanop01.isregatta.user.model.User;
+import com.xvanop01.isregatta.user.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +21,9 @@ public class RaceService {
     @Autowired
     private RacePersistenceService racePersistenceService;
 
+    @Autowired
+    private UserService userService;
+
     @Transactional(rollbackFor = HttpException.class)
     public Race createRace(Race race) throws HttpException {
         log.info("createRace: {}", race);
@@ -27,6 +33,8 @@ public class RaceService {
         if (race.getIsPublic() == null || !race.getIsPublic()) {
             race.setIsPublic(false);
         }
+        User user = userService.getUserById(PrincipalService.getPrincipalId());
+        race.setOrganizer(user);
         return racePersistenceService.persist(race);
     }
 
