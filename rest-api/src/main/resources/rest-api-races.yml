@@ -60,7 +60,7 @@ paths:
           description: Conflict
         500:
           description: Internal server error
-  /races/{raceId}:
+  /races/race/{raceId}:
     get:
       tags:
         - race-controller
@@ -129,7 +129,7 @@ paths:
           description: Conflict
         500:
           description: Internal server error
-  /races/{raceId}/open:
+  /races/race/{raceId}/open:
     post:
       tags:
         - race-controller
@@ -162,7 +162,7 @@ paths:
           description: Conflict
         500:
           description: Internal server error
-  /races/{raceId}/dates:
+  /races/race/{raceId}/dates:
     patch:
       tags:
         - race-controller
