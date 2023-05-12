@@ -4,9 +4,12 @@ import com.xvanop01.isregatta.api.race.RaceControllerApi;
 import com.xvanop01.isregatta.api.race.model.CreateRaceDto;
 import com.xvanop01.isregatta.api.race.model.RaceDetailDto;
 import com.xvanop01.isregatta.api.race.model.RaceDetailListDto;
+import com.xvanop01.isregatta.api.race.model.UpdateRaceDatesDto;
 import com.xvanop01.isregatta.api.race.model.UpdateRaceDto;
+import com.xvanop01.isregatta.base.exception.Http400ReturnCode;
 import com.xvanop01.isregatta.base.exception.HttpException;
 import com.xvanop01.isregatta.base.exception.HttpExceptionHandler;
+import com.xvanop01.isregatta.base.security.PrincipalService;
 import com.xvanop01.isregatta.base.security.SecurityService;
 import com.xvanop01.isregatta.race.mapper.RaceMapper;
 import com.xvanop01.isregatta.race.model.Race;
@@ -41,7 +44,7 @@ public class RaceController implements RaceControllerApi {
         log.info("activateRace: {}", raceId);
         Race race;
         try {
-            securityService.hasRole(SecurityService.ROLE_ORGANIZER);
+            securityIsOrganizerAndHasRole(raceId, SecurityService.ROLE_ORGANIZER);
             race = raceService.openRaceForSignUp(raceId);
         } catch (HttpException e) {
             return httpExceptionHandler.resolve(e);
@@ -86,11 +89,32 @@ public class RaceController implements RaceControllerApi {
         log.info("updateRace: raceId: {}, updateRaceDto: {}", raceId, updateRaceDto);
         Race race = raceMapper.map(updateRaceDto);
         try {
-            securityService.hasRole(SecurityService.ROLE_ORGANIZER);
+            securityIsOrganizerAndHasRole(raceId, SecurityService.ROLE_ORGANIZER);
             race = raceService.updateRace(raceId, race);
         } catch (HttpException e) {
             return httpExceptionHandler.resolve(e);
         }
         return ResponseEntity.ok(raceMapper.map(race));
+    }
+
+    @Override
+    public ResponseEntity<RaceDetailDto> updateRaceDates(Integer raceId, UpdateRaceDatesDto updateRaceDatesDto) {
+        log.info("updateRaceDates: raceId: {}, updateRaceDto: {}", raceId, updateRaceDatesDto);
+        Race race;
+        try {
+            securityIsOrganizerAndHasRole(raceId, SecurityService.ROLE_ORGANIZER);
+            race = raceService.changeDates(raceId, updateRaceDatesDto.getSignUpUntil(), updateRaceDatesDto.getDate());
+        } catch (HttpException e) {
+            return httpExceptionHandler.resolve(e);
+        }
+        return ResponseEntity.ok(raceMapper.map(race));
+    }
+
+    private void securityIsOrganizerAndHasRole(Integer raceId, String role) throws HttpException {
+        log.info("securityIsOrganizerAndHasRole: raceId: {}, role: {}", raceId, role);
+        securityService.hasRole(role);
+        if (!raceService.isMainOrganizer(raceId, PrincipalService.getPrincipalId())) {
+            throw new HttpException(Http400ReturnCode.FORBIDDEN, "User is not main organizer of the race.");
+        }
     }
 }

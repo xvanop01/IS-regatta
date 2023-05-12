@@ -117,4 +117,10 @@ public class RaceService {
         }
         return racePersistenceService.persist(race);
     }
+
+    public Boolean isMainOrganizer(Integer raceId, Integer organizerId) {
+        log.info("isMainOrganizer: raceId: {}, organizerId: {}", raceId, organizerId);
+        Race race = racePersistenceService.getRaceByIdAndOrganizerId(raceId, organizerId);
+        return race != null;
+    }
 }
