@@ -1,27 +1,25 @@
-<div style="top:60px; position:absolute;">
-  <ng-container *ngIf="user">
-    <div>
-      User {{ user.username }}
-    </div>
-    <div>
-      <p>Username: {{ user.username }}</p>
-      <p>E-mail: {{ user.email }}</p>
-      <p>Name: {{ user.fullName }}</p>
-      <div>
-        <a [routerLink]="['/user', user.id, 'update']">
-          Update user info
-        </a>
-      </div>
-    </div>
-  </ng-container>
-  <ng-container *ngIf="roles">
-  <div *ngFor="let role of roles">
-    <p>{{ role.role }}</p>
+<ng-container *ngIf="user">
+  <div>
+    User {{ user.username }}
   </div>
-  </ng-container>
-  <div *ngIf="isActiveAdmin">
-    <a [routerLink]="['/user', user.id, 'roles', 'update']">
-      Update roles
-    </a>
+  <div>
+    <p>Username: {{ user.username }}</p>
+    <p>E-mail: {{ user.email }}</p>
+    <p>Name: {{ user.fullName }}</p>
+    <div>
+      <a [routerLink]="['/user', user.id, 'update']">
+        Update user info
+      </a>
+    </div>
   </div>
+</ng-container>
+<ng-container *ngIf="roles">
+<div *ngFor="let role of roles">
+  <p>{{ role.role }}</p>
+</div>
+</ng-container>
+<div *ngIf="isActiveAdmin">
+  <a [routerLink]="['/user', user.id, 'roles', 'update']">
+    Update roles
+  </a>
 </div>

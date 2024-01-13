@@ -5,8 +5,8 @@ export interface CreateRaceDto {
 export interface UpdateRaceDto {
   name: string;
   location: string;
-  date: Date;
-  signUpUntil: Date;
+  date: string;
+  signUpUntil: string;
   description: string;
 }
 
@@ -14,8 +14,8 @@ export interface RaceDetailDto {
   id: number;
   name: string;
   location: string;
-  date: Date;
-  signUpUntil: Date;
+  date: string;
+  signUpUntil: string;
   description: string;
   isPublic: boolean;
 }
@@ -25,6 +25,6 @@ export interface RaceDetailListDto {
 }
 
 export interface UpdateRaceDatesDto {
-  date: Date;
-  signUpUntil: Date;
+  date: string;
+  signUpUntil: string;
 }

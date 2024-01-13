@@ -1,0 +1,11 @@
+<h1>Races</h1>
+<a [routerLink]="['/races/create']">
+  Create race
+</a>
+<div *ngFor="let race of races">
+  <p>
+    {{ race.name }}
+    {{ race.date }}
+    {{ race.signUpUntil }}
+  </p>
+</div>

@@ -1,7 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { LoggedUserService } from './users/logged-user.service';
-import { RoleListDto } from './users/users.model';
-import { UsersService } from './users/users.service';
 
 @Component({
   selector: 'app-root',

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
@@ -18,6 +18,8 @@ import { IndexComponent } from './core/index/index.component';
 import { UsersManagementScreenComponent } from './users/users-management-screen/users-management-screen.component';
 import { MatSnackBarModule, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/material/snack-bar';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RacesService } from './races/races.service';
+import { RacesScreenComponent } from './races/races-screen/races-screen.component';
 
 @NgModule({
   declarations: [
@@ -29,7 +31,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     LoginScreenComponent,
     UserUpdateScreenComponent,
     RolesUpdateScreenComponent,
-    UsersManagementScreenComponent
+    UsersManagementScreenComponent,
+    RacesScreenComponent
   ],
   imports: [
     CommonModule,
@@ -48,11 +51,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
       {path: 'user/:userId', component: UserScreenComponent},
       {path: 'user/:userId/update', component: UserUpdateScreenComponent},
       {path: 'user/:userId/roles/update', component: RolesUpdateScreenComponent},
-      {path: 'users', component: UsersManagementScreenComponent}
+      {path: 'users', component: UsersManagementScreenComponent},
+      {path: 'races', component: RacesScreenComponent},
+      {path: 'races/create', component: RacesScreenComponent}
     ]),
   ],
   providers: [
     UsersService,
+    RacesService,
     LoggedUserService,
     HttpClient,
     { provide: MAT_SNACK_BAR_DEFAULT_OPTIONS, useValue: {
