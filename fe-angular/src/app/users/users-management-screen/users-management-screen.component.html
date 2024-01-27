@@ -1,17 +1,12 @@
 <h1>User Management</h1>
-<div *ngFor="let user of users">
-  <p>
-    {{ user.username }}
-    <a [routerLink]="['/user', user.id]">
-      User info
-    </a>
-    |
-    <a [routerLink]="['/user', user.id, 'update']">
-      Update user
-    </a>
-    |
-    <a [routerLink]="['/user', user.id, 'roles', 'update']">
-      Update roles
-    </a>
-  </p>
+<div>
+  <app-table [rows]="users" (onButtonClick)="buttonClicked($event)">
+    <app-table-column [title]="'Id'" [field]="'id'" [width]="50"></app-table-column>
+    <app-table-column [title]="'Username'" [field]="'username'"></app-table-column>
+    <app-table-column [title]="'Name'" [field]="'fullName'"></app-table-column>
+    <app-table-column [title]="'Email'" [field]="'email'"></app-table-column>
+    <app-table-column [field]="Action.RedirectToDetail" [icon]="'fas fa-angle-right'" [isButton]="true"></app-table-column>
+    <app-table-column [field]="Action.EditUser" [icon]="'far fa-edit'" [isButton]="true"></app-table-column>
+    <app-table-column [field]="Action.ChangePermissions" [icon]="'fas fa-user-cog'" [isButton]="true"></app-table-column>
+  </app-table>
 </div>

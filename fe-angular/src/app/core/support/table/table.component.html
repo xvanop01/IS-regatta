@@ -8,9 +8,9 @@
     <tr>
       <ng-container *ngFor="let column of columns">
         <ng-container *ngIf="column?.isButton">
-          <th>
+          <th [width]="50">
             <button mat-icon-button (click)="onClick(row?.id, column?.field)" style="transform: scale(0.75);">
-              <mat-icon>{{column?.field}}</mat-icon>
+              <i class="{{column?.icon}}"></i>
             </button>
           </th>
         </ng-container>

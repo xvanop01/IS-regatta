@@ -14,6 +14,9 @@ export class TableColumnDirective implements OnInit {
   
   @Input()
   public width: number | string | undefined;
+
+  @Input()
+  public icon: string | undefined;
   
   @Input()
   public isButton = false;
@@ -28,6 +31,7 @@ export class TableColumnDirective implements OnInit {
       title: this.title === undefined ? '' : this.title,
       field: this.field === undefined ? '' : this.field,
       width: this.width === undefined ? 'auto' : this.width,
+      icon: this.icon === undefined ? '' : this.icon,
       isButton: this.isButton
     })
   }
