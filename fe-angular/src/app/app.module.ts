@@ -20,6 +20,10 @@ import { MatSnackBarModule, MAT_SNACK_BAR_DEFAULT_OPTIONS } from '@angular/mater
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RacesService } from './races/races.service';
 import { RacesScreenComponent } from './races/races-screen/races-screen.component';
+import { TableComponent } from './core/support/table/table.component';
+import { TableColumnDirective } from './core/support/table/table-column.directive';
+import { MatIconModule } from '@angular/material/icon'
+import { MatButtonModule } from '@angular/material/button'
 
 @NgModule({
   declarations: [
@@ -32,7 +36,9 @@ import { RacesScreenComponent } from './races/races-screen/races-screen.componen
     UserUpdateScreenComponent,
     RolesUpdateScreenComponent,
     UsersManagementScreenComponent,
-    RacesScreenComponent
+    RacesScreenComponent,
+    TableColumnDirective,
+    TableComponent
   ],
   imports: [
     CommonModule,
@@ -42,6 +48,8 @@ import { RacesScreenComponent } from './races/races-screen/races-screen.componen
     FormsModule,
     ReactiveFormsModule,
     MatSnackBarModule,
+    MatButtonModule,
+    MatIconModule,
     BrowserAnimationsModule,
     RouterModule.forRoot([
       {path: '', component: IndexComponent},

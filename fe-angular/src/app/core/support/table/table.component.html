@@ -1,0 +1,23 @@
+<table>
+  <tr>
+    <ng-container *ngFor="let column of columns">
+      <th width="{{column?.width}}">{{column?.title}}</th>
+    </ng-container>
+  </tr>
+  <ng-container *ngFor="let row of rows">
+    <tr>
+      <ng-container *ngFor="let column of columns">
+        <ng-container *ngIf="column?.isButton">
+          <th>
+            <button mat-icon-button (click)="onClick(row?.id, column?.field)" style="transform: scale(0.75);">
+              <mat-icon>{{column?.field}}</mat-icon>
+            </button>
+          </th>
+        </ng-container>
+        <ng-container *ngIf="!column?.isButton">
+          <th width="{{column?.width}}">{{row[column.field]}}</th>
+        </ng-container>
+      </ng-container>
+    </tr>
+  </ng-container>
+</table>

@@ -12,3 +12,7 @@
   --mdc-snackbar-container-color: green;
   --mdc-snackbar-supporting-text-color: white;
 }
+
+table {
+  width: 100%;
+}
