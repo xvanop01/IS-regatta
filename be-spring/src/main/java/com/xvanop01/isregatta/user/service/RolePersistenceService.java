@@ -4,7 +4,6 @@ import com.xvanop01.isregatta.base.support.templates.PersistenceService;
 import com.xvanop01.isregatta.user.model.Role;
 import com.xvanop01.isregatta.user.repository.RoleRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

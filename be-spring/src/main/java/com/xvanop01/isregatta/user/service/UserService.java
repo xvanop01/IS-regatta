@@ -5,8 +5,8 @@ import com.xvanop01.isregatta.base.exception.HttpException;
 import com.xvanop01.isregatta.base.security.PrincipalService;
 import com.xvanop01.isregatta.user.model.Role;
 import com.xvanop01.isregatta.user.model.User;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,16 +16,12 @@ import java.util.List;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class UserService {
 
-    @Autowired
-    private UserPersistenceService userPersistenceService;
-
-    @Autowired
-    private RolePersistenceService rolePersistenceService;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    private final UserPersistenceService userPersistenceService;
+    private final RolePersistenceService rolePersistenceService;
+    private final PasswordEncoder passwordEncoder;
 
     public User getUserById(Integer userId) throws HttpException {
         log.info("getUserById: {}", userId);
