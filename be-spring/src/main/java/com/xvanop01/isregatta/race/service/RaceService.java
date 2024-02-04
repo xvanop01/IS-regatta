@@ -6,8 +6,8 @@ import com.xvanop01.isregatta.base.security.PrincipalService;
 import com.xvanop01.isregatta.race.model.Race;
 import com.xvanop01.isregatta.user.model.User;
 import com.xvanop01.isregatta.user.service.UserService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,13 +16,11 @@ import java.util.List;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class RaceService {
 
-    @Autowired
-    private RacePersistenceService racePersistenceService;
-
-    @Autowired
-    private UserService userService;
+    private final RacePersistenceService racePersistenceService;
+    private final UserService userService;
 
     @Transactional(rollbackFor = HttpException.class)
     public Race createRace(Race race) throws HttpException {

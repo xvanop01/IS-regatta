@@ -6,24 +6,20 @@ import com.xvanop01.isregatta.base.exception.HttpExceptionHandler;
 import com.xvanop01.isregatta.user.mapper.UserMapper;
 import com.xvanop01.isregatta.user.model.User;
 import com.xvanop01.isregatta.user.service.UserService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 @Slf4j
+@RequiredArgsConstructor
 public class RegisterController {
 
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private HttpExceptionHandler httpExceptionHandler;
-
-    @Autowired
-    private UserMapper userMapper;
+    private final UserService userService;
+    private final HttpExceptionHandler httpExceptionHandler;
+    private final UserMapper userMapper;
 
     @PostMapping("/register")
     public ResponseEntity<UserDetailDto> registerUser(String username, String password) {

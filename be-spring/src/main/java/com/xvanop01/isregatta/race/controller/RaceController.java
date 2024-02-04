@@ -14,8 +14,8 @@ import com.xvanop01.isregatta.base.security.SecurityService;
 import com.xvanop01.isregatta.race.mapper.RaceMapper;
 import com.xvanop01.isregatta.race.model.Race;
 import com.xvanop01.isregatta.race.service.RaceService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,19 +25,13 @@ import java.util.List;
 @RestController
 @Slf4j
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class RaceController implements RaceControllerApi {
 
-    @Autowired
-    private RaceService raceService;
-
-    @Autowired
-    private SecurityService securityService;
-
-    @Autowired
-    private HttpExceptionHandler httpExceptionHandler;
-
-    @Autowired
-    private RaceMapper raceMapper;
+    private final RaceService raceService;
+    private final SecurityService securityService;
+    private final HttpExceptionHandler httpExceptionHandler;
+    private final RaceMapper raceMapper;
 
     @Override
     public ResponseEntity<RaceDetailDto> activateRace(Integer raceId) {

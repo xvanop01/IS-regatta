@@ -15,6 +15,7 @@ import com.xvanop01.isregatta.user.model.Role;
 import com.xvanop01.isregatta.user.model.User;
 import com.xvanop01.isregatta.user.service.RolePersistenceService;
 import com.xvanop01.isregatta.user.service.UserService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,25 +27,15 @@ import java.util.List;
 @RestController
 @Slf4j
 @RequestMapping("/api")
+@RequiredArgsConstructor
 public class UserController implements UserControllerApi {
 
-    @Autowired
-    public UserService userService;
-
-    @Autowired
-    public RolePersistenceService rolePersistenceService;
-
-    @Autowired
-    public SecurityService securityService;
-
-    @Autowired
-    public HttpExceptionHandler httpExceptionHandler;
-
-    @Autowired
-    public UserMapper userMapper;
-
-    @Autowired
-    public RoleMapper roleMapper;
+    private final UserService userService;
+    private final RolePersistenceService rolePersistenceService;
+    private final SecurityService securityService;
+    private final HttpExceptionHandler httpExceptionHandler;
+    private final UserMapper userMapper;
+    private final RoleMapper roleMapper;
 
     @Override
     public ResponseEntity<UserDetailDto> createUser(CreateUserDto createUserDto) {
@@ -80,7 +71,7 @@ public class UserController implements UserControllerApi {
         } catch (HttpException e) {
             return httpExceptionHandler.resolve(e);
         }
-        List<Role> roles = rolePersistenceService.getAllRoles();
+        List<Role> roles = rolePersistenceService.findAll();
         RoleListDto dto = roleMapper.mapRoleList(roles);
         return ResponseEntity.ok(dto);
     }

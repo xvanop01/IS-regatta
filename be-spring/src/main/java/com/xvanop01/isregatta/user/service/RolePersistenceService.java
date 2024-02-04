@@ -1,5 +1,6 @@
 package com.xvanop01.isregatta.user.service;
 
+import com.xvanop01.isregatta.base.support.templates.PersistenceService;
 import com.xvanop01.isregatta.user.model.Role;
 import com.xvanop01.isregatta.user.repository.RoleRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -12,10 +13,11 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class RolePersistenceService {
+public class RolePersistenceService extends PersistenceService<Role, RoleRepository> {
 
-    @Autowired
-    private RoleRepository repository;
+    public RolePersistenceService(RoleRepository repository) {
+        super(repository);
+    }
 
     public List<Role> getRolesByUserId(Integer userId) {
         log.info("getRolesByUserId: {}", userId);
@@ -23,11 +25,6 @@ public class RolePersistenceService {
             return repository.findAllByUserId(userId);
         }
         return new ArrayList<>();
-    }
-
-    public List<Role> getAllRoles() {
-        log.info("getAllRoles");
-        return repository.findAll();
     }
 
     @Transactional

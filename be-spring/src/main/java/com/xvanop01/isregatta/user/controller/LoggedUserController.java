@@ -3,8 +3,8 @@ package com.xvanop01.isregatta.user.controller;
 import com.xvanop01.isregatta.api.user.model.UserDetailDto;
 import com.xvanop01.isregatta.user.mapper.UserMapper;
 import com.xvanop01.isregatta.user.service.UserPersistenceService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,13 +16,11 @@ import java.security.Principal;
 @Controller
 @RequestMapping("/api")
 @Slf4j
+@RequiredArgsConstructor
 public class LoggedUserController {
 
-    @Autowired
-    private UserPersistenceService userPersistenceService;
-
-    @Autowired
-    private UserMapper userMapper;
+    private final UserPersistenceService userPersistenceService;
+    private final UserMapper userMapper;
 
     @RequestMapping(value = "/user", method = RequestMethod.GET)
     @ResponseBody

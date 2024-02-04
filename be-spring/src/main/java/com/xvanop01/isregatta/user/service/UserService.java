@@ -116,7 +116,7 @@ public class UserService {
             throw new HttpException(Http400ReturnCode.NOT_FOUND, "User not found by id: " + userId);
         }
         List<Integer> userRolesIds = rolePersistenceService.getRolesByUserId(userId).stream().map(Role::getId).toList();
-        List<Integer> allRolesIds = rolePersistenceService.getAllRoles().stream().map(Role::getId).toList();
+        List<Integer> allRolesIds = rolePersistenceService.findAll().stream().map(Role::getId).toList();
         for (Integer id : userRolesIds) {
             if (!rolesIds.contains(id)) {
                 rolePersistenceService.removeRoleFromUser(userId, id);

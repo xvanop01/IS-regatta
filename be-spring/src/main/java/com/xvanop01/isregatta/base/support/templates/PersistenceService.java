@@ -1,4 +1,4 @@
-package com.xvanop01.isregatta.base.templates;
+package com.xvanop01.isregatta.base.support.templates;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -10,9 +10,8 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Slf4j
-public class PersistenceService<E, R extends JpaRepository<E, Integer> & JpaSpecificationExecutor<E>> {
+public abstract class PersistenceService<E, R extends JpaRepository<E, Integer> & JpaSpecificationExecutor<E>> {
 
-    @SuppressWarnings("SpringJavaInjectionPointsAutowiringInspection")
     protected final R repository;
 
     @Transactional

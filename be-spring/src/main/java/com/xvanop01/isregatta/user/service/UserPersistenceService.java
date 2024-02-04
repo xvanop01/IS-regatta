@@ -1,6 +1,6 @@
 package com.xvanop01.isregatta.user.service;
 
-import com.xvanop01.isregatta.base.templates.PersistenceService;
+import com.xvanop01.isregatta.base.support.templates.PersistenceService;
 import com.xvanop01.isregatta.user.model.User;
 import com.xvanop01.isregatta.user.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
