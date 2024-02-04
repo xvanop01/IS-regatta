@@ -51,6 +51,27 @@
                 <version>${openapi-generator-maven-plugin.version}</version>
                 <executions>
                     <execution>
+                        <id>base-module</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.basedir}/src/main/resources/rest-api-base.yml</inputSpec>
+                            <generatorName>spring</generatorName>
+                            <library>spring-cloud</library>
+                            <apiPackage>com.xvanop01.isregatta.api.base</apiPackage>
+                            <modelPackage>com.xvanop01.isregatta.api.base.model</modelPackage>
+                            <output>${project.build.directory}/generated-sources/spring/base</output>
+                            <configOptions>
+                                <java8>true</java8>
+                                <interfaceOnly>true</interfaceOnly>
+                            </configOptions>
+                            <typeMappings>
+                                <typeMapping>Float=java.math.BigDecimal</typeMapping>
+                            </typeMappings>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>user-module</id>
                         <goals>
                             <goal>generate</goal>
