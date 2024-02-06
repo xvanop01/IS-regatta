@@ -8,21 +8,21 @@ export class TableColumnDirective implements OnInit {
 
   @Input()
   public title: string | undefined;
-  
+
   @Input()
   public field: string | undefined;
-  
+
   @Input()
   public width: number | string | undefined;
 
   @Input()
   public icon: string | undefined;
-  
+
   @Input()
   public isButton = false;
-  
+
   protected table: TableComponent;
-  
+
   constructor(@Host() parent: TableComponent) {
     this.table = parent;
   }
