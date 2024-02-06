@@ -8,8 +8,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-import java.util.function.Function;
-
 @RequiredArgsConstructor
 public abstract class TableDataService<E, R extends JpaRepository<E, ?> & JpaSpecificationExecutor<E>, D,
         M extends TableDataResponseMapper<E, D>> {

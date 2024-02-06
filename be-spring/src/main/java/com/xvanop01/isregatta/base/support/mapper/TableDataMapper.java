@@ -23,7 +23,7 @@ public abstract class TableDataMapper {
 
     public abstract TableDataResponseDto map(TableDataResponse tableDataResponse);
 
-    public TableDataResponseDto map(Page<? extends Object> page) {
+    public TableDataResponseDto map(Page<?> page) {
         TableDataResponse response = new TableDataResponse();
         response.setData(page.toList());
         response.setTotal(page.getTotalElements());
