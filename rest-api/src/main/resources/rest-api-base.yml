@@ -50,8 +50,6 @@ components:
   schemas:
     TableDataRequestDto:
       properties:
-        name:
-          type: string
         pageSize:
           type: integer
           format: int32
@@ -59,9 +57,7 @@ components:
           type: integer
           format: int32
         sortCriteria:
-          type: array
-          items:
-            $ref: '#/components/schemas/SortDto'
+          $ref: '#/components/schemas/SortDto'
         filterCriteria:
           type: array
           items:
@@ -86,4 +82,4 @@ components:
             type: object
         total:
           type: integer
-          format: int32
+          format: int64
