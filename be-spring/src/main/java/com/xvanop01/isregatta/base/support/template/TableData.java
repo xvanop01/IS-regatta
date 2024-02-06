@@ -1,4 +1,4 @@
-package com.xvanop01.isregatta.base.support.tableDataService;
+package com.xvanop01.isregatta.base.support.template;
 
 import org.springframework.stereotype.Component;
 
