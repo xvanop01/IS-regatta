@@ -4,7 +4,6 @@ import com.xvanop01.isregatta.api.user.model.CreateUserDto;
 import com.xvanop01.isregatta.api.user.model.RoleListDto;
 import com.xvanop01.isregatta.api.user.model.UpdateUserDto;
 import com.xvanop01.isregatta.api.user.model.UserDetailDto;
-import com.xvanop01.isregatta.api.user.model.UserDetailListDto;
 import com.xvanop01.isregatta.api.user.UserControllerApi;
 import com.xvanop01.isregatta.base.exception.HttpException;
 import com.xvanop01.isregatta.base.exception.HttpExceptionHandler;
@@ -45,20 +44,6 @@ public class UserController implements UserControllerApi {
             return HttpExceptionHandler.resolve(e);
         }
         return ResponseEntity.status(201).body(userMapper.map(user));
-    }
-
-    @Override
-    public ResponseEntity<UserDetailListDto> getAllUsers() {
-        log.info("getAllUsers");
-        try {
-            securityService.hasRole(SecurityService.ROLE_ADMIN);
-        } catch (HttpException e) {
-            return HttpExceptionHandler.resolve(e);
-        }
-        List<User> users = userService.getAllUsers();
-        UserDetailListDto dto = new UserDetailListDto();
-        dto.setUsers(userMapper.map(users));
-        return ResponseEntity.ok(dto);
     }
 
     @Override

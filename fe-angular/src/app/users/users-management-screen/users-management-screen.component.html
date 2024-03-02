@@ -1,6 +1,6 @@
 <h1>User Management</h1>
 <div>
-  <app-table [rows]="users" (onButtonClick)="buttonClicked($event)">
+  <app-table [serviceName]="'user-table'" (onButtonClick)="buttonClicked($event)">
     <app-table-column [title]="'Id'" [field]="'id'" [width]="50"></app-table-column>
     <app-table-column [title]="'Username'" [field]="'username'"></app-table-column>
     <app-table-column [title]="'Name'" [field]="'fullName'"></app-table-column>
