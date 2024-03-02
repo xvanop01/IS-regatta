@@ -24,6 +24,7 @@ import { TableComponent } from './core/support/table/table.component';
 import { TableColumnDirective } from './core/support/table/table-column.directive';
 import { MatIconModule } from '@angular/material/icon'
 import { MatButtonModule } from '@angular/material/button'
+import { CoreService } from "./core/core.service";
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { MatButtonModule } from '@angular/material/button'
     ]),
   ],
   providers: [
+    CoreService,
     UsersService,
     RacesService,
     LoggedUserService,

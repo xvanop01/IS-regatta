@@ -5,3 +5,8 @@ export interface TableColumn {
   icon: string;
   isButton: boolean;
 }
+
+export interface PageSpecs {
+  pageSize: number;
+  pageNumber: number;
+}
