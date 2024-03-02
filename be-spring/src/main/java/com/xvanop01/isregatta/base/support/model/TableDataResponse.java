@@ -9,5 +9,7 @@ public class TableDataResponse {
 
     private List<?> data;
 
-    private Long total;
+    private Long totalItems;
+
+    private Integer totalPages;
 }

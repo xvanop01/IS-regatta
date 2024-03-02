@@ -80,6 +80,9 @@ components:
           type: array
           items:
             type: object
-        total:
+        totalPages:
           type: integer
           format: int64
+        totalItems:
+          type: integer
+          format: int32

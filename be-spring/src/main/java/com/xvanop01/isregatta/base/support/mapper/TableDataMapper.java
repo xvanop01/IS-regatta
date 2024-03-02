@@ -36,7 +36,8 @@ public abstract class TableDataMapper {
     public TableDataResponseDto map(Page<?> page) {
         TableDataResponse response = new TableDataResponse();
         response.setData(page.toList());
-        response.setTotal(page.getTotalElements());
+        response.setTotalItems(page.getTotalElements());
+        response.setTotalPages(page.getTotalPages());
         return map(response);
     }
 }
