@@ -3,6 +3,8 @@ package com.xvanop01.isregatta.base.support.controller;
 import com.xvanop01.isregatta.api.base.TableDataServiceControllerApi;
 import com.xvanop01.isregatta.api.base.model.TableDataRequestDto;
 import com.xvanop01.isregatta.api.base.model.TableDataResponseDto;
+import com.xvanop01.isregatta.base.exception.HttpException;
+import com.xvanop01.isregatta.base.exception.HttpExceptionHandler;
 import com.xvanop01.isregatta.base.support.mapper.TableDataMapper;
 import com.xvanop01.isregatta.base.support.service.TableDataServiceProvider;
 import lombok.RequiredArgsConstructor;
@@ -26,9 +28,13 @@ public class TableDataServiceController implements TableDataServiceControllerApi
     public ResponseEntity<TableDataResponseDto> getTableDataByServiceName(String serviceName,
            TableDataRequestDto tableDataRequestDto) {
         // TODO log.info()
-        PageRequest pageRequest = tableDataMapper.map(tableDataRequestDto);
-        Page<?> page = tableDataServiceProvider.getTableData(serviceName, pageRequest);
-        TableDataResponseDto dto = tableDataMapper.map(page);
-        return ResponseEntity.ok(dto);
+        try {
+            PageRequest pageRequest = tableDataMapper.map(tableDataRequestDto);
+            Page<?> page = tableDataServiceProvider.getTableData(serviceName, pageRequest);
+            TableDataResponseDto dto = tableDataMapper.map(page);
+            return ResponseEntity.ok(dto);
+        } catch (HttpException e) {
+            return HttpExceptionHandler.resolve(e);
+        }
     }
 }

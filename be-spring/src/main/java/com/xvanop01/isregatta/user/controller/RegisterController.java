@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class RegisterController {
 
     private final UserService userService;
-    private final HttpExceptionHandler httpExceptionHandler;
     private final UserMapper userMapper;
 
     @PostMapping("/register")
@@ -30,7 +29,7 @@ public class RegisterController {
         try {
             user = userService.createUser(user);
         } catch (HttpException e) {
-            return httpExceptionHandler.resolve(e);
+            return HttpExceptionHandler.resolve(e);
         }
         return ResponseEntity.status(201).body(userMapper.map(user));
     }

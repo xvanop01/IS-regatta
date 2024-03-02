@@ -32,7 +32,6 @@ public class UserController implements UserControllerApi {
     private final UserService userService;
     private final RolePersistenceService rolePersistenceService;
     private final SecurityService securityService;
-    private final HttpExceptionHandler httpExceptionHandler;
     private final UserMapper userMapper;
     private final RoleMapper roleMapper;
 
@@ -43,7 +42,7 @@ public class UserController implements UserControllerApi {
         try {
             user = userService.createUser(user);
         } catch (HttpException e) {
-            return httpExceptionHandler.resolve(e);
+            return HttpExceptionHandler.resolve(e);
         }
         return ResponseEntity.status(201).body(userMapper.map(user));
     }
@@ -54,7 +53,7 @@ public class UserController implements UserControllerApi {
         try {
             securityService.hasRole(SecurityService.ROLE_ADMIN);
         } catch (HttpException e) {
-            return httpExceptionHandler.resolve(e);
+            return HttpExceptionHandler.resolve(e);
         }
         List<User> users = userService.getAllUsers();
         UserDetailListDto dto = new UserDetailListDto();
@@ -68,7 +67,7 @@ public class UserController implements UserControllerApi {
         try {
             securityService.hasRole(SecurityService.ROLE_ADMIN);
         } catch (HttpException e) {
-            return httpExceptionHandler.resolve(e);
+            return HttpExceptionHandler.resolve(e);
         }
         List<Role> roles = rolePersistenceService.findAll();
         RoleListDto dto = roleMapper.mapRoleList(roles);
@@ -83,7 +82,7 @@ public class UserController implements UserControllerApi {
             securityService.hasRoleOrIsUser(userId, SecurityService.ROLE_ADMIN);
             user = userService.getUserById(userId);
         } catch (HttpException e) {
-            return httpExceptionHandler.resolve(e);
+            return HttpExceptionHandler.resolve(e);
         }
         return ResponseEntity.ok(userMapper.map(user));
     }
@@ -96,7 +95,7 @@ public class UserController implements UserControllerApi {
             securityService.hasRoleOrIsUser(userId, SecurityService.ROLE_ADMIN);
             roles = userService.getUsersRoles(userId);
         } catch (HttpException e) {
-            return httpExceptionHandler.resolve(e);
+            return HttpExceptionHandler.resolve(e);
         }
         RoleListDto dto = roleMapper.mapRoleList(roles);
         return ResponseEntity.ok(dto);
@@ -110,7 +109,7 @@ public class UserController implements UserControllerApi {
             securityService.hasRoleOrIsUser(userId, SecurityService.ROLE_ADMIN);
             user = userService.updateUser(userId, user);
         } catch (HttpException e) {
-            return httpExceptionHandler.resolve(e);
+            return HttpExceptionHandler.resolve(e);
         }
         return ResponseEntity.ok(userMapper.map(user));
     }
@@ -124,7 +123,7 @@ public class UserController implements UserControllerApi {
             securityService.hasRole(SecurityService.ROLE_ADMIN);
             roles = userService.setUsersRoles(userId, rolesIds);
         } catch (HttpException e) {
-            return httpExceptionHandler.resolve(e);
+            return HttpExceptionHandler.resolve(e);
         }
         RoleListDto dto = roleMapper.mapRoleList(roles);
         return ResponseEntity.ok(dto);

@@ -30,7 +30,6 @@ public class RaceController implements RaceControllerApi {
 
     private final RaceService raceService;
     private final SecurityService securityService;
-    private final HttpExceptionHandler httpExceptionHandler;
     private final RaceMapper raceMapper;
 
     @Override
@@ -41,7 +40,7 @@ public class RaceController implements RaceControllerApi {
             securityIsOrganizerAndHasRole(raceId, SecurityService.ROLE_ORGANIZER);
             race = raceService.openRaceForSignUp(raceId);
         } catch (HttpException e) {
-            return httpExceptionHandler.resolve(e);
+            return HttpExceptionHandler.resolve(e);
         }
         return ResponseEntity.ok(raceMapper.map(race));
     }
@@ -54,7 +53,7 @@ public class RaceController implements RaceControllerApi {
             securityService.hasRole(SecurityService.ROLE_ORGANIZER);
             race = raceService.createRace(race);
         } catch (HttpException e) {
-            return httpExceptionHandler.resolve(e);
+            return HttpExceptionHandler.resolve(e);
         }
         return ResponseEntity.status(201).body(raceMapper.map(race));
     }
@@ -73,7 +72,7 @@ public class RaceController implements RaceControllerApi {
         try {
             race = raceService.getRaceById(raceId);
         } catch (HttpException e) {
-            return httpExceptionHandler.resolve(e);
+            return HttpExceptionHandler.resolve(e);
         }
         return ResponseEntity.ok(raceMapper.map(race));
     }
@@ -86,7 +85,7 @@ public class RaceController implements RaceControllerApi {
             securityIsOrganizerAndHasRole(raceId, SecurityService.ROLE_ORGANIZER);
             race = raceService.updateRace(raceId, race);
         } catch (HttpException e) {
-            return httpExceptionHandler.resolve(e);
+            return HttpExceptionHandler.resolve(e);
         }
         return ResponseEntity.ok(raceMapper.map(race));
     }
@@ -99,7 +98,7 @@ public class RaceController implements RaceControllerApi {
             securityIsOrganizerAndHasRole(raceId, SecurityService.ROLE_ORGANIZER);
             race = raceService.changeDates(raceId, updateRaceDatesDto.getSignUpUntil(), updateRaceDatesDto.getDate());
         } catch (HttpException e) {
-            return httpExceptionHandler.resolve(e);
+            return HttpExceptionHandler.resolve(e);
         }
         return ResponseEntity.ok(raceMapper.map(race));
     }
