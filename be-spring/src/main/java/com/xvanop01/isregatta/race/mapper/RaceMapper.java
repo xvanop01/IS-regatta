@@ -4,13 +4,14 @@ import com.xvanop01.isregatta.api.race.model.CreateRaceDto;
 import com.xvanop01.isregatta.api.race.model.RaceDetailDto;
 import com.xvanop01.isregatta.api.race.model.RaceDetailListDto;
 import com.xvanop01.isregatta.api.race.model.UpdateRaceDto;
+import com.xvanop01.isregatta.base.support.template.TableDataResponseMapper;
 import com.xvanop01.isregatta.race.model.Race;
 import org.mapstruct.Mapper;
 
 import java.util.List;
 
 @Mapper(componentModel = "spring")
-public abstract class RaceMapper {
+public abstract class RaceMapper extends TableDataResponseMapper<Race, RaceDetailDto> {
 
     public abstract RaceDetailDto map(Race race);
 
