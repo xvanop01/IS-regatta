@@ -17,6 +17,15 @@ public interface RoleRepository extends JpaRepository<Role, Integer>, JpaSpecifi
             "WHERE ur.user_id = ?1 ", nativeQuery = true)
     List<Role> findAllByUserId(Integer userId);
 
+    @Query(value = "SELECT \n" +
+            " r.id, \n" +
+            " r.role \n" +
+            "FROM user_user u \n" +
+            " LEFT JOIN user_user_role ur ON u.id = ur.user_id \n" +
+            " LEFT JOIN user_role r ON ur.role_id = r.id \n" +
+            "WHERE u.username = ?1 ", nativeQuery = true)
+    List<Role> findAllByUsername(String username);
+
     @Query(value = "INSERT INTO user_user_role (`user_id`, `role_id`) VALUES(?1, ?2) ", nativeQuery = true)
     void addRoleToUser(Integer userId, Integer roleId);
 

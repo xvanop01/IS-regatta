@@ -26,6 +26,14 @@ public class RolePersistenceService extends PersistenceService<Role, RoleReposit
         return new ArrayList<>();
     }
 
+    public List<Role> getRolesByUsername(String username) {
+        log.info("getRolesByUsername: {}", username);
+        if (username != null) {
+            return repository.findAllByUsername(username);
+        }
+        return new ArrayList<>();
+    }
+
     @Transactional
     public void addRoleToUser(Integer userId, Integer roleId) {
         log.info("addRoleToUser: userId: {}, roleId: {}", userId, roleId);
