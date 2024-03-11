@@ -1,18 +1,23 @@
-import {Component, OnInit } from "@angular/core";
-import { LoggedUserService } from "src/app/users/logged-user.service";
-import { UsersService } from "src/app/users/users.service";
+import { Component, OnInit } from "@angular/core";
+import { LoggedUserService } from "../../users/logged-user.service";
+import { UsersService } from "../../users/users.service";
+import { NgIf } from "@angular/common";
 
 @Component({
   selector: 'app-index',
+  standalone: true,
   templateUrl: './index.component.html',
-  styleUrls: ['./index.component.css']
+  styleUrls: ['./index.component.css'],
+  imports: [
+    NgIf
+  ]
 })
 export class IndexComponent implements OnInit {
-  
+
   protected user: any;
-  
+
   protected roles: any;
-  
+
   protected isAdmin: boolean = false;
 
   constructor(protected loggedUserService: LoggedUserService, protected usersService: UsersService) {

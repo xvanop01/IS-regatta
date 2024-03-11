@@ -1,14 +1,20 @@
-import { ChangeDetectionStrategy, Component, OnInit } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { ActivatedRoute, Router } from "@angular/router";
+import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { LoggedUserService } from "../logged-user.service";
-import { RoleDto } from "../users.model";
 import { UsersService } from "../users.service";
+import { NgFor, NgIf } from "@angular/common";
 
 @Component({
   selector: 'app-user',
+  standalone: true,
   templateUrl: './user-screen.component.html',
-  styleUrls: ['./user-screen.component.css']
+  styleUrls: ['./user-screen.component.css'],
+  imports: [
+    NgFor,
+    NgIf,
+    RouterLink
+  ]
 })
 export class UserScreenComponent implements OnInit {
 

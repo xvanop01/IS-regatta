@@ -2,7 +2,8 @@ import { Directive, Host, Input, OnInit } from "@angular/core";
 import { TableComponent } from "./table.component";
 
 @Directive({
-  selector: 'app-table-column'
+  selector: 'app-table-column',
+  standalone: true
 })
 export class TableColumnDirective implements OnInit {
 

@@ -13,6 +13,11 @@
   --mdc-snackbar-supporting-text-color: white;
 }
 
+.cdk-global-overlay-wrapper {
+  justify-content: end !important;
+  align-items: start !important;
+}
+
 table {
   width: 100%;
 }

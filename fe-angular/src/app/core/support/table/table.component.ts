@@ -1,13 +1,21 @@
-import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import {PageSpecs, TableColumn } from "./table.model";
+import { ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
+import { PageSpecs, TableColumn } from "./table.model";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router } from "@angular/router";
-import {CoreService} from "../../core.service";
+import { CoreService } from "../../core.service";
+import { NgFor, NgIf } from "@angular/common";
+import { MatIconButton } from "@angular/material/button";
 
 @Component({
   selector: 'app-table',
+  standalone: true,
   templateUrl: './table.component.html',
-  styleUrls: ['./table.component.css']
+  styleUrls: ['./table.component.css'],
+  imports: [
+    NgIf,
+    NgFor,
+    MatIconButton
+  ]
 })
 export class TableComponent implements OnInit {
 

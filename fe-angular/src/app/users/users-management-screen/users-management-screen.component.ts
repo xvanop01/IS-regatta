@@ -1,5 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
+import { TableColumnDirective } from "../../core/support/table/table-column.directive";
+import { TableComponent } from "../../core/support/table/table.component";
 
 enum Action {
   RedirectToDetail = 'DETAIL',
@@ -9,8 +11,13 @@ enum Action {
 
 @Component({
   selector: 'app-users-management',
+  standalone: true,
   templateUrl: './users-management-screen.component.html',
-  styleUrls: ['./users-management-screen.component.css']
+  styleUrls: ['./users-management-screen.component.css'],
+  imports: [
+    TableComponent,
+    TableColumnDirective
+  ]
 })
 export class UsersManagementScreenComponent implements OnInit {
 

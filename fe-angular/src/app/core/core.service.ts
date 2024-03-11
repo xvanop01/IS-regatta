@@ -3,7 +3,9 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { PageSpecs } from "./support/table/table.model";
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class CoreService {
 
   protected apiUrl;

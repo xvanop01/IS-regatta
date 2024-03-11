@@ -1,13 +1,17 @@
 import { Component, OnInit } from "@angular/core";
-import { FormBuilder } from "@angular/forms";
+import { FormBuilder, ReactiveFormsModule } from "@angular/forms";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router } from "@angular/router";
 import { UsersService } from "../users.service";
 
 @Component({
   selector: 'app-register',
+  standalone: true,
   templateUrl: './register-screen.component.html',
-  styleUrls: ['./register-screen.component.css']
+  styleUrls: ['./register-screen.component.css'],
+  imports: [
+    ReactiveFormsModule
+  ]
 })
 export class RegisterScreenComponent implements OnInit {
 

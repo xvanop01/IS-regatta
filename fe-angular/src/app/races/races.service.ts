@@ -1,9 +1,11 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import {CreateRaceDto, RaceDetailDto, RaceDetailListDto, UpdateRaceDatesDto, UpdateRaceDto } from "./races.model";
+import { CreateRaceDto, RaceDetailDto, RaceDetailListDto, UpdateRaceDatesDto, UpdateRaceDto } from "./races.model";
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class RacesService {
 
   protected apiUrl;

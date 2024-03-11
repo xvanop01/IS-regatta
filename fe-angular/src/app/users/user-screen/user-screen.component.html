@@ -7,7 +7,7 @@
     <p>E-mail: {{ user.email }}</p>
     <p>Name: {{ user.fullName }}</p>
     <div>
-      <a [routerLink]="['/user', user.id, 'update']">
+      <a routerLink="/user/{{user.id}}/update">
         Update user info
       </a>
     </div>
@@ -19,7 +19,7 @@
 </div>
 </ng-container>
 <div *ngIf="isActiveAdmin">
-  <a [routerLink]="['/user', user.id, 'roles', 'update']">
+  <a routerLink="/user/{{user.id}}/roles/update">
     Update roles
   </a>
 </div>

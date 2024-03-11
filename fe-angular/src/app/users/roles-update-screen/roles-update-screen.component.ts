@@ -1,29 +1,34 @@
 import { Component, OnInit } from "@angular/core";
-import {FormArray, FormBuilder } from "@angular/forms";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { ActivatedRoute, Router } from "@angular/router";
-import { CreateUserDto, RoleDto, RoleListDto, UserDetailDto } from "../users.model";
+import { RoleDto, RoleListDto } from "../users.model";
 import { UsersService } from "../users.service";
+import { FormsModule } from "@angular/forms";
+import { NgFor } from "@angular/common";
 
 @Component({
   selector: 'app-roles-update',
+  standalone: true,
   templateUrl: './roles-update-screen.component.html',
-  styleUrls: ['./roles-update-screen.component.css']
+  styleUrls: ['./roles-update-screen.component.css'],
+  imports: [
+    NgFor,
+    FormsModule
+  ]
 })
 export class RolesUpdateScreenComponent implements OnInit {
-  
+
   protected userId: number;
 
   protected user: any;
-  
+
   protected allRoles: RoleDto[] = [];
-  
+
   protected roles: RoleDto[] = [];
 
   constructor(private route: ActivatedRoute,
               private router: Router,
               private usersService: UsersService,
-              private formBuilder: FormBuilder,
               private snackBar: MatSnackBar) {
     const routeParams = this.route.snapshot.paramMap;
     this.userId = Number(routeParams.get('userId'));
@@ -37,7 +42,7 @@ export class RolesUpdateScreenComponent implements OnInit {
     }
     return false;
   }
-  
+
   checkRole(role: RoleDto): void {
     if (this.isChecked(role)) {
       this.roles.forEach((value, index) => {

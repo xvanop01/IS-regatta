@@ -1,15 +1,16 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
   CreateUserDto,
   RoleListDto,
   UpdateUserDto,
-  UserDetailDto,
-  UserDetailListDto
+  UserDetailDto
 } from './users.model';
 
-@Injectable()
+@Injectable({
+  providedIn: 'root'
+})
 export class UsersService {
 
   protected apiUrl;

@@ -1,13 +1,20 @@
 import { Component, OnInit } from '@angular/core';
 import { LoggedUserService } from './users/logged-user.service';
+import { RouterOutlet } from "@angular/router";
+import { ToolbarComponent } from "./core/toolbar/toolbar.component";
 
 @Component({
   selector: 'app-root',
+  standalone: true,
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  imports: [
+    RouterOutlet,
+    ToolbarComponent
+  ]
 })
 export class AppComponent implements OnInit {
-  title = 'my-project';
+  title = 'IS regatta';
 
   public user: any;
 

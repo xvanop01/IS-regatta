@@ -1,13 +1,16 @@
-import {ChangeDetectionStrategy, Component, Input, OnInit } from "@angular/core";
-import { LoggedUserService } from "src/app/users/logged-user.service";
-import { UserDetailDto } from "src/app/users/users.model";
+import { Component, Input } from "@angular/core";
+import { NgIf } from "@angular/common";
 
 @Component({
   selector: 'app-toolbar',
+  standalone: true,
   templateUrl: './toolbar.component.html',
-  styleUrls: ['./toolbar.component.css']
+  styleUrls: ['./toolbar.component.css'],
+  imports: [
+    NgIf
+  ]
 })
-export class ToolbarComponent implements OnInit {
+export class ToolbarComponent {
 
   @Input()
   public authenticated = false;
@@ -15,11 +18,8 @@ export class ToolbarComponent implements OnInit {
   @Input()
   public user: any;
 
-  constructor(protected loggedUserService: LoggedUserService) {
+  constructor() {
 
-  }
-
-  ngOnInit(): void {
   }
 
 }

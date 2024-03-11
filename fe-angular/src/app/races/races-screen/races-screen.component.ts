@@ -2,15 +2,24 @@ import { Component, OnInit } from "@angular/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { Router } from "@angular/router";
 import { RacesService } from "../races.service";
-import { LoggedUserService } from "src/app/users/logged-user.service";
+import { LoggedUserService } from "../../users/logged-user.service";
+import { TableComponent } from "../../core/support/table/table.component";
+import { TableColumnDirective } from "../../core/support/table/table-column.directive";
+import { NgFor } from "@angular/common";
 
 @Component({
   selector: 'app-races',
+  standalone: true,
   templateUrl: './races-screen.component.html',
-  styleUrls: ['./races-screen.component.css']
+  styleUrls: ['./races-screen.component.css'],
+  imports: [
+    TableComponent,
+    TableColumnDirective,
+    NgFor
+  ]
 })
 export class RacesScreenComponent implements OnInit {
-  
+
   protected isOrganizer: boolean = false;
 
   protected races: any;

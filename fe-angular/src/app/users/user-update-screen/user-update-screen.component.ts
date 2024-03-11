@@ -1,15 +1,21 @@
 import { Component, OnInit } from "@angular/core";
-import { FormBuilder } from "@angular/forms";
+import { FormBuilder, ReactiveFormsModule } from "@angular/forms";
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from "@angular/router";
 import { LoggedUserService } from "../logged-user.service";
-import { CreateUserDto, UpdateUserDto, UserDetailDto } from "../users.model";
+import { UpdateUserDto } from "../users.model";
 import { UsersService } from "../users.service";
+import { NgIf } from "@angular/common";
 
 @Component({
   selector: 'app-user-update',
+  standalone: true,
   templateUrl: './user-update-screen.component.html',
-  styleUrls: ['./user-update-screen.component.css']
+  styleUrls: ['./user-update-screen.component.css'],
+  imports: [
+    ReactiveFormsModule,
+    NgIf
+  ]
 })
 export class UserUpdateScreenComponent implements OnInit {
 

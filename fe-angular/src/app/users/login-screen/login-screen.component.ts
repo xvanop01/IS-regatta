@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 
 @Component({
   selector: 'app-login',
+  standalone: true,
   templateUrl: './login-screen.component.html',
   styleUrls: ['./login-screen.component.css']
 })
