@@ -1,23 +1,99 @@
-<table>
-  <tr>
-    <ng-container *ngFor="let column of columns">
-      <th width="{{column?.width}}">{{column?.title}}</th>
-    </ng-container>
-  </tr>
-  <ng-container *ngFor="let row of rows">
-    <tr>
+<div class="table-pager-wrapper">
+  <table>
+    <tr class="table-header-row">
       <ng-container *ngFor="let column of columns">
-        <ng-container *ngIf="column?.isButton">
-          <th [width]="50">
-            <button mat-icon-button (click)="onClick(row?.id, column?.field)" style="transform: scale(0.75);">
-              <i class="{{column?.icon}}"></i>
-            </button>
-          </th>
-        </ng-container>
-        <ng-container *ngIf="!column?.isButton">
-          <th width="{{column?.width}}">{{row[column.field]}}</th>
-        </ng-container>
+        <th class="table-header-column" width="{{column?.width}}">{{column?.title}}</th>
       </ng-container>
     </tr>
-  </ng-container>
-</table>
+
+    <!-- No data placeholder -->
+    <ng-container *ngIf="rows.length === 0">
+      <ng-container *ngFor="let column of columns">
+        <ng-container *ngIf="column?.isButton">
+          <th [width]="50"></th>
+        </ng-container>
+        <ng-container *ngIf="!column?.isButton">
+          <th width="{{column?.width}}"></th>
+        </ng-container>
+      </ng-container>
+    </ng-container>
+
+    <!-- Data container -->
+    <ng-container *ngFor="let row of rows" class="table-data-container">
+      <tr style="width: 100%;">
+        <ng-container *ngFor="let column of columns">
+          <ng-container *ngIf="column?.isButton">
+            <th [width]="50">
+              <button mat-icon-button (click)="onClick(row?.id, column?.field)" style="transform: scale(0.75);">
+                <i class="{{column?.icon}}"></i>
+              </button>
+            </th>
+          </ng-container>
+          <ng-container *ngIf="!column?.isButton">
+            <th width="{{column?.width}}" style="min-width: 0">{{row[column.field]}}</th>
+          </ng-container>
+        </ng-container>
+      </tr>
+    </ng-container>
+  </table>
+
+  <!-- Pager -->
+  <div class="row-2c table-pager-container">
+    <div style="align-content: center;">
+      <button mat-icon-button (click)="showPage(0)" style="transform: scale(0.65);"
+              disabled="{{pageSpecs.pageNumber <= 0}}">
+        <i class="fa-solid fa-angles-left"></i>
+      </button>
+      <button mat-icon-button (click)="showPage(pageSpecs.pageNumber - 1)" style="transform: scale(0.65);"
+              disabled="{{pageSpecs.pageNumber <= 0}}">
+        <i class="fa-solid fa-angle-left"></i>
+      </button>
+      <ng-container *ngIf="pageSpecs.pageNumber - 2 >= 0">
+        <button mat-icon-button (click)="showPage(pageSpecs.pageNumber - 2)" style="transform: scale(0.65);">
+          {{pageSpecs.pageNumber - 1}}
+        </button>
+      </ng-container>
+      <ng-container *ngIf="pageSpecs.pageNumber - 1 >= 0">
+        <button mat-icon-button (click)="showPage(pageSpecs.pageNumber - 1)" style="transform: scale(0.65);">
+          {{pageSpecs.pageNumber}}
+        </button>
+      </ng-container>
+      <button mat-icon-button style="transform: scale(0.75);">
+        <b>{{pageSpecs.pageNumber + 1}}</b>
+      </button>
+      <ng-container *ngIf="pageSpecs.pageNumber + 1 < totalPages">
+        <button mat-icon-button (click)="showPage(pageSpecs.pageNumber + 1)" style="transform: scale(0.65);">
+          {{pageSpecs.pageNumber + 2}}
+        </button>
+      </ng-container>
+      <ng-container *ngIf="pageSpecs.pageNumber + 2 < totalPages">
+        <button mat-icon-button (click)="showPage(pageSpecs.pageNumber + 2)" style="transform: scale(0.65);">
+          {{pageSpecs.pageNumber + 3}}
+        </button>
+      </ng-container>
+      <button mat-icon-button (click)="showPage(pageSpecs.pageNumber + 1)" style="transform: scale(0.65);"
+              disabled="{{pageSpecs.pageNumber + 1 >= totalPages}}">
+        <i class="fa-solid fa-angle-right"></i>
+      </button>
+      <button mat-icon-button (click)="showPage(totalPages - 1)" style="transform: scale(0.65);"
+              disabled="{{pageSpecs.pageNumber + 1 >= totalPages}}">
+        <i class="fa-solid fa-angles-right"></i>
+      </button>
+
+      <mat-form-field style="transform: scale(0.85);">
+        <mat-label>Page size</mat-label>
+        <mat-select [(ngModel)]="pageSpecs.pageSize" (valueChange)="setPageSize($event)" name="size">
+          <mat-option [value]="10">10</mat-option>
+          <mat-option [value]="15">15</mat-option>
+          <mat-option [value]="25">25</mat-option>
+          <mat-option [value]="50">50</mat-option>
+          <mat-option [value]="100">100</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div class="table-total-items">
+      <p>Total items: {{totalItems}}</p>
+    </div>
+  </div>
+</div>

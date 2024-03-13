@@ -13,11 +13,31 @@
   --mdc-snackbar-supporting-text-color: white;
 }
 
+.mat-mdc-form-field-subscript-wrapper {
+  height: 0;
+}
+
 .cdk-global-overlay-wrapper {
   justify-content: end !important;
   align-items: start !important;
 }
 
-table {
+h1 {
+  padding: 10px;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.row-2c {
+  width: 100%;
+  display: inline-grid;
+  grid-template-columns: auto auto;
+  gap: 10px;
+}
+
+.table-wrapper {
+  position: absolute;
+  top: 53px;
+  bottom: 0;
   width: 100%;
 }

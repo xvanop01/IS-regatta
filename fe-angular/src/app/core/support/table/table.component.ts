@@ -5,6 +5,10 @@ import { Router } from "@angular/router";
 import { CoreService } from "../../core.service";
 import { NgFor, NgIf } from "@angular/common";
 import { MatIconButton } from "@angular/material/button";
+import { MatSelectModule } from "@angular/material/select";
+import { FormsModule } from "@angular/forms";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { MatInputModule } from "@angular/material/input";
 
 @Component({
   selector: 'app-table',
@@ -14,7 +18,11 @@ import { MatIconButton } from "@angular/material/button";
   imports: [
     NgIf,
     NgFor,
-    MatIconButton
+    MatIconButton,
+    FormsModule,
+    MatFormFieldModule,
+    MatSelectModule,
+    MatInputModule
   ]
 })
 export class TableComponent implements OnInit {
@@ -29,14 +37,14 @@ export class TableComponent implements OnInit {
 
   protected rows: Array<any> = [];
 
-  private pageSpecs: PageSpecs = {
+  protected pageSpecs: PageSpecs = {
     pageSize: 25,
     pageNumber: 0
   };
 
-  private totalPages: number = 1;
+  protected totalPages: number = 1;
 
-  private totalItems: number = 0;
+  protected totalItems: number = 0;
 
   constructor(private cd: ChangeDetectorRef,
               private coreService: CoreService,
@@ -60,6 +68,7 @@ export class TableComponent implements OnInit {
 
   public setPageSize(size: number) {
     this.pageSpecs.pageSize = size;
+    this.pageSpecs.pageNumber = 0;
     this.tableDataRefresh();
   }
 

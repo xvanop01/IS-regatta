@@ -1,12 +1,18 @@
-<h1>Races</h1>
-<a routerLink="/races/create">
-  Create race
-</a>
-<div>
-  <app-table [serviceName]="'race-table'" (onButtonClick)="buttonClicked($event)">
-    <app-table-column [title]="'Id'" [field]="'id'" [width]="50"></app-table-column>
-    <app-table-column [title]="'Name'" [field]="'name'"></app-table-column>
-    <app-table-column [title]="'Race date'" [field]="'date'"></app-table-column>
-    <app-table-column [title]="'Sign up until'" [field]="'signUpUntil'"></app-table-column>
-  </app-table>
+<div style="height: 100%;">
+  <div class="row-2c">
+    <h1>Races</h1>
+    <div class="table-buttons">
+      <a routerLink="/races/create">
+        Create race
+      </a>
+    </div>
+  </div>
+  <div class="table-wrapper">
+    <app-table [serviceName]="'race-table'" (onButtonClick)="buttonClicked($event)">
+      <app-table-column [title]="'Id'" [field]="'id'" [width]="50"></app-table-column>
+      <app-table-column [title]="'Name'" [field]="'name'"></app-table-column>
+      <app-table-column [title]="'Race date'" [field]="'date'"></app-table-column>
+      <app-table-column [title]="'Sign up until'" [field]="'signUpUntil'"></app-table-column>
+    </app-table>
+  </div>
 </div>

@@ -1,0 +1,25 @@
+:host {
+  font-family: Arial, sans-serif;
+}
+
+.toolbar {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background-color: #1976d2;
+  color: white;
+  font-weight: 600;
+}
+
+.router-wrapper {
+  position: absolute;
+  top: 60px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+}
