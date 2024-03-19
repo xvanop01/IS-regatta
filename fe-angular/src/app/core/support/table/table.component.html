@@ -2,7 +2,12 @@
   <table>
     <tr class="table-header-row">
       <ng-container *ngFor="let column of columns">
-        <th class="table-header-column" width="{{column?.width}}">{{column?.title}}</th>
+        <th (click)="onHeaderClick(column?.field)" class="table-header-column" width="{{column?.width}}">
+          {{column?.title}}
+          <i id="{{column?.field}}-placeholder" class="fa-solid fa-arrow-up" style="display: inline; visibility: hidden"></i>
+          <i id="{{column?.field}}-up" class="fa-solid fa-arrow-up" style="display: none;"></i>
+          <i id="{{column?.field}}-down" class="fa-solid fa-arrow-down" style="display: none"></i>
+        </th>
       </ng-container>
     </tr>
 

@@ -1,5 +1,8 @@
 package com.xvanop01.isregatta.base.support.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xvanop01.isregatta.api.base.TableDataServiceControllerApi;
 import com.xvanop01.isregatta.api.base.model.TableDataRequestDto;
 import com.xvanop01.isregatta.api.base.model.TableDataResponseDto;
@@ -23,18 +26,22 @@ public class TableDataServiceController implements TableDataServiceControllerApi
 
     private final TableDataServiceProvider tableDataServiceProvider;
     private final TableDataMapper tableDataMapper;
+    private final ObjectMapper objectMapper;
 
     @Override
-    public ResponseEntity<TableDataResponseDto> getTableDataByServiceName(String serviceName,
-           TableDataRequestDto tableDataRequestDto) {
+    public ResponseEntity<TableDataResponseDto> getTableDataByServiceName(String tableDataRequestDto,
+           String serviceName) {
         // TODO log.info()
         try {
-            PageRequest pageRequest = tableDataMapper.map(tableDataRequestDto);
+            TableDataRequestDto requestDto = objectMapper.readValue(tableDataRequestDto, TableDataRequestDto.class);
+            PageRequest pageRequest = tableDataMapper.map(requestDto);
             Page<?> page = tableDataServiceProvider.getTableData(serviceName, pageRequest);
             TableDataResponseDto dto = tableDataMapper.map(page);
             return ResponseEntity.ok(dto);
         } catch (HttpException e) {
             return HttpExceptionHandler.resolve(e);
+        } catch (JsonProcessingException e) {
+            return ResponseEntity.badRequest().build();
         }
     }
 }

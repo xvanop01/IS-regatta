@@ -18,18 +18,18 @@ paths:
       summary: Get data for table by service name
       operationId: getTableDataByServiceName
       parameters:
+        - name: tableDataRequestDto
+          in: query
+          required: true
+          description: Parameters for required data as JSON (schema TableDataRequestDto)
+          schema:
+            type: string
         - name: serviceName
           in: path
           required: true
           description: Table srvice name
           schema:
             type: string
-        - name: tableDataRequestDto
-          in: query
-          required: true
-          description: Parameters for required data
-          schema:
-            $ref: '#/components/schemas/TableDataRequestDto'
       responses:
         200:
           description: Data successfully retrieved
