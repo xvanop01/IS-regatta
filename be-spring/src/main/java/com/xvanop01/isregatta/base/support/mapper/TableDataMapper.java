@@ -1,11 +1,14 @@
 package com.xvanop01.isregatta.base.support.mapper;
 
+import com.xvanop01.isregatta.api.base.model.FilterDto;
 import com.xvanop01.isregatta.api.base.model.SortDto;
 import com.xvanop01.isregatta.api.base.model.TableDataRequestDto;
 import com.xvanop01.isregatta.api.base.model.TableDataResponseDto;
 import com.xvanop01.isregatta.base.exception.Http400ReturnCode;
 import com.xvanop01.isregatta.base.exception.HttpException;
+import com.xvanop01.isregatta.base.support.model.Filter;
 import com.xvanop01.isregatta.base.support.model.TableDataResponse;
+import java.util.List;
 import org.mapstruct.Mapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -40,4 +43,8 @@ public abstract class TableDataMapper {
         response.setTotalPages(page.getTotalPages());
         return map(response);
     }
+
+    public abstract Filter map(FilterDto filterDto);
+
+    public abstract List<Filter> mapFilterList(List<FilterDto> filterDtoList);
 }

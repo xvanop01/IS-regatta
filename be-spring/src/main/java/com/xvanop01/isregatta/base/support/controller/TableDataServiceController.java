@@ -1,7 +1,6 @@
 package com.xvanop01.isregatta.base.support.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.xvanop01.isregatta.api.base.TableDataServiceControllerApi;
 import com.xvanop01.isregatta.api.base.model.TableDataRequestDto;
@@ -9,7 +8,9 @@ import com.xvanop01.isregatta.api.base.model.TableDataResponseDto;
 import com.xvanop01.isregatta.base.exception.HttpException;
 import com.xvanop01.isregatta.base.exception.HttpExceptionHandler;
 import com.xvanop01.isregatta.base.support.mapper.TableDataMapper;
+import com.xvanop01.isregatta.base.support.model.Filter;
 import com.xvanop01.isregatta.base.support.service.TableDataServiceProvider;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -35,7 +36,8 @@ public class TableDataServiceController implements TableDataServiceControllerApi
         try {
             TableDataRequestDto requestDto = objectMapper.readValue(tableDataRequestDto, TableDataRequestDto.class);
             PageRequest pageRequest = tableDataMapper.map(requestDto);
-            Page<?> page = tableDataServiceProvider.getTableData(serviceName, pageRequest);
+            List<Filter> filterList = tableDataMapper.mapFilterList(requestDto.getFilterCriteria());
+            Page<?> page = tableDataServiceProvider.getTableData(serviceName, pageRequest, filterList);
             TableDataResponseDto dto = tableDataMapper.map(page);
             return ResponseEntity.ok(dto);
         } catch (HttpException e) {

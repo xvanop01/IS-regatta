@@ -20,6 +20,8 @@
 		<isregatta-api.version>0.0.1-SNAPSHOT</isregatta-api.version>
 		<org.mapstruct.version>1.5.5.Final</org.mapstruct.version>
 		<org.projectlombok.version>1.18.24</org.projectlombok.version>
+		<org.hibernate.modelgen.version>6.1.7.Final</org.hibernate.modelgen.version>
+		<jakarta.xml.bind.version>3.0.0</jakarta.xml.bind.version>
 	</properties>
 
 	<dependencies>
@@ -70,6 +72,16 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate.orm</groupId>
+			<artifactId>hibernate-jpamodelgen</artifactId>
+			<version>${org.hibernate.modelgen.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.xml.bind</groupId>
+			<artifactId>jakarta.xml.bind-api</artifactId>
+			<version>${jakarta.xml.bind.version}</version>
 		</dependency>
 	</dependencies>
 
