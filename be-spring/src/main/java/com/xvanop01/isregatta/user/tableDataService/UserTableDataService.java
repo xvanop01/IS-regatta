@@ -22,10 +22,22 @@ public class UserTableDataService
     @Override
     protected void doFilter(Object filter) {
         if (filter instanceof UserTableDataFilter f) {
-            if (f.search != null && !f.search.isEmpty()) {
-                String searchFormatted = "%" + f.search.toLowerCase() + "%";
-                this.specification = ((root, query, criteriaBuilder) -> criteriaBuilder.or(
+            if (f.username != null && !f.username.isEmpty()) {
+                String searchFormatted = "%" + f.username.toLowerCase() + "%";
+                specAnd((root, query, criteriaBuilder) -> criteriaBuilder.or(
                         criteriaBuilder.like(root.get(User_.username), searchFormatted)
+                ));
+            }
+            if (f.name != null && !f.name.isEmpty()) {
+                String searchFormatted = "%" + f.name.toLowerCase() + "%";
+                specAnd((root, query, criteriaBuilder) -> criteriaBuilder.or(
+                        criteriaBuilder.like(root.get(User_.fullName), searchFormatted)
+                ));
+            }
+            if (f.email != null && !f.email.isEmpty()) {
+                String searchFormatted = "%" + f.email.toLowerCase() + "%";
+                specAnd((root, query, criteriaBuilder) -> criteriaBuilder.or(
+                        criteriaBuilder.like(root.get(User_.email), searchFormatted)
                 ));
             }
         }

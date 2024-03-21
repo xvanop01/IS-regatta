@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { TableColumnDirective } from "../../core/support/table/table-column.directive";
 import { TableComponent } from "../../core/support/table/table.component";
+import {TableSearchDirective} from "../../core/support/table/table-search.directive";
 
 enum Action {
   RedirectToDetail = 'DETAIL',
@@ -16,7 +17,8 @@ enum Action {
   styleUrls: ['./users-management-screen.component.css'],
   imports: [
     TableComponent,
-    TableColumnDirective
+    TableColumnDirective,
+    TableSearchDirective
   ]
 })
 export class UsersManagementScreenComponent implements OnInit {

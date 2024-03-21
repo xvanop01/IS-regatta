@@ -21,7 +21,7 @@ public abstract class TableDataService<E, R extends JpaRepository<E, ?> & JpaSpe
 
     protected final M mapper;
 
-    protected Specification<E> specification;
+    private Specification<E> specification;
 
     public F createFilter(List<Filter> filterList) throws HttpException {
         if (filterList != null && !filterList.isEmpty()) {
@@ -55,4 +55,12 @@ public abstract class TableDataService<E, R extends JpaRepository<E, ?> & JpaSpe
     }
 
     protected void doFilter(Object filter) {}
+
+    protected void specAnd(Specification<E> spec) {
+        if (this.specification == null) {
+            this.specification = spec;
+        } else {
+            this.specification = this.specification.and(spec);
+        }
+    }
 }
