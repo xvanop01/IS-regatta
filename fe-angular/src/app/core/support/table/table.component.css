@@ -1,5 +1,33 @@
-.table-pager-wrapper {
+.table-component-wrapper {
+  position: relative;
   height: 100%;
+}
+
+.table-search-wrapper {
+  position: absolute;
+  display: table-cell;
+  top: 0;
+  height: 55px;
+  width: 100%;
+}
+
+.search-button {
+  position: absolute;
+  transform: scale(0.85);
+  bottom: 5px;
+  right: 5px;
+  width: 100px;
+}
+
+mat-form-field {
+  padding-left: 5px;
+  height: 50px;
+}
+
+.table-pager-wrapper {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
   display: grid;
   grid-template-columns: 100%;
   grid-template-rows: auto 56px;

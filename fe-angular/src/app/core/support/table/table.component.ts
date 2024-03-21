@@ -1,14 +1,15 @@
 import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
-import {dir, PageSpecs, SortSpecs, TableColumn} from "./table.model";
+import {dir, PageSpecs, SortSpecs, TableColumn, TableSearch} from "./table.model";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {Router} from "@angular/router";
 import {CoreService} from "../../core.service";
 import {NgFor, NgIf} from "@angular/common";
-import {MatIconButton} from "@angular/material/button";
+import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatSelectModule} from "@angular/material/select";
 import {FormsModule} from "@angular/forms";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
+import {MatIcon} from "@angular/material/icon";
 
 @Component({
   selector: 'app-table',
@@ -22,7 +23,9 @@ import {MatInputModule} from "@angular/material/input";
     FormsModule,
     MatFormFieldModule,
     MatSelectModule,
-    MatInputModule
+    MatInputModule,
+    MatIcon,
+    MatButton
   ]
 })
 export class TableComponent implements OnInit {
@@ -34,6 +37,8 @@ export class TableComponent implements OnInit {
   public onButtonClick = new EventEmitter();
 
   public columns: Array<TableColumn> = [];
+
+  public searchColumns: Array<TableSearch> = [];
 
   protected rows: Array<any> = [];
 
@@ -51,6 +56,10 @@ export class TableComponent implements OnInit {
 
   protected totalItems: number = 0;
 
+  protected scrollActivated: boolean = this.isScrollActivated();
+
+  private filters: Array<TableSearch> = [];
+
   constructor(private cd: ChangeDetectorRef,
               private coreService: CoreService,
               private router: Router,
@@ -63,6 +72,10 @@ export class TableComponent implements OnInit {
 
   addColumn(column: TableColumn): void {
     this.columns.push(column);
+  }
+
+  addSearch(searchField: TableSearch): void {
+    this.searchColumns.push(searchField);
   }
 
   onClick(id: any, action: any): void {
@@ -82,12 +95,18 @@ export class TableComponent implements OnInit {
     this.tableDataRefresh();
   }
 
+  public doFilter() {
+    this.filters = this.searchColumns;
+    this.showPage(0);
+  }
+
   public tableDataRefresh(): void {
-    this.coreService.getTableData(this.serviceName, this.pageSpecs, this.sortSpecs).subscribe(
+    this.coreService.getTableData(this.serviceName, this.pageSpecs, this.sortSpecs, this.filters).subscribe(
       result => {
         this.rows = result.data;
         this.totalItems = result.totalItems;
         this.totalPages = result.totalPages;
+        this.scrollActivated = this.isScrollActivated();
         this.cd.detectChanges();
       },
       error => {
@@ -136,5 +155,13 @@ export class TableComponent implements OnInit {
       this.sortSpecs.column = '';
       this.sortSpecs.direction = dir.ASC;
     }
+  }
+
+  protected isScrollActivated(): boolean {
+    let tableScrollArea = document.getElementById('table-pager-wrapper');
+    if (tableScrollArea != null) {
+      return tableScrollArea.scrollHeight >= tableScrollArea.clientHeight;
+    }
+    return false;
   }
 }

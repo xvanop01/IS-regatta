@@ -6,6 +6,12 @@ export interface TableColumn {
   isButton: boolean;
 }
 
+export interface TableSearch {
+  title: string;
+  column: string;
+  value: string;
+}
+
 export interface PageSpecs {
   pageSize: number;
   pageNumber: number;
