@@ -1,27 +1,24 @@
 <div class="toolbar">
-  <div class="home-button">
-    <a href="index.html">
-      Home
-    </a>
-  </div>
-  <ng-container *ngIf="authenticated; else loginLink">
-    <a href="http://localhost:4200/home">
-      <ng-container *ngIf="user">
-        {{ user?.username }}
+  <div class="toolbar-wrapper">
+    <div class="toolbar-left">
+      <button mat-icon-button (click)="redirectToIndex()">
+        <i class="fa-solid fa-house"></i>
+      </button>
+    </div>
+    <div class="toolbar-right">
+      <ng-container *ngIf="authenticated; else loginLink">
+        <button mat-icon-button (click)="redirectToUser()">
+          <i class="fa-solid fa-user"></i>
+        </button>
+        <button mat-icon-button (click)="redirectToLogout()">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        </button>
       </ng-container>
-    </a>
-    |
-    <a href="http://localhost:8080/logout">
-      Log Out
-    </a>
-  </ng-container>
-  <ng-template #loginLink>
-    <a href="http://localhost:4200/login">
-      Log In
-    </a>
-    |
-    <a href="http://localhost:4200/register">
-      Register
-    </a>
-  </ng-template>
+      <ng-template #loginLink>
+        <button mat-icon-button (click)="redirectToLogin()">
+          <i class="fa-solid fa-arrow-right-to-bracket"></i>
+        </button>
+      </ng-template>
+    </div>
+  </div>
 </div>
