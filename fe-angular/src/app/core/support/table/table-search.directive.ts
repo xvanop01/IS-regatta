@@ -1,5 +1,6 @@
 import {Directive, Host, Input, OnInit} from "@angular/core";
 import {TableComponent} from "./table.component";
+import {SearchType} from "./table.model";
 
 @Directive({
   selector: 'app-table-search',
@@ -16,6 +17,9 @@ export class TableSearchDirective implements OnInit {
   @Input()
   public value: string | undefined;
 
+  @Input()
+  public type: SearchType | undefined;
+
   protected table: TableComponent;
 
   constructor(@Host() parent: TableComponent) {
@@ -26,7 +30,8 @@ export class TableSearchDirective implements OnInit {
     this.table.addSearch({
       title: this.title === undefined ? '' : this.title,
       column: this.column === undefined ? '' : this.column,
-      value: this.value === undefined ? '' : this.value
+      value: this.value === undefined ? '' : this.value,
+      type: this.type === undefined ? SearchType.STRING : this.type
     })
   }
 }

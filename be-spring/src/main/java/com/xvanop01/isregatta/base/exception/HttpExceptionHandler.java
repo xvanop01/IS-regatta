@@ -6,9 +6,9 @@ import org.springframework.http.ResponseEntity;
 public class HttpExceptionHandler {
 
     public static ResponseEntity resolve(HttpException exception) {
-        Http400ReturnCode code = exception.getErrorCode();
+        HttpReturnCode code = exception.getErrorCode();
         if (code == null) {
-            code = Http400ReturnCode.BAD_REQUEST;
+            code = HttpReturnCode.BAD_REQUEST;
         }
         return ResponseEntity.status(code.getCode()).contentType(MediaType.TEXT_PLAIN).body(exception.getMessage());
     }

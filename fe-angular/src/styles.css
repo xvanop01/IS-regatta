@@ -41,3 +41,13 @@ h1 {
   bottom: 0;
   width: 100%;
 }
+
+.table-buttons {
+  text-align: right;
+  line-height: 53px;
+  height: 53px;
+}
+
+.table-buttons button {
+  margin-right: 10px;
+}

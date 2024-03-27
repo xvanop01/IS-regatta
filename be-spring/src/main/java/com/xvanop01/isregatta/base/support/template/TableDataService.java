@@ -1,9 +1,10 @@
 package com.xvanop01.isregatta.base.support.template;
 
-import com.xvanop01.isregatta.base.exception.Http400ReturnCode;
 import com.xvanop01.isregatta.base.exception.HttpException;
+import com.xvanop01.isregatta.base.exception.HttpReturnCode;
 import com.xvanop01.isregatta.base.support.model.Filter;
 import java.lang.reflect.Field;
+import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.ResolvableType;
@@ -31,12 +32,25 @@ public abstract class TableDataService<E, R extends JpaRepository<E, ?> & JpaSpe
                 try {
                     F filter = fClass.newInstance();
                     for (Filter f : filterList) {
+                        if (f.getValue().isEmpty()) {
+                            continue;
+                        }
                         Field field = fClass.getDeclaredField(f.getColumn());
-                        field.set(filter, f.getValue());
+                        Class<?> c = field.getType();
+                        if (c == String.class) {
+                            field.set(filter, f.getValue());
+                        } else if (field.getType() == LocalDate.class) {
+                            field.set(filter, LocalDate.parse(f.getValue()));
+                        } else if (field.getType() == Integer.class) {
+                            field.set(filter, Integer.valueOf(f.getValue()));
+                        } else {
+                            throw new HttpException(HttpReturnCode.NOT_IMPLEMENTED,
+                                    "Mapping to " + c + " not supported.");
+                        }
                     }
                     return filter;
                 } catch (InstantiationException | IllegalAccessException | NoSuchFieldException e) {
-                    throw new HttpException(Http400ReturnCode.BAD_REQUEST, e.getMessage());
+                    throw new HttpException(HttpReturnCode.BAD_REQUEST, e.getMessage());
                 }
             }
         }

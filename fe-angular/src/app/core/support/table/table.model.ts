@@ -10,6 +10,12 @@ export interface TableSearch {
   title: string;
   column: string;
   value: string;
+  type: SearchType;
+}
+
+export enum SearchType {
+  STRING,
+  MONTH
 }
 
 export interface PageSpecs {

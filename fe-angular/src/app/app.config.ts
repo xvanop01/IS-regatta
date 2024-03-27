@@ -8,15 +8,19 @@ import { CoreService } from "./core/core.service";
 import { LoggedUserService } from "./users/logged-user.service";
 import { provideHttpClient } from "@angular/common/http";
 import { provideAnimations } from "@angular/platform-browser/animations";
+import { provideNativeDateAdapter } from "@angular/material/core";
+import {DatePipe} from "@angular/common";
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
     provideHttpClient(),
     provideAnimations(),
+    provideNativeDateAdapter(),
     {provide: LoggedUserService},
     {provide: UsersService},
     {provide: RacesService},
     {provide: CoreService},
+    {provide: DatePipe}
   ]
 };

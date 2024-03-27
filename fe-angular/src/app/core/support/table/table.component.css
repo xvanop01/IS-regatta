@@ -66,13 +66,6 @@ table {
   width: 100%;
 }
 
-.table-buttons {
-  text-align: right;
-  padding-right: 10px;
-  line-height: 53px;
-  height: 53px;
-}
-
 .table-buttons a {
   padding-left: 10px;
 }

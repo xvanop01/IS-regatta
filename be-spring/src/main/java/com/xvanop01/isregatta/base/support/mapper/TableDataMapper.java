@@ -4,7 +4,7 @@ import com.xvanop01.isregatta.api.base.model.FilterDto;
 import com.xvanop01.isregatta.api.base.model.SortDto;
 import com.xvanop01.isregatta.api.base.model.TableDataRequestDto;
 import com.xvanop01.isregatta.api.base.model.TableDataResponseDto;
-import com.xvanop01.isregatta.base.exception.Http400ReturnCode;
+import com.xvanop01.isregatta.base.exception.HttpReturnCode;
 import com.xvanop01.isregatta.base.exception.HttpException;
 import com.xvanop01.isregatta.base.support.model.Filter;
 import com.xvanop01.isregatta.base.support.model.TableDataResponse;
@@ -21,7 +21,7 @@ public abstract class TableDataMapper {
 
     public PageRequest map(TableDataRequestDto tableDataRequestDto) throws HttpException {
         if (tableDataRequestDto == null) {
-            throw new HttpException(Http400ReturnCode.BAD_REQUEST, "Empty request body.");
+            throw new HttpException(HttpReturnCode.BAD_REQUEST, "Empty request body.");
         }
         SortDto sortDto = tableDataRequestDto.getSortCriteria();
         if (sortDto == null) {

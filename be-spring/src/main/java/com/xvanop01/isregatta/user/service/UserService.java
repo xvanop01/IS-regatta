@@ -1,6 +1,6 @@
 package com.xvanop01.isregatta.user.service;
 
-import com.xvanop01.isregatta.base.exception.Http400ReturnCode;
+import com.xvanop01.isregatta.base.exception.HttpReturnCode;
 import com.xvanop01.isregatta.base.exception.HttpException;
 import com.xvanop01.isregatta.base.security.PrincipalService;
 import com.xvanop01.isregatta.user.model.Role;
@@ -31,22 +31,22 @@ public class UserService {
                 return user;
             }
         }
-        throw new HttpException(Http400ReturnCode.NOT_FOUND, "User not found by id: " + userId);
+        throw new HttpException(HttpReturnCode.NOT_FOUND, "User not found by id: " + userId);
     }
 
     @Transactional(rollbackFor = HttpException.class)
     public User createUser(User user) throws HttpException {
         log.info("createUser: {}", user);
         if (user == null) {
-            throw new HttpException(Http400ReturnCode.BAD_REQUEST, "User is not defined.");
+            throw new HttpException(HttpReturnCode.BAD_REQUEST, "User is not defined.");
         }
         if (user.getUsername() == null || user.getUsername().isEmpty() || user.getPassword() == null
                 || user.getPassword().isEmpty()) {
-            throw new HttpException(Http400ReturnCode.BAD_REQUEST, "User must have username and password defined.");
+            throw new HttpException(HttpReturnCode.BAD_REQUEST, "User must have username and password defined.");
         }
         User existingUser = userPersistenceService.findByUsername(user.getUsername());
         if (existingUser != null) {
-            throw new HttpException(Http400ReturnCode.CONFLICT,
+            throw new HttpException(HttpReturnCode.CONFLICT,
                     String.format("User with username '%s' already exists", existingUser.getUsername()));
         }
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -57,21 +57,21 @@ public class UserService {
     public User updateUser(Integer userId, User updateUser) throws HttpException {
         log.info("updateUser: userId : {}, updateUser : {}", userId, updateUser);
         if (userId == null || updateUser == null) {
-            throw new HttpException(Http400ReturnCode.BAD_REQUEST, "Missing update user's info.");
+            throw new HttpException(HttpReturnCode.BAD_REQUEST, "Missing update user's info.");
         }
         User user = userPersistenceService.findById(userId);
         if (user == null) {
-            throw new HttpException(Http400ReturnCode.NOT_FOUND, "User not found by id: " + userId);
+            throw new HttpException(HttpReturnCode.NOT_FOUND, "User not found by id: " + userId);
         }
         if (updateUser.getUsername() != null && !updateUser.getUsername().isEmpty()) {
             User userByUsername = userPersistenceService.findByUsername(updateUser.getUsername());
             if (userByUsername != null && !userByUsername.getId().equals(userId)) {
-                throw new HttpException(Http400ReturnCode.CONFLICT,
+                throw new HttpException(HttpReturnCode.CONFLICT,
                         String.format("User with username '%s' already exists.", updateUser.getUsername()));
             }
             if (!PrincipalService.getPrincipalId().equals(userId)
                     && !updateUser.getUsername().equals(user.getUsername())) {
-                throw new HttpException(Http400ReturnCode.CONFLICT, "Only user can change his own username.");
+                throw new HttpException(HttpReturnCode.CONFLICT, "Only user can change his own username.");
             }
             user.setUsername(updateUser.getUsername());
         }
@@ -91,7 +91,7 @@ public class UserService {
         log.info("getUserRoles: {}", userId);
         User user = userId == null ? null : userPersistenceService.findById(userId);
         if (user == null) {
-            throw new HttpException(Http400ReturnCode.NOT_FOUND, "User not found by id: " + userId);
+            throw new HttpException(HttpReturnCode.NOT_FOUND, "User not found by id: " + userId);
         }
         return rolePersistenceService.getRolesByUserId(userId);
     }
@@ -104,7 +104,7 @@ public class UserService {
         }
         User user = userId == null ? null : userPersistenceService.findById(userId);
         if (user == null) {
-            throw new HttpException(Http400ReturnCode.NOT_FOUND, "User not found by id: " + userId);
+            throw new HttpException(HttpReturnCode.NOT_FOUND, "User not found by id: " + userId);
         }
         List<Integer> userRolesIds = rolePersistenceService.getRolesByUserId(userId).stream().map(Role::getId).toList();
         List<Integer> allRolesIds = rolePersistenceService.findAll().stream().map(Role::getId).toList();
@@ -115,7 +115,7 @@ public class UserService {
         }
         for (Integer id : rolesIds) {
             if (!allRolesIds.contains(id)) {
-                throw new HttpException(Http400ReturnCode.NOT_FOUND, "Role not found by id: " + id);
+                throw new HttpException(HttpReturnCode.NOT_FOUND, "Role not found by id: " + id);
             }
             if (!userRolesIds.contains(id)) {
                 rolePersistenceService.addRoleToUser(userId, id);

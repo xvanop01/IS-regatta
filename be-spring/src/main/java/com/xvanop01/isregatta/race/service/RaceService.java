@@ -1,6 +1,6 @@
 package com.xvanop01.isregatta.race.service;
 
-import com.xvanop01.isregatta.base.exception.Http400ReturnCode;
+import com.xvanop01.isregatta.base.exception.HttpReturnCode;
 import com.xvanop01.isregatta.base.exception.HttpException;
 import com.xvanop01.isregatta.base.security.PrincipalService;
 import com.xvanop01.isregatta.race.model.Race;
@@ -26,7 +26,7 @@ public class RaceService {
     public Race createRace(Race race) throws HttpException {
         log.info("createRace: {}", race);
         if (race == null || race.getName() == null) {
-            throw new HttpException(Http400ReturnCode.BAD_REQUEST, "Race is badly defined.");
+            throw new HttpException(HttpReturnCode.BAD_REQUEST, "Race is badly defined.");
         }
         if (race.getIsPublic() == null || !race.getIsPublic()) {
             race.setIsPublic(false);
@@ -44,7 +44,7 @@ public class RaceService {
                 return race;
             }
         }
-        throw new HttpException(Http400ReturnCode.NOT_FOUND, "Race not found by id: " + raceId);
+        throw new HttpException(HttpReturnCode.NOT_FOUND, "Race not found by id: " + raceId);
     }
 
     public List<Race> getAllRaces() {
@@ -56,14 +56,14 @@ public class RaceService {
     public Race updateRace(Integer raceId, Race updateRace) throws HttpException {
         log.info("updateRace: raceId: {}, updateRace: {}", raceId, updateRace);
         if (raceId == null || updateRace == null) {
-            throw new HttpException(Http400ReturnCode.BAD_REQUEST, "Missing update race's info.");
+            throw new HttpException(HttpReturnCode.BAD_REQUEST, "Missing update race's info.");
         }
         Race race = racePersistenceService.findById(raceId);
         if (race == null) {
-            throw new HttpException(Http400ReturnCode.NOT_FOUND, "Race not found by id: " + raceId);
+            throw new HttpException(HttpReturnCode.NOT_FOUND, "Race not found by id: " + raceId);
         }
         if (race.getIsPublic()) {
-            throw new HttpException(Http400ReturnCode.CONFLICT, "Race with id " + raceId + " can't be updated.");
+            throw new HttpException(HttpReturnCode.CONFLICT, "Race with id " + raceId + " can't be updated.");
         }
         if (updateRace.getName() != null && !updateRace.getName().isEmpty()) {
             race.setName(updateRace.getName());
@@ -88,10 +88,10 @@ public class RaceService {
         log.info("openRaceForSignUp: {}", raceId);
         Race race = raceId == null ? null : racePersistenceService.findById(raceId);
         if (race == null) {
-            throw new HttpException(Http400ReturnCode.NOT_FOUND, "Race not found by id: " + raceId);
+            throw new HttpException(HttpReturnCode.NOT_FOUND, "Race not found by id: " + raceId);
         }
         if (race.getIsPublic()) {
-            throw new HttpException(Http400ReturnCode.CONFLICT, "Race was already opened.");
+            throw new HttpException(HttpReturnCode.CONFLICT, "Race was already opened.");
         }
         race.setIsPublic(true);
         return racePersistenceService.persist(race);
@@ -102,10 +102,10 @@ public class RaceService {
         log.info("changeDates: raceId: {}, signUpUntil: {}, raceDate: {}", raceId, signUpUntil, raceDate);
         Race race = raceId == null ? null : racePersistenceService.findById(raceId);
         if (race == null) {
-            throw new HttpException(Http400ReturnCode.NOT_FOUND, "Race not found by id: " + raceId);
+            throw new HttpException(HttpReturnCode.NOT_FOUND, "Race not found by id: " + raceId);
         }
         if (!race.getIsPublic()) {
-            throw new HttpException(Http400ReturnCode.CONFLICT, "Race wasn't opened for registration.");
+            throw new HttpException(HttpReturnCode.CONFLICT, "Race wasn't opened for registration.");
         }
         if (signUpUntil != null) {
             race.setSignUpUntil(signUpUntil);

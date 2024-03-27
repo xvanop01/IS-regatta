@@ -5,6 +5,9 @@ import { LoggedUserService } from "../../users/logged-user.service";
 import { TableComponent } from "../../core/support/table/table.component";
 import { TableColumnDirective } from "../../core/support/table/table-column.directive";
 import { NgFor } from "@angular/common";
+import {MatButton} from "@angular/material/button";
+import {TableSearchDirective} from "../../core/support/table/table-search.directive";
+import {SearchType} from "../../core/support/table/table.model";
 
 @Component({
   selector: 'app-races',
@@ -15,7 +18,9 @@ import { NgFor } from "@angular/common";
     TableComponent,
     TableColumnDirective,
     NgFor,
-    RouterLink
+    RouterLink,
+    MatButton,
+    TableSearchDirective
   ]
 })
 export class RacesScreenComponent implements OnInit {
@@ -44,4 +49,10 @@ export class RacesScreenComponent implements OnInit {
   buttonClicked($event: any) {
 
   }
+
+  createRace(): void {
+    this.router.navigate(['races', 'create']);
+  }
+
+  protected readonly SearchType = SearchType;
 }

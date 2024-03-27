@@ -1,6 +1,6 @@
 package com.xvanop01.isregatta.base.security;
 
-import com.xvanop01.isregatta.base.exception.Http400ReturnCode;
+import com.xvanop01.isregatta.base.exception.HttpReturnCode;
 import com.xvanop01.isregatta.base.exception.HttpException;
 import com.xvanop01.isregatta.user.model.Role;
 import com.xvanop01.isregatta.user.service.UserService;
@@ -27,7 +27,7 @@ public class SecurityService {
                 return;
             }
         }
-        throw new HttpException(Http400ReturnCode.FORBIDDEN, "You don't have permission.");
+        throw new HttpException(HttpReturnCode.FORBIDDEN, "You don't have permission.");
     }
 
     public void hasRoleOrIsUser(Integer userId, String role) throws HttpException {

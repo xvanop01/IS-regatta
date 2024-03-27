@@ -1,21 +1,39 @@
 import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
-import {dir, PageSpecs, SortSpecs, TableColumn, TableSearch} from "./table.model";
+import {dir, PageSpecs, SearchType, SortSpecs, TableColumn, TableSearch} from "./table.model";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {Router} from "@angular/router";
 import {CoreService} from "../../core.service";
-import {NgFor, NgIf} from "@angular/common";
+import {DatePipe, NgFor, NgIf} from "@angular/common";
 import {MatButton, MatIconButton} from "@angular/material/button";
 import {MatSelectModule} from "@angular/material/select";
-import {FormsModule} from "@angular/forms";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatIcon} from "@angular/material/icon";
+import {MatDatepicker, MatDatepickerModule} from "@angular/material/datepicker";
+import {provideMomentDateAdapter} from '@angular/material-moment-adapter';
+import {Moment} from "moment";
+
+export const MONTH_FORMAT = {
+  parse: {
+    dateInput: 'MM-YYYY',
+  },
+  display: {
+    dateInput: 'MM-YYYY',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMM YYYY',
+  },
+};
 
 @Component({
   selector: 'app-table',
   standalone: true,
   templateUrl: './table.component.html',
   styleUrls: ['./table.component.css'],
+  providers: [
+    provideMomentDateAdapter(MONTH_FORMAT)
+  ],
   imports: [
     NgIf,
     NgFor,
@@ -25,7 +43,11 @@ import {MatIcon} from "@angular/material/icon";
     MatSelectModule,
     MatInputModule,
     MatIcon,
-    MatButton
+    MatButton,
+    MatDatepickerModule,
+    MatDatepicker,
+    DatePipe,
+    ReactiveFormsModule
   ]
 })
 export class TableComponent implements OnInit {
@@ -58,12 +80,15 @@ export class TableComponent implements OnInit {
 
   protected scrollActivated: boolean = this.isScrollActivated();
 
+  protected readonly SearchType = SearchType;
+
   private filters: Array<TableSearch> = [];
 
   constructor(private cd: ChangeDetectorRef,
               private coreService: CoreService,
               private router: Router,
-              private snackBar: MatSnackBar) {
+              private snackBar: MatSnackBar,
+              private datePipe: DatePipe) {
   }
 
   ngOnInit(): void {
@@ -96,7 +121,21 @@ export class TableComponent implements OnInit {
   }
 
   public doFilter() {
-    this.filters = this.searchColumns;
+    this.filters = [];
+    for (const search of this.searchColumns) {
+      if (search.value != '') {
+        const filter = {
+          title: search.title,
+          column: search.column,
+          value: search.value,
+          type: search.type
+        }
+        if (search.type === SearchType.MONTH && search.value != '') {
+          filter.value = filter.value + '-01';
+        }
+        this.filters.push(filter);
+      }
+    }
     this.showPage(0);
   }
 
@@ -163,5 +202,18 @@ export class TableComponent implements OnInit {
       return tableScrollArea.scrollHeight >= tableScrollArea.clientHeight;
     }
     return false;
+  }
+
+  setMonthAndYear(dateForm: string, datepicker: MatDatepicker<Moment>, searchColumn: String) {
+    const date = Date.parse(dateForm);
+    let search = this.searchColumns.find(f => f.column == searchColumn);
+    if (search) {
+      const dateTransformed = this.datePipe.transform(date, 'YYYY-MM');
+      if (dateTransformed != null) {
+        search.value = dateTransformed;
+      }
+    }
+    datepicker.close();
+    console.log(search);
   }
 }

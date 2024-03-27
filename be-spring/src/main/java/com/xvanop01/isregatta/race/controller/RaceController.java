@@ -6,7 +6,7 @@ import com.xvanop01.isregatta.api.race.model.RaceDetailDto;
 import com.xvanop01.isregatta.api.race.model.RaceDetailListDto;
 import com.xvanop01.isregatta.api.race.model.UpdateRaceDatesDto;
 import com.xvanop01.isregatta.api.race.model.UpdateRaceDto;
-import com.xvanop01.isregatta.base.exception.Http400ReturnCode;
+import com.xvanop01.isregatta.base.exception.HttpReturnCode;
 import com.xvanop01.isregatta.base.exception.HttpException;
 import com.xvanop01.isregatta.base.exception.HttpExceptionHandler;
 import com.xvanop01.isregatta.base.security.PrincipalService;
@@ -107,7 +107,7 @@ public class RaceController implements RaceControllerApi {
         log.info("securityIsOrganizerAndHasRole: raceId: {}, role: {}", raceId, role);
         securityService.hasRole(role);
         if (!raceService.isMainOrganizer(raceId, PrincipalService.getPrincipalId())) {
-            throw new HttpException(Http400ReturnCode.FORBIDDEN, "User is not main organizer of the race.");
+            throw new HttpException(HttpReturnCode.FORBIDDEN, "User is not main organizer of the race.");
         }
     }
 }
