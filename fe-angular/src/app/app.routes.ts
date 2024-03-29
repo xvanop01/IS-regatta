@@ -7,7 +7,6 @@ import { UserUpdateScreenComponent } from "./users/user-update-screen/user-updat
 import { RolesUpdateScreenComponent } from "./users/roles-update-screen/roles-update-screen.component";
 import { UsersManagementScreenComponent } from "./users/users-management-screen/users-management-screen.component";
 import { RacesScreenComponent } from "./races/races-screen/races-screen.component";
-import { RacesCreateScreenComponent } from "./races/races-create-screen/races-create-screen.component";
 
 export const routes: Routes = [
   {path: '', component: IndexComponent},
@@ -18,6 +17,5 @@ export const routes: Routes = [
   {path: 'user/:userId/update', component: UserUpdateScreenComponent},
   {path: 'user/:userId/roles/update', component: RolesUpdateScreenComponent},
   {path: 'users', component: UsersManagementScreenComponent},
-  {path: 'races', component: RacesScreenComponent},
-  {path: 'races/create', component: RacesCreateScreenComponent}
+  {path: 'races', component: RacesScreenComponent}
 ];

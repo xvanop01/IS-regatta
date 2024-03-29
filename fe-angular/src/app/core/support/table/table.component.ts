@@ -4,7 +4,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {Router} from "@angular/router";
 import {CoreService} from "../../core.service";
 import {DatePipe, NgFor, NgIf} from "@angular/common";
-import {MatButton, MatIconButton} from "@angular/material/button";
+import {MatButtonModule, MatIconButton} from "@angular/material/button";
 import {MatSelectModule} from "@angular/material/select";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatFormFieldModule} from "@angular/material/form-field";
@@ -37,15 +37,14 @@ export const MONTH_FORMAT = {
   imports: [
     NgIf,
     NgFor,
-    MatIconButton,
     FormsModule,
+    MatIconButton,
     MatFormFieldModule,
     MatSelectModule,
     MatInputModule,
     MatIcon,
-    MatButton,
+    MatButtonModule,
     MatDatepickerModule,
-    MatDatepicker,
     DatePipe,
     ReactiveFormsModule
   ]

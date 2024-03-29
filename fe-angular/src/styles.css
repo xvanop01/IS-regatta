@@ -17,9 +17,14 @@
   height: 0;
 }
 
-.cdk-global-overlay-wrapper {
+.cdk-global-overlay-wrapper:has(simple-snack-bar) {
   justify-content: end !important;
   align-items: start !important;
+}
+
+.cdk-global-overlay-wrapper:not(:has(simple-snack-bar)) {
+  justify-content: center !important;
+  align-items: center !important;
 }
 
 h1 {

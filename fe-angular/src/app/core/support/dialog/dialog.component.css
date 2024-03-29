@@ -1,0 +1,17 @@
+.dialog-template {
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 5px;
+}
+
+.field-wrapper {
+  height: 56px;
+}
+
+.datepicker-wrapper {
+  height: 78px;
+}
+
+mat-form-field {
+  width: 212px;
+}
