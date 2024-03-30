@@ -77,4 +77,13 @@ export class DialogComponent {
       field.error = null;
     }
   }
+
+  public isFieldInvalid(): boolean {
+    for (const field of this.fields) {
+      if (field.required && field.fc.value === null) {
+        return true;
+      }
+    }
+    return false;
+  }
 }
