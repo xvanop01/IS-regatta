@@ -1,6 +1,7 @@
 import {Directive, Host, Input, OnInit} from "@angular/core";
 import {DialogEnum, DialogFieldType} from "./dialog.model";
 import {DialogComponent} from "./dialog.component";
+import {FormControl} from "@angular/forms";
 
 @Directive({
   selector: 'app-dialog-field',
@@ -20,6 +21,9 @@ export class DialogFieldDirective implements OnInit {
   @Input()
   public enum: Array<DialogEnum> = [];
 
+  @Input()
+  public required: boolean = false;
+
   protected dialog: DialogComponent;
 
   constructor(@Host() parent: DialogComponent) {
@@ -29,9 +33,11 @@ export class DialogFieldDirective implements OnInit {
   ngOnInit(): void {
     this.dialog.addField({
       title: this.title === undefined ? '' : this.title,
-      value: this.value,
       type: this.type,
-      enum: this.enum
+      enum: this.enum,
+      required: this.required,
+      error: null,
+      fc: new FormControl(this.value)
     })
   }
 

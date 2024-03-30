@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from "@angular/core";
+import {ChangeDetectorRef, Component, EventEmitter, Input, Output} from "@angular/core";
 import {MatDialogModule} from "@angular/material/dialog";
 import {MatButtonModule} from "@angular/material/button";
 import {DialogField, DialogFieldType} from "./dialog.model";
@@ -51,14 +51,15 @@ export class DialogComponent {
   @Input()
   public title: string | undefined;
 
-  public fields: Array<DialogField> = [];
-
   @Output()
   public submitButtonClick = new EventEmitter();
 
+  public fields: Array<DialogField> = [];
+
   protected readonly DialogFieldType = DialogFieldType;
 
-  constructor() {
+  constructor(private cd: ChangeDetectorRef) {
+
   }
 
   public addField(field: DialogField): void {
@@ -67,5 +68,13 @@ export class DialogComponent {
 
   public onSubmitButtonClick(): void {
     this.submitButtonClick.emit(this.data);
+  }
+
+  public validateField(field: DialogField) {
+    if (field.required && field.fc.value === null) {
+      field.error = 'Field is required';
+    } else {
+      field.error = null;
+    }
   }
 }
