@@ -2,6 +2,7 @@ import {FormControl} from "@angular/forms";
 
 export interface DialogField {
   title: string,
+  field: string,
   type: DialogFieldType,
   enum: Array<DialogEnum>,
   required: boolean,

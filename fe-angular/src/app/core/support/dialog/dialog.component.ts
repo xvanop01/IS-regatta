@@ -1,10 +1,10 @@
-import {ChangeDetectorRef, Component, EventEmitter, Input, Output} from "@angular/core";
+import {Component, EventEmitter, Input, Output} from "@angular/core";
 import {MatDialogModule} from "@angular/material/dialog";
 import {MatButtonModule} from "@angular/material/button";
 import {DialogField, DialogFieldType} from "./dialog.model";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatInputModule} from "@angular/material/input";
-import {NgFor, NgIf} from "@angular/common";
+import {DatePipe, NgFor, NgIf} from "@angular/common";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {provideMomentDateAdapter} from "@angular/material-moment-adapter";
 import {MatFormFieldModule} from "@angular/material/form-field";
@@ -46,7 +46,7 @@ export const MONTH_FORMAT = {
 export class DialogComponent {
 
   @Input()
-  public data: any;
+  public data: {[key: string]: any} = {};
 
   @Input()
   public title: string | undefined;
@@ -58,7 +58,7 @@ export class DialogComponent {
 
   protected readonly DialogFieldType = DialogFieldType;
 
-  constructor(private cd: ChangeDetectorRef) {
+  constructor(private datePipe: DatePipe) {
 
   }
 
@@ -67,6 +67,19 @@ export class DialogComponent {
   }
 
   public onSubmitButtonClick(): void {
+    console.log(this.fields);
+    for (const field of this.fields) {
+      switch (field.type) {
+        case DialogFieldType.STRING:
+        case DialogFieldType.NUMBER:
+        case DialogFieldType.ENUM:
+          this.data[field.field] = field.fc.value;
+          break;
+        case DialogFieldType.DATE:
+          this.data[field.field] = this.datePipe.transform(field.fc.value, 'YYYY-MM-dd');
+          break;
+      }
+    }
     this.submitButtonClick.emit(this.data);
   }
 

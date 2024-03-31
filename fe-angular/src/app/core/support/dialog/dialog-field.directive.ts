@@ -13,6 +13,9 @@ export class DialogFieldDirective implements OnInit {
   public title: string | undefined;
 
   @Input()
+  public field: string = '';
+
+  @Input()
   public value: any = null;
 
   @Input()
@@ -33,6 +36,7 @@ export class DialogFieldDirective implements OnInit {
   ngOnInit(): void {
     this.dialog.addField({
       title: this.title === undefined ? '' : this.title,
+      field: this.field,
       type: this.type,
       enum: this.enum,
       required: this.required,
