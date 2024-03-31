@@ -94,15 +94,15 @@ export class TableComponent implements OnInit {
     this.tableDataRefresh();
   }
 
-  addColumn(column: TableColumn): void {
+  public addColumn(column: TableColumn): void {
     this.columns.push(column);
   }
 
-  addSearch(searchField: TableSearch): void {
+  public addSearch(searchField: TableSearch): void {
     this.searchColumns.push(searchField);
   }
 
-  onClick(id: any, action: any): void {
+  public onClick(id: any, action: any): void {
     if (id && action) {
       this.onButtonClick.emit({id: id, action: action});
     }

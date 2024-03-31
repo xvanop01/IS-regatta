@@ -6,7 +6,7 @@
     </div>
   </div>
   <div class="table-wrapper">
-    <app-table [serviceName]="'race-table'" (onButtonClick)="buttonClicked($event)">
+    <app-table #racesTable [serviceName]="'race-table'" (onButtonClick)="buttonClicked($event)">
       <app-table-search [title]="'Name'" [column]="'name'"></app-table-search>
       <app-table-search [title]="'Race date'" [column]="'date'" [type]="SearchType.MONTH"></app-table-search>
 

@@ -1,13 +1,15 @@
-import { Component, OnInit } from "@angular/core";
+import {Component, OnInit, ViewChild} from "@angular/core";
 import { Router, RouterLink } from "@angular/router";
 import { RacesService } from "../races.service";
 import { LoggedUserService } from "../../users/logged-user.service";
 import { TableComponent } from "../../core/support/table/table.component";
 import { TableColumnDirective } from "../../core/support/table/table-column.directive";
 import { NgFor } from "@angular/common";
-import {MatButton} from "@angular/material/button";
+import {MatButton, MatButtonModule} from "@angular/material/button";
 import {TableSearchDirective} from "../../core/support/table/table-search.directive";
 import {SearchType} from "../../core/support/table/table.model";
+import {MatDialog, MatDialogModule} from "@angular/material/dialog";
+import {RacesCreateDialogComponent} from "../races-create-dialog/races-create-dialog.component";
 
 @Component({
   selector: 'app-races',
@@ -19,15 +21,22 @@ import {SearchType} from "../../core/support/table/table.model";
     TableColumnDirective,
     NgFor,
     RouterLink,
+    MatButtonModule,
     MatButton,
-    TableSearchDirective
+    TableSearchDirective,
+    MatDialogModule
   ]
 })
 export class RacesScreenComponent implements OnInit {
 
+  @ViewChild('racesTable') racesTableComponent?: TableComponent;
+
   protected isOrganizer: boolean = false;
 
-  constructor(private router: Router,
+  protected readonly SearchType = SearchType;
+
+  constructor(private dialog: MatDialog,
+              private router: Router,
               private racesService: RacesService,
               private loggedUserService: LoggedUserService) {
   }
@@ -51,8 +60,12 @@ export class RacesScreenComponent implements OnInit {
   }
 
   createRace(): void {
-    this.router.navigate(['races', 'create']);
+    const crDialogRef = this.dialog.open(RacesCreateDialogComponent);
+    crDialogRef.afterClosed().subscribe(result => {
+      console.log(result);
+      if (this.racesTableComponent) {
+        this.racesTableComponent.tableDataRefresh();
+      }
+    })
   }
-
-  protected readonly SearchType = SearchType;
 }

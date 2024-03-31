@@ -1,5 +1,9 @@
 export interface CreateRaceDto {
   name: string;
+  location: string;
+  date: string;
+  signUpUntil: string;
+  description: string;
 }
 
 export interface UpdateRaceDto {

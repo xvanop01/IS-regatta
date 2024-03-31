@@ -208,6 +208,16 @@ components:
       properties:
         name:
           type: string
+        location:
+          type: string
+        date:
+          type: string
+          format: date
+        signUpUntil:
+          type: string
+          format: date
+        description:
+          type: string
     UpdateRaceDto:
       properties:
         name:
