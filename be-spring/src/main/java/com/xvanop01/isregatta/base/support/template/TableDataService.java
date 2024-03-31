@@ -32,7 +32,7 @@ public abstract class TableDataService<E, R extends JpaRepository<E, ?> & JpaSpe
                 try {
                     F filter = fClass.newInstance();
                     for (Filter f : filterList) {
-                        if (f.getValue().isEmpty()) {
+                        if (f.getValue() == null || f.getValue().isEmpty()) {
                             continue;
                         }
                         Field field = fClass.getDeclaredField(f.getColumn());

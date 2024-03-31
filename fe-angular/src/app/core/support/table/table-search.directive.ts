@@ -1,6 +1,7 @@
 import {Directive, Host, Input, OnInit} from "@angular/core";
 import {TableComponent} from "./table.component";
 import {SearchType} from "./table.model";
+import {FormControl} from "@angular/forms";
 
 @Directive({
   selector: 'app-table-search',
@@ -30,8 +31,8 @@ export class TableSearchDirective implements OnInit {
     this.table.addSearch({
       title: this.title === undefined ? '' : this.title,
       column: this.column === undefined ? '' : this.column,
-      value: this.value === undefined ? '' : this.value,
-      type: this.type === undefined ? SearchType.STRING : this.type
+      type: this.type === undefined ? SearchType.STRING : this.type,
+      fc: new FormControl(this.value)
     })
   }
 }

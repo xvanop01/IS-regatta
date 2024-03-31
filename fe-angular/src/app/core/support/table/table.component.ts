@@ -1,5 +1,5 @@
 import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
-import {dir, PageSpecs, SearchType, SortSpecs, TableColumn, TableSearch} from "./table.model";
+import {dir, Filter, PageSpecs, SearchType, SortSpecs, TableColumn, TableSearch} from "./table.model";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {Router} from "@angular/router";
 import {CoreService} from "../../core.service";
@@ -81,7 +81,7 @@ export class TableComponent implements OnInit {
 
   protected readonly SearchType = SearchType;
 
-  private filters: Array<TableSearch> = [];
+  private filters: Array<Filter> = [];
 
   constructor(private cd: ChangeDetectorRef,
               private coreService: CoreService,
@@ -122,15 +122,15 @@ export class TableComponent implements OnInit {
   public doFilter() {
     this.filters = [];
     for (const search of this.searchColumns) {
-      if (search.value != '') {
+      if (search.fc.value != '') {
         const filter = {
           title: search.title,
           column: search.column,
-          value: search.value,
-          type: search.type
+          type: search.type,
+          value: search.fc.value
         }
-        if (search.type === SearchType.MONTH && search.value != '') {
-          filter.value = filter.value + '-01';
+        if (search.type === SearchType.MONTH && search.fc.value != null) {
+          filter.value = search.fc.value + '-01';
         }
         this.filters.push(filter);
       }
@@ -181,6 +181,37 @@ export class TableComponent implements OnInit {
     }
   }
 
+  public setMonthAndYear(dateForm: string, datepicker: MatDatepicker<Moment>, searchColumn: String) {
+    const date = Date.parse(dateForm);
+    let search = this.searchColumns.find(f => f.column == searchColumn);
+    if (search) {
+      const dateTransformed = this.datePipe.transform(date, 'YYYY-MM');
+      if (dateTransformed != null) {
+        search.fc.setValue(dateTransformed);
+      }
+    }
+    datepicker.close();
+  }
+
+  public setDateFilter(searchColumn: String): void {
+    let search = this.searchColumns.find(f => f.column == searchColumn);
+    if (search) {
+      const date = Date.parse(search.fc.value);
+      const dateTransformed = this.datePipe.transform(date, 'YYYY-MM');
+      if (dateTransformed != null) {
+        search.fc.setValue(dateTransformed);
+      }
+    }
+  }
+
+  protected isScrollActivated(): boolean {
+    let tableScrollArea = document.getElementById('table-pager-wrapper');
+    if (tableScrollArea != null) {
+      return tableScrollArea.scrollHeight >= tableScrollArea.clientHeight;
+    }
+    return false;
+  }
+
   private resetSort(): void {
     if (this.sortSpecs.column !== '') {
       let placeholder = document.getElementById(this.sortSpecs.column + '-placeholder');
@@ -193,26 +224,5 @@ export class TableComponent implements OnInit {
       this.sortSpecs.column = '';
       this.sortSpecs.direction = dir.ASC;
     }
-  }
-
-  protected isScrollActivated(): boolean {
-    let tableScrollArea = document.getElementById('table-pager-wrapper');
-    if (tableScrollArea != null) {
-      return tableScrollArea.scrollHeight >= tableScrollArea.clientHeight;
-    }
-    return false;
-  }
-
-  setMonthAndYear(dateForm: string, datepicker: MatDatepicker<Moment>, searchColumn: String) {
-    const date = Date.parse(dateForm);
-    let search = this.searchColumns.find(f => f.column == searchColumn);
-    if (search) {
-      const dateTransformed = this.datePipe.transform(date, 'YYYY-MM');
-      if (dateTransformed != null) {
-        search.value = dateTransformed;
-      }
-    }
-    datepicker.close();
-    console.log(search);
   }
 }

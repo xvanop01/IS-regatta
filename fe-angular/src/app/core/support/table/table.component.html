@@ -5,13 +5,13 @@
         <ng-container *ngIf="search.type === SearchType.STRING">
           <mat-form-field>
             <mat-label>{{search?.title}}</mat-label>
-            <input matInput type="text" [(ngModel)]="search.value">
+            <input matInput type="text" [formControl]="search.fc">
           </mat-form-field>
         </ng-container>
         <ng-container *ngIf="search.type === SearchType.MONTH">
           <mat-form-field>
             <mat-label>{{search?.title}}</mat-label>
-            <input matInput [matDatepicker]="datepicker" [value]="search.value">
+            <input matInput [matDatepicker]="datepicker" [formControl]="search.fc" (blur)="setDateFilter(search.column)">
             <mat-hint>MM-YYYY</mat-hint>
             <mat-datepicker-toggle matIconSuffix [for]="datepicker"></mat-datepicker-toggle>
             <mat-datepicker #datepicker

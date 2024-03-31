@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import {PageSpecs, SortSpecs, TableSearch} from "./support/table/table.model";
+import {Filter, PageSpecs, SortSpecs} from "./support/table/table.model";
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +15,7 @@ export class CoreService {
   }
 
   public getTableData(serviceName: string, pageSpecs: PageSpecs, sortSpecs: SortSpecs | null,
-                      filters: Array<TableSearch>): Observable<any> {
+                      filters: Array<Filter>): Observable<any> {
     if (sortSpecs?.column === '') {
       sortSpecs = null;
     }

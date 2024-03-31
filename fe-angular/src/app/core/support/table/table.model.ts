@@ -1,3 +1,5 @@
+import {FormControl} from "@angular/forms";
+
 export interface TableColumn {
   title: string;
   field: string;
@@ -7,6 +9,13 @@ export interface TableColumn {
 }
 
 export interface TableSearch {
+  title: string;
+  column: string;
+  type: SearchType;
+  fc: FormControl
+}
+
+export interface Filter {
   title: string;
   column: string;
   value: string;
