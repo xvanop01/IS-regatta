@@ -5,7 +5,7 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
-import {FormControl, FormGroup, NgForm, ReactiveFormsModule} from "@angular/forms";
+import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
 import {UsersService} from "../users.service";
 
 enum VisiblePassword {
@@ -22,6 +22,7 @@ enum IconPassword {
   selector: 'app-login',
   standalone: true,
   templateUrl: './login-screen.component.html',
+  styleUrls: ['./login-screen.component.css'],
   imports: [
     MatFormFieldModule,
     MatInputModule,
@@ -29,8 +30,7 @@ enum IconPassword {
     MatIconModule,
     ReactiveFormsModule,
     RouterLink
-  ],
-  styleUrls: ['./login-screen.component.css']
+  ]
 })
 export class LoginScreenComponent implements OnInit {
 
