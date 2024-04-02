@@ -1,14 +1,28 @@
-<h1>Login Page</h1>
-<form ngNoForm action="http://localhost:8080/login" method="post">
-  <div>
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="username" />
+<div class="login-page-wrapper">
+  <div class="login-page-inner-wrapper">
+    <h1>Log In Page</h1>
+    <form #formElement (keydown.enter)="$event.preventDefault()" action="http://localhost:8080/login" method="post">
+      <div>
+        <mat-form-field>
+          <mat-label>Username</mat-label>
+          <input type="text" matInput name="username">
+        </mat-form-field>
+      </div>
+      <div>
+        <mat-form-field>
+          <mat-label>Password</mat-label>
+          <input [type]="visible" matInput name="password" (keyup.enter)="onSubmit()">
+          <button type="button" mat-icon-button matSuffix (click)="onIconClicked()">
+            <i class="{{icon}}"></i>
+          </button>
+        </mat-form-field>
+      </div>
+      <div class="register-text-wrapper">
+        Don't have account? Register <a [routerLink]="['/register']">here</a>!
+      </div>
+      <div>
+        <button type="button" mat-flat-button color="primary" (click)="onSubmit()">Log in</button>
+      </div>
+    </form>
   </div>
-  <div>
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="password" />
-  </div>
-  <div>
-    <button type="submit">Log in</button>
-  </div>
-</form>
+</div>
