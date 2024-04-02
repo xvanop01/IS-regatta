@@ -2,6 +2,7 @@ import { Component, Input } from "@angular/core";
 import { NgIf } from "@angular/common";
 import {MatIconButton} from "@angular/material/button";
 import {Router} from "@angular/router";
+import {HttpClient} from "@angular/common/http";
 
 @Component({
   selector: 'app-toolbar',
@@ -21,8 +22,8 @@ export class ToolbarComponent {
   @Input()
   public user: any;
 
-  constructor(private router: Router) {
-
+  constructor(private http: HttpClient,
+              private router: Router) {
   }
 
   protected redirectToIndex(): void {
@@ -38,7 +39,12 @@ export class ToolbarComponent {
   }
 
   protected redirectToLogout(): void {
-    window.location.href = 'http://localhost:8080/logout';
+    localStorage.removeItem('token');
+    this.http.post(`http://localhost:8080/logout`, {withCredentials: true}).subscribe(
+      result => {
+        location.reload();
+      }
+    );
   }
 
 }
