@@ -35,6 +35,8 @@ export class RacesScreenComponent implements OnInit {
 
   protected readonly SearchType = SearchType;
 
+  protected readonly detail = 'DETAIL';
+
   constructor(private dialog: MatDialog,
               private router: Router,
               private racesService: RacesService,
@@ -55,14 +57,17 @@ export class RacesScreenComponent implements OnInit {
     )
   }
 
-  buttonClicked($event: any) {
-
+  buttonClicked(data: any) {
+    switch (data?.action) {
+      case this.detail:
+        this.router.navigate(['/race', data?.id]);
+        break;
+    }
   }
 
   createRace(): void {
     const crDialogRef = this.dialog.open(RacesCreateDialogComponent);
     crDialogRef.afterClosed().subscribe(result => {
-      console.log(result);
       if (this.racesTableComponent) {
         this.racesTableComponent.tableDataRefresh();
       }
