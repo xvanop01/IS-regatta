@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,7 +18,6 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 
 @Configuration
-@EnableWebSecurity
 @Slf4j
 public class WebSecurityConfig {
 
@@ -46,7 +44,7 @@ public class WebSecurityConfig {
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .defaultSuccessUrl("http://localhost:4200/", true)
+                .defaultSuccessUrl("http://localhost:8080/", true)
                 .failureHandler(getAuthenticationFailureHandler())
                 .permitAll()
                 .and()
@@ -54,7 +52,7 @@ public class WebSecurityConfig {
                 .authenticationEntryPoint(getUnauthorizedEntryPoint())
                 .and()
                 .logout()
-                .logoutSuccessUrl("http://localhost:4200/")
+                .logoutSuccessUrl("http://localhost:8080/")
                 .permitAll();
         return httpSecurity.build();
     }
@@ -84,7 +82,7 @@ public class WebSecurityConfig {
     private AuthenticationFailureHandler getAuthenticationFailureHandler() {
         return (request, response, exception) -> {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.sendRedirect("http://localhost:4200/login?error=" + exception.getMessage());
+            response.sendRedirect("http://localhost:8080/login?error=" + exception.getMessage());
         };
     }
 }
