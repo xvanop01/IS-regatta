@@ -11,11 +11,11 @@
           <mat-error *ngIf="field.error != null">{{field.error}}</mat-error>
         </div>
       </ng-container>
-      <ng-container *ngIf="field.type === DialogFieldType.ENUM">
+      <ng-container *ngIf="field.type === DialogFieldType.ENUM || field.type === DialogFieldType.ENUM_MULTIPLE">
         <div class="field-wrapper">
           <mat-form-field>
             <mat-label>{{field?.title}}</mat-label>
-            <mat-select [required]="field.required" [formControl]="field.fc" (blur)="validateField(field)" (closed)="validateField(field)">
+            <mat-select [multiple]="field.type === DialogFieldType.ENUM_MULTIPLE" [required]="field.required" [formControl]="field.fc" (blur)="validateField(field)" (closed)="validateField(field)">
               <ng-container *ngFor="let e of field.enum">
                 <mat-option [value]="e.value">{{e.title}}</mat-option>
               </ng-container>

@@ -72,6 +72,7 @@ export class DialogComponent {
         case DialogFieldType.STRING:
         case DialogFieldType.NUMBER:
         case DialogFieldType.ENUM:
+        case DialogFieldType.ENUM_MULTIPLE:
           this.data[field.field] = field.fc.value;
           break;
         case DialogFieldType.DATE:

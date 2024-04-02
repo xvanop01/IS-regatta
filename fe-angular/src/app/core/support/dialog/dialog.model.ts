@@ -14,6 +14,7 @@ export enum DialogFieldType {
   STRING = 'text',
   NUMBER = 'number',
   ENUM = 'enum',
+  ENUM_MULTIPLE = 'enum_multiple',
   DATE = 'date'
 }
 
