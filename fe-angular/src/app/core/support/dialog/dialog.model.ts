@@ -5,6 +5,7 @@ export interface DialogField {
   field: string,
   type: DialogFieldType,
   enum: Array<DialogEnum>,
+  pswdVisible: boolean,
   required: boolean,
   error: string | null,
   fc: FormControl
@@ -15,7 +16,8 @@ export enum DialogFieldType {
   NUMBER = 'number',
   ENUM = 'enum',
   ENUM_MULTIPLE = 'enum_multiple',
-  DATE = 'date'
+  DATE = 'date',
+  PASSWORD = 'password'
 }
 
 export interface DialogEnum {

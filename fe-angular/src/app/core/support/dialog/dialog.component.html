@@ -2,6 +2,7 @@
 <mat-dialog-content>
   <div class="dialog-template">
     <ng-container *ngFor="let field of fields">
+
       <ng-container *ngIf="field.type === DialogFieldType.STRING || field.type === DialogFieldType.NUMBER">
         <div class="field-wrapper">
           <mat-form-field>
@@ -11,6 +12,7 @@
           <mat-error *ngIf="field.error != null">{{field.error}}</mat-error>
         </div>
       </ng-container>
+
       <ng-container *ngIf="field.type === DialogFieldType.ENUM || field.type === DialogFieldType.ENUM_MULTIPLE">
         <div class="field-wrapper">
           <mat-form-field>
@@ -24,6 +26,7 @@
           <mat-error *ngIf="field.error != null">{{field.error}}</mat-error>
         </div>
       </ng-container>
+
       <ng-container *ngIf="field.type == DialogFieldType.DATE">
         <div class="datepicker-wrapper">
           <mat-form-field>
@@ -36,6 +39,20 @@
           <mat-error *ngIf="field.error != null">{{field.error}}</mat-error>
         </div>
       </ng-container>
+
+      <ng-container *ngIf="field.type == DialogFieldType.PASSWORD">
+        <div class="datepicker-wrapper">
+          <mat-form-field>
+            <mat-label>{{field?.title}}</mat-label>
+            <input [type]="field.pswdVisible ? 'text' : 'password'" matInput [formControl]="field.fc" [required]="field.required" (blur)="validateField(field)">
+            <button type="button" mat-icon-button matSuffix (click)="onIconClicked(field)">
+              <i class="{{field.pswdVisible ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'}}"></i>
+            </button>
+          </mat-form-field>
+          <mat-error *ngIf="field.error != null">{{field.error}}</mat-error>
+        </div>
+      </ng-container>
+
     </ng-container>
   </div>
 </mat-dialog-content>

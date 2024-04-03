@@ -9,6 +9,7 @@ import {MatDatepickerModule} from "@angular/material/datepicker";
 import {provideMomentDateAdapter} from "@angular/material-moment-adapter";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatSelectModule} from "@angular/material/select";
+import {MatIconModule} from "@angular/material/icon";
 
 export const MONTH_FORMAT = {
   parse: {
@@ -34,6 +35,7 @@ export const MONTH_FORMAT = {
     MatDialogModule,
     MatButtonModule,
     MatInputModule,
+    MatIconModule,
     MatFormFieldModule,
     MatDatepickerModule,
     MatSelectModule,
@@ -63,6 +65,7 @@ export class DialogComponent {
   }
 
   public addField(field: DialogField): void {
+    field.fc.setValue(this.data[field.field]);
     this.fields.push(field);
   }
 
@@ -73,6 +76,7 @@ export class DialogComponent {
         case DialogFieldType.NUMBER:
         case DialogFieldType.ENUM:
         case DialogFieldType.ENUM_MULTIPLE:
+        case DialogFieldType.PASSWORD:
           this.data[field.field] = field.fc.value;
           break;
         case DialogFieldType.DATE:
@@ -83,7 +87,7 @@ export class DialogComponent {
     this.submitButtonClick.emit(this.data);
   }
 
-  public validateField(field: DialogField) {
+  public validateField(field: DialogField): void {
     if (field.required && field.fc.value === null) {
       field.error = 'Field is required';
     } else {
@@ -98,5 +102,9 @@ export class DialogComponent {
       }
     }
     return false;
+  }
+
+  public onIconClicked(field: DialogField): void {
+    field.pswdVisible = !field.pswdVisible;
   }
 }

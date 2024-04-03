@@ -39,6 +39,7 @@ export class DialogFieldDirective implements OnInit {
       field: this.field,
       type: this.type,
       enum: this.enum,
+      pswdVisible: false,
       required: this.required,
       error: null,
       fc: new FormControl(this.value)
