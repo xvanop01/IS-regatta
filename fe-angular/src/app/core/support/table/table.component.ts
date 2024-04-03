@@ -102,9 +102,9 @@ export class TableComponent implements OnInit {
     this.searchColumns.push(searchField);
   }
 
-  public onClick(id: any, action: any): void {
-    if (id && action) {
-      this.onButtonClick.emit({id: id, action: action});
+  public onClick(data: any, action: any): void {
+    if (data && action) {
+      this.onButtonClick.emit({rowData: data, action: action});
     }
   }
 

@@ -1,0 +1,6 @@
+<app-dialog [title]="'Update user'" [data]="data" (submitButtonClick)="onSubmitButtonClick($event)">
+  <app-dialog-field [field]="'username'" [title]="'Username'" [type]="DialogFieldType.STRING"></app-dialog-field>
+  <app-dialog-field [field]="'password'" [title]="'Password'" [type]="DialogFieldType.PASSWORD"></app-dialog-field>
+  <app-dialog-field [field]="'email'" [title]="'E-mail'" [type]="DialogFieldType.STRING"></app-dialog-field>
+  <app-dialog-field [field]="'fullName'" [title]="'Full name'" [type]="DialogFieldType.STRING"></app-dialog-field>
+</app-dialog>

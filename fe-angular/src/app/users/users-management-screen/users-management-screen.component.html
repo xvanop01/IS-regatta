@@ -1,7 +1,7 @@
 <div style="height: 100%;">
   <h1>User Management</h1>
   <div class="table-wrapper">
-    <app-table [serviceName]="'user-table'" (onButtonClick)="buttonClicked($event)">
+    <app-table #usersTable [serviceName]="'user-table'" (onButtonClick)="buttonClicked($event)">
       <app-table-search [title]="'Username'" [column]="'username'"></app-table-search>
       <app-table-search [title]="'Name'" [column]="'name'"></app-table-search>
       <app-table-search [title]="'Email'" [column]="'email'"></app-table-search>

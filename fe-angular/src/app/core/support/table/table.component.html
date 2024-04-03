@@ -45,7 +45,7 @@
           <ng-container *ngFor="let column of columns">
             <ng-container *ngIf="column?.isButton; else field">
               <th [width]="50">
-                <button mat-icon-button (click)="onClick(row?.id, column?.field)" style="transform: scale(0.75);">
+                <button mat-icon-button (click)="onClick(row, column?.field)" style="transform: scale(0.75);">
                   <i class="{{column?.icon}}"></i>
                 </button>
               </th>

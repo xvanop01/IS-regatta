@@ -4,7 +4,7 @@ import { RacesService } from "../races.service";
 import { LoggedUserService } from "../../users/logged-user.service";
 import { TableComponent } from "../../core/support/table/table.component";
 import { TableColumnDirective } from "../../core/support/table/table-column.directive";
-import { NgFor } from "@angular/common";
+import {NgFor, NgIf} from "@angular/common";
 import {MatButton, MatButtonModule} from "@angular/material/button";
 import {TableSearchDirective} from "../../core/support/table/table-search.directive";
 import {SearchType} from "../../core/support/table/table.model";
@@ -24,7 +24,8 @@ import {RacesCreateDialogComponent} from "../races-create-dialog/races-create-di
     MatButtonModule,
     MatButton,
     TableSearchDirective,
-    MatDialogModule
+    MatDialogModule,
+    NgIf
   ]
 })
 export class RacesScreenComponent implements OnInit {
@@ -60,7 +61,7 @@ export class RacesScreenComponent implements OnInit {
   buttonClicked(data: any) {
     switch (data?.action) {
       case this.detail:
-        this.router.navigate(['/race', data?.id]);
+        this.router.navigate(['/race', data?.rowData?.id]);
         break;
     }
   }

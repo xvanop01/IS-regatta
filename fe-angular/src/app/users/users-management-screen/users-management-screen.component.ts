@@ -1,8 +1,11 @@
-import { Component, OnInit } from "@angular/core";
+import {Component, OnInit, ViewChild} from "@angular/core";
 import { Router } from "@angular/router";
 import { TableColumnDirective } from "../../core/support/table/table-column.directive";
 import { TableComponent } from "../../core/support/table/table.component";
 import {TableSearchDirective} from "../../core/support/table/table-search.directive";
+import {RacesCreateDialogComponent} from "../../races/races-create-dialog/races-create-dialog.component";
+import {MatDialog, MatDialogModule} from "@angular/material/dialog";
+import {UserUpdateDialogComponent} from "../user-update-dialog/user-update-dialog.component";
 
 enum Action {
   RedirectToDetail = 'DETAIL',
@@ -18,16 +21,20 @@ enum Action {
   imports: [
     TableComponent,
     TableColumnDirective,
-    TableSearchDirective
+    TableSearchDirective,
+    MatDialogModule
   ]
 })
 export class UsersManagementScreenComponent implements OnInit {
+
+  @ViewChild('usersTable') usersTableComponent?: TableComponent;
 
   protected users: any;
 
   protected readonly Action = Action;
 
-  constructor(private router: Router) {
+  constructor(private router: Router,
+              private dialog: MatDialog) {
 
   }
 
@@ -37,13 +44,19 @@ export class UsersManagementScreenComponent implements OnInit {
   public buttonClicked(data: any): void {
     switch (data?.action) {
       case Action.RedirectToDetail:
-        this.router.navigate(['/user', data?.id]);
+        this.router.navigate(['/user', data?.rowData?.id]);
         break;
       case Action.EditUser:
-        this.router.navigate(['/user', data?.id, 'update']);
+        const crDialogRef = this.dialog.open(UserUpdateDialogComponent,
+          {data: data?.rowData});
+        crDialogRef.afterClosed().subscribe(result => {
+          if (this.usersTableComponent) {
+            this.usersTableComponent.tableDataRefresh();
+          }
+        })
         break;
       case Action.ChangePermissions:
-        this.router.navigate(['/user', data?.id, 'roles', 'update']);
+        this.router.navigate(['/user', data?.rowData?.id, 'roles', 'update']);
         break;
     }
   }
