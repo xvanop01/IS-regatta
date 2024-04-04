@@ -17,10 +17,6 @@ export interface UserDetailDto {
   fullName: string;
 }
 
-export interface UserDetailListDto {
-  users: Array<UserDetailDto>;
-}
-
 export interface RoleDto {
   id: number;
   role: string;

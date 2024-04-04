@@ -65,7 +65,24 @@ export class DialogComponent {
   }
 
   public addField(field: DialogField): void {
-    field.fc.setValue(this.data[field.field]);
+    switch (field.type) {
+      case DialogFieldType.ENUM:
+        field.fc.setValue(this.data[field.field]?.value);
+        break;
+      case DialogFieldType.ENUM_MULTIPLE:
+        let enums = [];
+        for (const e of this.data[field.field]) {
+          enums.push(e.value);
+        }
+        field.fc.setValue(enums);
+        break;
+      case DialogFieldType.STRING:
+      case DialogFieldType.NUMBER:
+      case DialogFieldType.PASSWORD:
+      case DialogFieldType.DATE:
+        field.fc.setValue(this.data[field.field]);
+        break;
+    }
     this.fields.push(field);
   }
 
