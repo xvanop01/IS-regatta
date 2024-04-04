@@ -1,0 +1,3 @@
+<app-dialog [title]="'Update user\'s roles'" [data]="{roles: userRoles}" (submitButtonClick)="onSubmitButtonClick($event)">
+  <app-dialog-field [field]="'roles'" [title]="'Roles'" [type]="DialogFieldType.ENUM_MULTIPLE" [enum]="allRoles"></app-dialog-field>
+</app-dialog>

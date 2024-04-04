@@ -1,11 +1,13 @@
-import {Component, OnInit, ViewChild} from "@angular/core";
+import {Component, ViewChild} from "@angular/core";
 import { Router } from "@angular/router";
 import { TableColumnDirective } from "../../core/support/table/table-column.directive";
 import { TableComponent } from "../../core/support/table/table.component";
 import {TableSearchDirective} from "../../core/support/table/table-search.directive";
-import {RacesCreateDialogComponent} from "../../races/races-create-dialog/races-create-dialog.component";
 import {MatDialog, MatDialogModule} from "@angular/material/dialog";
 import {UserUpdateDialogComponent} from "../user-update-dialog/user-update-dialog.component";
+import {UsersService} from "../users.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {RolesUpdateDialogComponent} from "../roles-update-dialog/roles-update-dialog.component";
 
 enum Action {
   RedirectToDetail = 'DETAIL',
@@ -25,7 +27,7 @@ enum Action {
     MatDialogModule
   ]
 })
-export class UsersManagementScreenComponent implements OnInit {
+export class UsersManagementScreenComponent {
 
   @ViewChild('usersTable') usersTableComponent?: TableComponent;
 
@@ -33,12 +35,17 @@ export class UsersManagementScreenComponent implements OnInit {
 
   protected readonly Action = Action;
 
+  protected roles: any;
+
   constructor(private router: Router,
-              private dialog: MatDialog) {
-
-  }
-
-  ngOnInit(): void {
+              private dialog: MatDialog,
+              private usersService: UsersService,
+              private snackBar: MatSnackBar) {
+    usersService.getAllRoles().subscribe(result => {
+        this.roles = result.roles;
+      }, error => {
+        let snackBarRef = this.snackBar.open(error.status + ': ' + error.error, 'X');
+      });
   }
 
   public buttonClicked(data: any): void {
@@ -47,16 +54,30 @@ export class UsersManagementScreenComponent implements OnInit {
         this.router.navigate(['/user', data?.rowData?.id]);
         break;
       case Action.EditUser:
-        const crDialogRef = this.dialog.open(UserUpdateDialogComponent,
+        const uuDialogRef = this.dialog.open(UserUpdateDialogComponent,
           {data: data?.rowData});
-        crDialogRef.afterClosed().subscribe(result => {
+        uuDialogRef.afterClosed().subscribe(result => {
           if (this.usersTableComponent) {
             this.usersTableComponent.tableDataRefresh();
           }
         })
         break;
       case Action.ChangePermissions:
-        this.router.navigate(['/user', data?.rowData?.id, 'roles', 'update']);
+        this.usersService.getUserRoles(data?.rowData?.id).subscribe(result => {
+          const ruDialogRef = this.dialog.open(RolesUpdateDialogComponent,
+            {data: {
+                id: data?.rowData?.id,
+                allRoles: this.roles,
+                userRoles: result?.roles
+              }});
+          ruDialogRef.afterClosed().subscribe(result => {
+            if (this.usersTableComponent) {
+              this.usersTableComponent.tableDataRefresh();
+            }
+          })
+        }, error => {
+          let snackBarRef = this.snackBar.open(error.status + ': ' + error.error, 'X');
+        })
         break;
     }
   }
