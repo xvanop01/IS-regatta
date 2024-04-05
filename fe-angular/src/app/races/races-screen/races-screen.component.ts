@@ -1,4 +1,4 @@
-import {Component, OnInit, ViewChild} from "@angular/core";
+import {ChangeDetectorRef, Component, OnInit, ViewChild} from "@angular/core";
 import { Router, RouterLink } from "@angular/router";
 import { RacesService } from "../races.service";
 import { LoggedUserService } from "../../users/logged-user.service";
@@ -41,16 +41,18 @@ export class RacesScreenComponent implements OnInit {
   constructor(private dialog: MatDialog,
               private router: Router,
               private racesService: RacesService,
-              private loggedUserService: LoggedUserService) {
+              private loggedUserService: LoggedUserService,
+              private cd: ChangeDetectorRef) {
   }
 
   ngOnInit(): void {
     this.loggedUserService.getLoggedUserRoles().subscribe(
       roles => {
         if (roles != null) {
-          for (const role in roles) {
-            if (role === 'ADMIN' || role === 'ORGANIZER') {
+          for (const role of roles.roles) {
+            if (role.role === 'ADMIN' || role.role === 'ORGANIZER') {
               this.isOrganizer = true;
+              this.cd.detectChanges();
             }
           }
         }
