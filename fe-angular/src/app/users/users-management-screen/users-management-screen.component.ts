@@ -57,7 +57,7 @@ export class UsersManagementScreenComponent {
         const uuDialogRef = this.dialog.open(UserUpdateDialogComponent,
           {data: data?.rowData});
         uuDialogRef.afterClosed().subscribe(result => {
-          if (this.usersTableComponent) {
+          if (this.usersTableComponent && result) {
             this.usersTableComponent.tableDataRefresh();
           }
         })
@@ -71,7 +71,7 @@ export class UsersManagementScreenComponent {
                 userRoles: result?.roles
               }});
           ruDialogRef.afterClosed().subscribe(result => {
-            if (this.usersTableComponent) {
+            if (this.usersTableComponent && result) {
               this.usersTableComponent.tableDataRefresh();
             }
           })

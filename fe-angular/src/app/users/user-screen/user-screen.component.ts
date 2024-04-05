@@ -107,8 +107,10 @@ export class UserScreenComponent implements OnInit {
     const uuDialogRef = this.dialog.open(UserUpdateDialogComponent,
       {data: this.user});
     uuDialogRef.afterClosed().subscribe(result => {
-      this.user = result;
-      this.cd.detectChanges();
+      if (result) {
+        this.user = result;
+        this.cd.detectChanges();
+      }
     })
   }
 
@@ -120,8 +122,10 @@ export class UserScreenComponent implements OnInit {
           userRoles: this.userRoles
         }});
     ruDialogRef.afterClosed().subscribe(result => {
-      this.userRoles = result.roles;
-      this.cd.detectChanges();
+      if (result) {
+        this.userRoles = result.roles;
+        this.cd.detectChanges();
+      }
     })
   }
 }

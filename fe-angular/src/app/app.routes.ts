@@ -3,8 +3,6 @@ import { IndexComponent } from "./core/index/index.component";
 import { UserScreenComponent } from "./users/user-screen/user-screen.component";
 import { RegisterScreenComponent } from "./users/register-screen/register-screen.component";
 import { LoginScreenComponent } from "./users/login-screen/login-screen.component";
-import { UserUpdateScreenComponent } from "./users/user-update-screen/user-update-screen.component";
-import { RolesUpdateScreenComponent } from "./users/roles-update-screen/roles-update-screen.component";
 import { UsersManagementScreenComponent } from "./users/users-management-screen/users-management-screen.component";
 import { RacesScreenComponent } from "./races/races-screen/races-screen.component";
 
