@@ -7,19 +7,15 @@
     <p>E-mail: {{ user.email }}</p>
     <p>Name: {{ user.fullName }}</p>
     <div>
-      <a routerLink="/user/{{user.id}}/update">
-        Update user info
-      </a>
+      <button mat-flat-button color="primary" (click)="updateUser()">Update user info</button>
     </div>
   </div>
 </ng-container>
-<ng-container *ngIf="roles">
-<div *ngFor="let role of roles">
+<ng-container *ngIf="userRoles">
+<div *ngFor="let role of userRoles">
   <p>{{ role.role }}</p>
 </div>
 </ng-container>
 <div *ngIf="isActiveAdmin">
-  <a routerLink="/user/{{user.id}}/roles/update">
-    Update roles
-  </a>
+  <button mat-flat-button color="primary" (click)="updateRoles()">Update user roles</button>
 </div>

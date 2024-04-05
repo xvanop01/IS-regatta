@@ -14,8 +14,6 @@ export const routes: Routes = [
   {path: 'register', component: RegisterScreenComponent},
   {path: 'login', component: LoginScreenComponent},
   {path: 'user/:userId', component: UserScreenComponent},
-  {path: 'user/:userId/update', component: UserUpdateScreenComponent},
-  {path: 'user/:userId/roles/update', component: RolesUpdateScreenComponent},
   {path: 'users', component: UsersManagementScreenComponent},
   {path: 'races', component: RacesScreenComponent}
 ];

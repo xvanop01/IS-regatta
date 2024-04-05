@@ -1,9 +1,13 @@
-import { Component, OnInit } from "@angular/core";
+import {ChangeDetectorRef, Component, OnInit} from "@angular/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { LoggedUserService } from "../logged-user.service";
 import { UsersService } from "../users.service";
 import { NgFor, NgIf } from "@angular/common";
+import {MatButton} from "@angular/material/button";
+import {UserUpdateDialogComponent} from "../user-update-dialog/user-update-dialog.component";
+import {MatDialog} from "@angular/material/dialog";
+import {RolesUpdateDialogComponent} from "../roles-update-dialog/roles-update-dialog.component";
 
 @Component({
   selector: 'app-user',
@@ -13,22 +17,27 @@ import { NgFor, NgIf } from "@angular/common";
   imports: [
     NgFor,
     NgIf,
-    RouterLink
+    RouterLink,
+    MatButton
   ]
 })
 export class UserScreenComponent implements OnInit {
 
   public user: any;
 
-  public roles: any;
+  public userRoles: any;
+
+  public allRoles: any;
 
   public isActiveAdmin: boolean = false;
 
-  constructor(private route: ActivatedRoute,
-              private router: Router,
-              protected loggedUserService: LoggedUserService,
+  constructor(protected loggedUserService: LoggedUserService,
               protected usersService: UsersService,
-              private snackBar: MatSnackBar) {
+              private route: ActivatedRoute,
+              private router: Router,
+              private dialog: MatDialog,
+              private snackBar: MatSnackBar,
+              private cd: ChangeDetectorRef) {
 
   }
 
@@ -49,12 +58,19 @@ export class UserScreenComponent implements OnInit {
           this.usersService.getUserRoles(result.id).subscribe(
             result => {
               if (userId == null) {
-                this.roles = result.roles;
+                this.userRoles = result.roles;
               }
               for (let i = 0; i < result.roles.length; i++) {
                 if (result.roles.at(i)?.role == 'ADMIN') {
                   this.isActiveAdmin = true;
                 }
+              }
+              if (this.isActiveAdmin) {
+                this.usersService.getAllRoles().subscribe(result => {
+                  this.allRoles = result.roles;
+                }, error => {
+                  let snackBarRef = this.snackBar.open(error.status + ': ' + error.error, 'X');
+                });
               }
             },
             error => {
@@ -71,7 +87,7 @@ export class UserScreenComponent implements OnInit {
           this.user = result;
           this.usersService.getUserRoles(this.user.id).subscribe(
             result => {
-              this.roles = result.roles;
+              this.userRoles = result.roles;
             })
         },
         error => {
@@ -85,5 +101,27 @@ export class UserScreenComponent implements OnInit {
           }
         });
     }
+  }
+
+  public updateUser(): void {
+    const uuDialogRef = this.dialog.open(UserUpdateDialogComponent,
+      {data: this.user});
+    uuDialogRef.afterClosed().subscribe(result => {
+      this.user = result;
+      this.cd.detectChanges();
+    })
+  }
+
+  public updateRoles(): void {
+    const ruDialogRef = this.dialog.open(RolesUpdateDialogComponent,
+      {data: {
+          id: this.user.id,
+          allRoles: this.allRoles,
+          userRoles: this.userRoles
+        }});
+    ruDialogRef.afterClosed().subscribe(result => {
+      this.userRoles = result.roles;
+      this.cd.detectChanges();
+    })
   }
 }
