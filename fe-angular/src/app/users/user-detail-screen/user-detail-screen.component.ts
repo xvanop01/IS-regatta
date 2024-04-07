@@ -10,10 +10,10 @@ import {MatDialog} from "@angular/material/dialog";
 import {RolesUpdateDialogComponent} from "../roles-update-dialog/roles-update-dialog.component";
 
 @Component({
-  selector: 'app-user',
+  selector: 'app-user-detail',
   standalone: true,
-  templateUrl: './user-screen.component.html',
-  styleUrls: ['./user-screen.component.css'],
+  templateUrl: './user-detail-screen.component.html',
+  styleUrls: ['./user-detail-screen.component.css'],
   imports: [
     NgFor,
     NgIf,
@@ -21,7 +21,7 @@ import {RolesUpdateDialogComponent} from "../roles-update-dialog/roles-update-di
     MatButton
   ]
 })
-export class UserScreenComponent implements OnInit {
+export class UserDetailScreenComponent implements OnInit {
 
   public user: any;
 
