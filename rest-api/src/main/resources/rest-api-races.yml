@@ -12,26 +12,6 @@ servers:
 
 paths:
   /races:
-    get:
-      tags:
-        - race-controller
-      summary: Get all races
-      operationId: getAllRaces
-      responses:
-        200:
-          description: Races successfully retrieved
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RaceDetailListDto'
-        400:
-          description: Bad request
-        401:
-          description: Unauthorized
-        403:
-          description: Forbidden
-        500:
-          description: Internal server error
     post:
       tags:
         - race-controller
@@ -146,45 +126,6 @@ paths:
       responses:
         200:
           description: Race successfully opened for signing up
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RaceDetailDto'
-        400:
-          description: Bad request
-        401:
-          description: Unauthorized
-        403:
-          description: Forbidden
-        404:
-          description: Race not found
-        409:
-          description: Conflict
-        500:
-          description: Internal server error
-  /races/race/{raceId}/dates:
-    patch:
-      tags:
-        - race-controller
-      summary: Change race's dates
-      operationId: updateRaceDates
-      parameters:
-        - name: raceId
-          in: path
-          required: true
-          description: Race's ID
-          schema:
-            type: integer
-            format: int32
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/UpdateRaceDatesDto'
-      responses:
-        200:
-          description: Race's dates successfully updated
           content:
             application/json:
               schema:

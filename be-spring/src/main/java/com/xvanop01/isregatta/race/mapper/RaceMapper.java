@@ -20,15 +20,7 @@ public abstract class RaceMapper extends TableDataResponseMapper<Race, RaceDetai
     })
     public abstract RaceDetailDto map(Race race);
 
-    public abstract List<RaceDetailDto> map(List<Race> raceList);
-
     public abstract Race map(CreateRaceDto dto);
 
     public abstract Race map(UpdateRaceDto dto);
-
-    public RaceDetailListDto mapList(List<Race> raceList) {
-        RaceDetailListDto dto = new RaceDetailListDto();
-        dto.setRaces(map(raceList));
-        return dto;
-    }
 }

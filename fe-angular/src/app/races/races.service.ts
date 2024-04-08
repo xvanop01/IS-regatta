@@ -14,10 +14,6 @@ export class RacesService {
     this.apiUrl = 'http://localhost:8080/api/races'
   }
 
-  public getAllRaces(): Observable<RaceDetailListDto> {
-    return this.http.get<RaceDetailListDto>(`${this.apiUrl}`, {withCredentials: true});
-  }
-
   public createRace(createRaceDto: CreateRaceDto): Observable<RaceDetailDto> {
     return this.http.post<RaceDetailDto>(`${this.apiUrl}`, createRaceDto, {withCredentials: true});
   }
@@ -32,11 +28,5 @@ export class RacesService {
 
   public activateRace(raceId: number): Observable<RaceDetailDto> {
     return this.http.post<RaceDetailDto>(`${this.apiUrl}/race/${raceId}/open`, null, {withCredentials: true});
-  }
-
-  public updateRaceDates(raceId: number, updateRaceDatesDto: UpdateRaceDatesDto): Observable<RaceDetailDto> {
-    return this.http.patch<RaceDetailDto>(
-      `${this.apiUrl}/race/${raceId}/dates`, updateRaceDatesDto, {withCredentials: true}
-    );
   }
 }

@@ -59,13 +59,6 @@ public class RaceController implements RaceControllerApi {
     }
 
     @Override
-    public ResponseEntity<RaceDetailListDto> getAllRaces() {
-        log.info("getAllRaces");
-        List<Race> raceList = raceService.getAllRaces();
-        return ResponseEntity.ok(raceMapper.mapList(raceList));
-    }
-
-    @Override
     public ResponseEntity<RaceDetailDto> getRace(Integer raceId) {
         log.info("getRace");
         Race race;
@@ -84,19 +77,6 @@ public class RaceController implements RaceControllerApi {
         try {
             securityIsOrganizerAndHasRole(raceId, SecurityService.ROLE_ORGANIZER);
             race = raceService.updateRace(raceId, race);
-        } catch (HttpException e) {
-            return HttpExceptionHandler.resolve(e);
-        }
-        return ResponseEntity.ok(raceMapper.map(race));
-    }
-
-    @Override
-    public ResponseEntity<RaceDetailDto> updateRaceDates(Integer raceId, UpdateRaceDatesDto updateRaceDatesDto) {
-        log.info("updateRaceDates: raceId: {}, updateRaceDto: {}", raceId, updateRaceDatesDto);
-        Race race;
-        try {
-            securityIsOrganizerAndHasRole(raceId, SecurityService.ROLE_ORGANIZER);
-            race = raceService.changeDates(raceId, updateRaceDatesDto.getSignUpUntil(), updateRaceDatesDto.getDate());
         } catch (HttpException e) {
             return HttpExceptionHandler.resolve(e);
         }
