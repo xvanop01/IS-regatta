@@ -1,21 +1,26 @@
 <ng-container *ngIf="user">
-  <div>
-    User {{ user.username }}
+  <div class="detail-header-wrapper">
+    <h1>
+      User {{ user.username }}
+    </h1>
+    <ng-container *ngFor="let role of userRoles">
+      <p class="detail-header-info">{{ role.role }}</p>
+    </ng-container>
   </div>
-  <div>
-    <p>Username: {{ user.username }}</p>
-    <p>E-mail: {{ user.email }}</p>
-    <p>Name: {{ user.fullName }}</p>
-    <div>
+  <div class="detail-wrapper">
+    <div class="detail-text-wrapper">
+      <label>Name</label>
+      <p>{{ user.fullName }}</p>
+    </div>
+    <div class="detail-text-wrapper">
+      <label>E-mail</label>
+      <p>{{ user.email }}</p>
+    </div>
+    <div class="detail-button-wrapper">
+      <ng-container *ngIf="isActiveAdmin">
+        <button mat-flat-button color="primary" (click)="updateRoles()">Update user roles</button>
+      </ng-container>
       <button mat-flat-button color="primary" (click)="updateUser()">Update user info</button>
     </div>
   </div>
 </ng-container>
-<ng-container *ngIf="userRoles">
-<div *ngFor="let role of userRoles">
-  <p>{{ role.role }}</p>
-</div>
-</ng-container>
-<div *ngIf="isActiveAdmin">
-  <button mat-flat-button color="primary" (click)="updateRoles()">Update user roles</button>
-</div>
