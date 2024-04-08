@@ -9,10 +9,15 @@ import com.xvanop01.isregatta.race.model.Race;
 import org.mapstruct.Mapper;
 
 import java.util.List;
+import org.mapstruct.Mapping;
+import org.mapstruct.Mappings;
 
 @Mapper(componentModel = "spring")
 public abstract class RaceMapper extends TableDataResponseMapper<Race, RaceDetailDto> {
 
+    @Mappings({
+            @Mapping(target = "mainOrganizerId", source = "organizer.id")
+    })
     public abstract RaceDetailDto map(Race race);
 
     public abstract List<RaceDetailDto> map(List<Race> raceList);

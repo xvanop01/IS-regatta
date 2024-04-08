@@ -251,6 +251,9 @@ components:
           type: string
         isPublic:
           type: boolean
+        mainOrganizerId:
+          type: integer
+          format: int32
     RaceDetailListDto:
       properties:
         races:
