@@ -34,7 +34,8 @@ export class RacesCreateDialogComponent {
       location: data?.location,
       date: data?.date,
       signUpUntil: data?.signUpUntil,
-      description: data?.description
+      description: data?.description,
+      isPublic: data?.isPublic
     }).subscribe(result => {
       this.dialogRef.close(result);
     }, error => {

@@ -159,6 +159,8 @@ components:
           format: date
         description:
           type: string
+        isPublic:
+          type: boolean
     UpdateRaceDto:
       properties:
         name:

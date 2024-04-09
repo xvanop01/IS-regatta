@@ -4,6 +4,7 @@ export interface CreateRaceDto {
   date: string;
   signUpUntil: string;
   description: string;
+  isPublic: boolean;
 }
 
 export interface UpdateRaceDto {
