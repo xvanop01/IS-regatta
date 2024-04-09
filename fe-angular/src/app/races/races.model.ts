@@ -23,6 +23,7 @@ export interface RaceDetailDto {
   signUpUntil: string;
   description: string;
   isPublic: boolean;
+  mainOrganizerId: number;
 }
 
 export interface RaceDetailListDto {
