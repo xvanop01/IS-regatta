@@ -2,7 +2,7 @@ package com.xvanop01.isregatta.base.support.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.xvanop01.isregatta.api.base.TableDataServiceControllerApi;
+import com.xvanop01.isregatta.api.base.TableDataServiceApi;
 import com.xvanop01.isregatta.api.base.model.TableDataRequestDto;
 import com.xvanop01.isregatta.api.base.model.TableDataResponseDto;
 import com.xvanop01.isregatta.base.exception.HttpException;
@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 @Slf4j
 @RequestMapping("/api")
 @RequiredArgsConstructor
-public class TableDataServiceController implements TableDataServiceControllerApi {
+public class TableDataServiceController implements TableDataServiceApi {
 
     private final TableDataServiceProvider tableDataServiceProvider;
     private final TableDataMapper tableDataMapper;

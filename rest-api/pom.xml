@@ -4,22 +4,23 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.10</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <groupId>com.xvanop01</groupId>
+        <artifactId>isregatta</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
-    <groupId>com.xvanop01</groupId>
     <artifactId>isregatta-api</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <name>isregatta-api</name>
+    <description>IS Regatta OpenAPI project</description>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        <springfox-swagger2.version>3.0.0</springfox-swagger2.version>
+        <swagger-annotations.version>2.2.21</swagger-annotations.version>
         <jackson-databind-nullable.version>0.1.0</jackson-databind-nullable.version>
-        <openapi-generator-maven-plugin.version>4.3.1</openapi-generator-maven-plugin.version>
+        <openapi-generator-maven-plugin.version>7.4.0</openapi-generator-maven-plugin.version>
     </properties>
 
     <dependencies>
@@ -28,9 +29,9 @@
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
         <dependency>
-            <groupId>io.springfox</groupId>
-            <artifactId>springfox-swagger2</artifactId>
-            <version>${springfox-swagger2.version}</version>
+            <groupId>io.swagger.core.v3</groupId>
+            <artifactId>swagger-annotations</artifactId>
+            <version>${swagger-annotations.version}</version>
         </dependency>
         <dependency>
             <groupId>org.openapitools</groupId>
@@ -38,8 +39,8 @@
             <version>${jackson-databind-nullable.version}</version>
         </dependency>
         <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
         </dependency>
     </dependencies>
 
@@ -49,6 +50,11 @@
                 <groupId>org.openapitools</groupId>
                 <artifactId>openapi-generator-maven-plugin</artifactId>
                 <version>${openapi-generator-maven-plugin.version}</version>
+                <configuration>
+                    <configOptions>
+                        <useSpringBoot3>true</useSpringBoot3>
+                    </configOptions>
+                </configuration>
                 <executions>
                     <execution>
                         <id>base-module</id>
@@ -63,7 +69,7 @@
                             <modelPackage>com.xvanop01.isregatta.api.base.model</modelPackage>
                             <output>${project.build.directory}/generated-sources/spring/base</output>
                             <configOptions>
-                                <java8>true</java8>
+                                <useSpringBoot3>true</useSpringBoot3>
                                 <interfaceOnly>true</interfaceOnly>
                             </configOptions>
                             <typeMappings>
@@ -84,7 +90,7 @@
                             <modelPackage>com.xvanop01.isregatta.api.user.model</modelPackage>
                             <output>${project.build.directory}/generated-sources/spring/users</output>
                             <configOptions>
-                                <java8>true</java8>
+                                <useSpringBoot3>true</useSpringBoot3>
                                 <interfaceOnly>true</interfaceOnly>
                             </configOptions>
                             <typeMappings>
@@ -105,7 +111,7 @@
                             <modelPackage>com.xvanop01.isregatta.api.race.model</modelPackage>
                             <output>${project.build.directory}/generated-sources/spring/users</output>
                             <configOptions>
-                                <java8>true</java8>
+                                <useSpringBoot3>true</useSpringBoot3>
                                 <interfaceOnly>true</interfaceOnly>
                             </configOptions>
                             <typeMappings>

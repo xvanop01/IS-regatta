@@ -1,10 +1,10 @@
 package com.xvanop01.isregatta.user.controller;
 
+import com.xvanop01.isregatta.api.user.UsersApi;
 import com.xvanop01.isregatta.api.user.model.CreateUserDto;
 import com.xvanop01.isregatta.api.user.model.RoleListDto;
 import com.xvanop01.isregatta.api.user.model.UpdateUserDto;
 import com.xvanop01.isregatta.api.user.model.UserDetailDto;
-import com.xvanop01.isregatta.api.user.UserControllerApi;
 import com.xvanop01.isregatta.base.exception.HttpException;
 import com.xvanop01.isregatta.base.exception.HttpExceptionHandler;
 import com.xvanop01.isregatta.base.security.SecurityService;
@@ -26,7 +26,7 @@ import java.util.List;
 @Slf4j
 @RequestMapping("/api")
 @RequiredArgsConstructor
-public class UserController implements UserControllerApi {
+public class UserController implements UsersApi {
 
     private final UserService userService;
     private final RolePersistenceService rolePersistenceService;

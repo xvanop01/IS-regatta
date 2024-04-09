@@ -1,10 +1,8 @@
 package com.xvanop01.isregatta.race.controller;
 
-import com.xvanop01.isregatta.api.race.RaceControllerApi;
+import com.xvanop01.isregatta.api.race.RacesApi;
 import com.xvanop01.isregatta.api.race.model.CreateRaceDto;
 import com.xvanop01.isregatta.api.race.model.RaceDetailDto;
-import com.xvanop01.isregatta.api.race.model.RaceDetailListDto;
-import com.xvanop01.isregatta.api.race.model.UpdateRaceDatesDto;
 import com.xvanop01.isregatta.api.race.model.UpdateRaceDto;
 import com.xvanop01.isregatta.base.exception.HttpReturnCode;
 import com.xvanop01.isregatta.base.exception.HttpException;
@@ -20,13 +18,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-
 @RestController
 @Slf4j
 @RequestMapping("/api")
 @RequiredArgsConstructor
-public class RaceController implements RaceControllerApi {
+public class RaceController implements RacesApi {
 
     private final RaceService raceService;
     private final SecurityService securityService;
