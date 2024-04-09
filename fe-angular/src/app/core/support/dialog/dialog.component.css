@@ -5,6 +5,8 @@
 }
 
 .field-wrapper {
+  display: flex;
+  align-items: center;
   height: 56px;
 }
 

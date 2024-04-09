@@ -10,6 +10,7 @@ import {provideMomentDateAdapter} from "@angular/material-moment-adapter";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatSelectModule} from "@angular/material/select";
 import {MatIconModule} from "@angular/material/icon";
+import {MatCheckbox} from "@angular/material/checkbox";
 
 export const MONTH_FORMAT = {
   parse: {
@@ -42,7 +43,8 @@ export const MONTH_FORMAT = {
     FormsModule,
     ReactiveFormsModule,
     NgIf,
-    NgFor
+    NgFor,
+    MatCheckbox
   ]
 })
 export class DialogComponent {
@@ -78,6 +80,7 @@ export class DialogComponent {
         break;
       case DialogFieldType.STRING:
       case DialogFieldType.NUMBER:
+      case DialogFieldType.BOOLEAN:
       case DialogFieldType.PASSWORD:
       case DialogFieldType.DATE:
         field.fc.setValue(this.data[field.field]);
@@ -91,6 +94,7 @@ export class DialogComponent {
       switch (field.type) {
         case DialogFieldType.STRING:
         case DialogFieldType.NUMBER:
+        case DialogFieldType.BOOLEAN:
         case DialogFieldType.ENUM:
         case DialogFieldType.ENUM_MULTIPLE:
         case DialogFieldType.PASSWORD:

@@ -14,6 +14,7 @@ export interface DialogField {
 export enum DialogFieldType {
   STRING = 'text',
   NUMBER = 'number',
+  BOOLEAN = 'boolean',
   ENUM = 'enum',
   ENUM_MULTIPLE = 'enum_multiple',
   DATE = 'date',

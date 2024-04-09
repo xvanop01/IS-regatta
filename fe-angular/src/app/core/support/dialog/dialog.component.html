@@ -13,6 +13,13 @@
         </div>
       </ng-container>
 
+      <ng-container *ngIf="field.type === DialogFieldType.BOOLEAN">
+        <div class="field-wrapper">
+          <mat-checkbox color="primary" [formControl]="field.fc">{{field?.title}}</mat-checkbox>
+          <mat-error *ngIf="field.error != null">{{field.error}}</mat-error>
+        </div>
+      </ng-container>
+
       <ng-container *ngIf="field.type === DialogFieldType.ENUM || field.type === DialogFieldType.ENUM_MULTIPLE">
         <div class="field-wrapper">
           <mat-form-field>
