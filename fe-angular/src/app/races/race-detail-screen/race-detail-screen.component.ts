@@ -5,6 +5,8 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {MatButton} from "@angular/material/button";
 import {DatePipe, NgForOf, NgIf} from "@angular/common";
 import {LoggedUserService} from "../../users/logged-user.service";
+import {RacesCreateUpdateDialogComponent} from "../races-create-update-dialog/races-create-update-dialog.component";
+import {MatDialog} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-race-detail',
@@ -26,6 +28,7 @@ export class RaceDetailScreenComponent implements OnInit {
   constructor(private route: ActivatedRoute,
               private router: Router,
               private snackBar: MatSnackBar,
+              private dialog: MatDialog,
               private racesService: RacesService,
               private loggedUserService: LoggedUserService) {
   }
@@ -60,6 +63,12 @@ export class RaceDetailScreenComponent implements OnInit {
   }
 
   public updateRaceDetail(): void {
-    // TODO
+    const crDialogRef = this.dialog.open(RacesCreateUpdateDialogComponent,
+      {data: this.race});
+    crDialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.race = result;
+      }
+    });
   }
 }

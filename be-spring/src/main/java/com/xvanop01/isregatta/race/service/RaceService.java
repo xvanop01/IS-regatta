@@ -11,9 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDate;
-import java.util.List;
-
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -47,11 +44,6 @@ public class RaceService {
         throw new HttpException(HttpReturnCode.NOT_FOUND, "Race not found by id: " + raceId);
     }
 
-    public List<Race> getAllRaces() {
-        log.info("getAllRaces");
-        return racePersistenceService.findAll();
-    }
-
     @Transactional(rollbackFor = HttpException.class)
     public Race updateRace(Integer raceId, Race updateRace) throws HttpException {
         log.info("updateRace: raceId: {}, updateRace: {}", raceId, updateRace);
@@ -61,9 +53,6 @@ public class RaceService {
         Race race = racePersistenceService.findById(raceId);
         if (race == null) {
             throw new HttpException(HttpReturnCode.NOT_FOUND, "Race not found by id: " + raceId);
-        }
-        if (race.getIsPublic()) {
-            throw new HttpException(HttpReturnCode.CONFLICT, "Race with id " + raceId + " can't be updated.");
         }
         if (updateRace.getName() != null && !updateRace.getName().isEmpty()) {
             race.setName(updateRace.getName());
@@ -80,38 +69,8 @@ public class RaceService {
         if (updateRace.getDescription() != null && !updateRace.getDescription().isEmpty()) {
             race.setDescription(updateRace.getDescription());
         }
-        return racePersistenceService.persist(race);
-    }
-
-    @Transactional(rollbackFor = HttpException.class)
-    public Race openRaceForSignUp(Integer raceId) throws HttpException {
-        log.info("openRaceForSignUp: {}", raceId);
-        Race race = raceId == null ? null : racePersistenceService.findById(raceId);
-        if (race == null) {
-            throw new HttpException(HttpReturnCode.NOT_FOUND, "Race not found by id: " + raceId);
-        }
-        if (race.getIsPublic()) {
-            throw new HttpException(HttpReturnCode.CONFLICT, "Race was already opened.");
-        }
-        race.setIsPublic(true);
-        return racePersistenceService.persist(race);
-    }
-
-    @Transactional(rollbackFor = HttpException.class)
-    public Race changeDates(Integer raceId, LocalDate signUpUntil, LocalDate raceDate) throws HttpException {
-        log.info("changeDates: raceId: {}, signUpUntil: {}, raceDate: {}", raceId, signUpUntil, raceDate);
-        Race race = raceId == null ? null : racePersistenceService.findById(raceId);
-        if (race == null) {
-            throw new HttpException(HttpReturnCode.NOT_FOUND, "Race not found by id: " + raceId);
-        }
-        if (!race.getIsPublic()) {
-            throw new HttpException(HttpReturnCode.CONFLICT, "Race wasn't opened for registration.");
-        }
-        if (signUpUntil != null) {
-            race.setSignUpUntil(signUpUntil);
-        }
-        if (raceDate != null) {
-            race.setDate(raceDate);
+        if (updateRace.getIsPublic() != null) {
+            race.setIsPublic(updateRace.getIsPublic());
         }
         return racePersistenceService.persist(race);
     }

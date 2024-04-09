@@ -1,7 +1,10 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
-import { CreateRaceDto, RaceDetailDto, RaceDetailListDto, UpdateRaceDatesDto, UpdateRaceDto } from "./races.model";
+import {
+  CreateUdateRaceDto,
+  RaceDetailDto
+} from "./races.model";
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +17,7 @@ export class RacesService {
     this.apiUrl = 'http://localhost:8080/api/races'
   }
 
-  public createRace(createRaceDto: CreateRaceDto): Observable<RaceDetailDto> {
+  public createRace(createRaceDto: CreateUdateRaceDto): Observable<RaceDetailDto> {
     return this.http.post<RaceDetailDto>(`${this.apiUrl}`, createRaceDto, {withCredentials: true});
   }
 
@@ -22,11 +25,7 @@ export class RacesService {
     return this.http.get<RaceDetailDto>(`${this.apiUrl}/race/${raceId}`, {withCredentials: true});
   }
 
-  public updateRace(raceId: number, updateRaceDto: UpdateRaceDto): Observable<RaceDetailDto> {
+  public updateRace(raceId: number, updateRaceDto: CreateUdateRaceDto): Observable<RaceDetailDto> {
     return this.http.patch<RaceDetailDto>(`${this.apiUrl}/race/${raceId}`, updateRaceDto, {withCredentials: true});
-  }
-
-  public activateRace(raceId: number): Observable<RaceDetailDto> {
-    return this.http.post<RaceDetailDto>(`${this.apiUrl}/race/${raceId}/open`, null, {withCredentials: true});
   }
 }

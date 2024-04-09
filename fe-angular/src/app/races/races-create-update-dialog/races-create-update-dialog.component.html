@@ -1,4 +1,4 @@
-<app-dialog [title]="'Create race'" (submitButtonClick)="onSubmitButtonClick($event)">
+<app-dialog [title]="'Create race'" [data]="data" (submitButtonClick)="onSubmitButtonClick($event)">
   <app-dialog-field [field]="'name'" [title]="'Name'" [type]="DialogFieldType.STRING" [required]="true"></app-dialog-field>
   <app-dialog-field [field]="'location'" [title]="'Location'" [type]="DialogFieldType.STRING"></app-dialog-field>
   <app-dialog-field [field]="'date'" [title]="'Race date'" [type]="DialogFieldType.DATE" [required]="true"></app-dialog-field>

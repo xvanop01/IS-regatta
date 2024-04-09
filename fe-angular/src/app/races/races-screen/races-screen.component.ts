@@ -9,7 +9,7 @@ import {MatButton, MatButtonModule} from "@angular/material/button";
 import {TableSearchDirective} from "../../core/support/table/table-search.directive";
 import {SearchType} from "../../core/support/table/table.model";
 import {MatDialog, MatDialogModule} from "@angular/material/dialog";
-import {RacesCreateDialogComponent} from "../races-create-dialog/races-create-dialog.component";
+import {RacesCreateUpdateDialogComponent} from "../races-create-update-dialog/races-create-update-dialog.component";
 
 @Component({
   selector: 'app-races',
@@ -69,11 +69,11 @@ export class RacesScreenComponent implements OnInit {
   }
 
   createRace(): void {
-    const crDialogRef = this.dialog.open(RacesCreateDialogComponent);
+    const crDialogRef = this.dialog.open(RacesCreateUpdateDialogComponent);
     crDialogRef.afterClosed().subscribe(result => {
       if (this.racesTableComponent) {
         this.racesTableComponent.tableDataRefresh();
       }
-    })
+    });
   }
 }

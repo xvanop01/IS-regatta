@@ -22,7 +22,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreateRaceDto'
+              $ref: '#/components/schemas/CreateUpdateRaceDto'
       responses:
         201:
           description: Race successfully created
@@ -89,7 +89,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/UpdateRaceDto'
+              $ref: '#/components/schemas/CreateUpdateRaceDto'
       responses:
         200:
           description: Race's info updated
@@ -109,43 +109,10 @@ paths:
           description: Conflict
         500:
           description: Internal server error
-  /races/race/{raceId}/open:
-    post:
-      tags:
-        - race-controller
-      summary: Open race for signing up
-      operationId: activateRace
-      parameters:
-        - name: raceId
-          in: path
-          required: true
-          description: Race's ID
-          schema:
-            type: integer
-            format: int32
-      responses:
-        200:
-          description: Race successfully opened for signing up
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/RaceDetailDto'
-        400:
-          description: Bad request
-        401:
-          description: Unauthorized
-        403:
-          description: Forbidden
-        404:
-          description: Race not found
-        409:
-          description: Conflict
-        500:
-          description: Internal server error
 
 components:
   schemas:
-    CreateRaceDto:
+    CreateUpdateRaceDto:
       properties:
         name:
           type: string
@@ -161,20 +128,6 @@ components:
           type: string
         isPublic:
           type: boolean
-    UpdateRaceDto:
-      properties:
-        name:
-          type: string
-        location:
-          type: string
-        date:
-          type: string
-          format: date
-        signUpUntil:
-          type: string
-          format: date
-        description:
-          type: string
     RaceDetailDto:
       properties:
         id:

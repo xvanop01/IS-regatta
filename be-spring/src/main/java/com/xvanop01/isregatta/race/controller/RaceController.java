@@ -1,9 +1,8 @@
 package com.xvanop01.isregatta.race.controller;
 
 import com.xvanop01.isregatta.api.race.RacesApi;
-import com.xvanop01.isregatta.api.race.model.CreateRaceDto;
+import com.xvanop01.isregatta.api.race.model.CreateUpdateRaceDto;
 import com.xvanop01.isregatta.api.race.model.RaceDetailDto;
-import com.xvanop01.isregatta.api.race.model.UpdateRaceDto;
 import com.xvanop01.isregatta.base.exception.HttpReturnCode;
 import com.xvanop01.isregatta.base.exception.HttpException;
 import com.xvanop01.isregatta.base.exception.HttpExceptionHandler;
@@ -29,20 +28,7 @@ public class RaceController implements RacesApi {
     private final RaceMapper raceMapper;
 
     @Override
-    public ResponseEntity<RaceDetailDto> activateRace(Integer raceId) {
-        log.info("activateRace: {}", raceId);
-        Race race;
-        try {
-            securityIsOrganizerAndHasRole(raceId, SecurityService.ROLE_ORGANIZER);
-            race = raceService.openRaceForSignUp(raceId);
-        } catch (HttpException e) {
-            return HttpExceptionHandler.resolve(e);
-        }
-        return ResponseEntity.ok(raceMapper.map(race));
-    }
-
-    @Override
-    public ResponseEntity<RaceDetailDto> createRace(CreateRaceDto createRaceDto) {
+    public ResponseEntity<RaceDetailDto> createRace(CreateUpdateRaceDto createRaceDto) {
         log.info("createRace: {}", createRaceDto);
         Race race = raceMapper.map(createRaceDto);
         try {
@@ -67,7 +53,7 @@ public class RaceController implements RacesApi {
     }
 
     @Override
-    public ResponseEntity<RaceDetailDto> updateRace(Integer raceId, UpdateRaceDto updateRaceDto) {
+    public ResponseEntity<RaceDetailDto> updateRace(Integer raceId, CreateUpdateRaceDto updateRaceDto) {
         log.info("updateRace: raceId: {}, updateRaceDto: {}", raceId, updateRaceDto);
         Race race = raceMapper.map(updateRaceDto);
         try {
