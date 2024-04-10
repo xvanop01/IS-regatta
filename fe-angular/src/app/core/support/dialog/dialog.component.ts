@@ -93,18 +93,20 @@ export class DialogComponent {
 
   public onSubmitButtonClick(): void {
     for (const field of this.fields) {
-      switch (field.type) {
-        case DialogFieldType.STRING:
-        case DialogFieldType.NUMBER:
-        case DialogFieldType.BOOLEAN:
-        case DialogFieldType.ENUM:
-        case DialogFieldType.ENUM_MULTIPLE:
-        case DialogFieldType.PASSWORD:
-          this.data[field.field] = field.fc.value;
-          break;
-        case DialogFieldType.DATE:
-          this.data[field.field] = this.datePipe.transform(field.fc.value, 'YYYY-MM-dd');
-          break;
+      if (this.data[field.field]) {
+        switch (field.type) {
+          case DialogFieldType.STRING:
+          case DialogFieldType.NUMBER:
+          case DialogFieldType.BOOLEAN:
+          case DialogFieldType.ENUM:
+          case DialogFieldType.ENUM_MULTIPLE:
+          case DialogFieldType.PASSWORD:
+            this.data[field.field] = field.fc.value;
+            break;
+          case DialogFieldType.DATE:
+            this.data[field.field] = this.datePipe.transform(field.fc.value, 'YYYY-MM-dd');
+            break;
+        }
       }
     }
     this.submitButtonClick.emit(this.data);
