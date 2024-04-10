@@ -8,8 +8,8 @@
           <mat-form-field>
             <mat-label>{{field?.title}}</mat-label>
             <input type="{{field?.type}}" matInput [formControl]="field.fc" [required]="field.required" (blur)="validateField(field)">
+            <mat-error *ngIf="field.error != null">{{field.error}}</mat-error>
           </mat-form-field>
-          <mat-error *ngIf="field.error != null">{{field.error}}</mat-error>
         </div>
       </ng-container>
 
@@ -29,8 +29,8 @@
                 <mat-option [value]="e.value">{{e.title}}</mat-option>
               </ng-container>
             </mat-select>
+            <mat-error *ngIf="field.error != null">{{field.error}}</mat-error>
           </mat-form-field>
-          <mat-error *ngIf="field.error != null">{{field.error}}</mat-error>
         </div>
       </ng-container>
 
@@ -42,8 +42,8 @@
             <mat-hint *ngIf="field.error === null">DD.MM.YYYY</mat-hint>
             <mat-datepicker-toggle matIconSuffix [for]="datepicker"></mat-datepicker-toggle>
             <mat-datepicker #datepicker (closed)="validateField(field)"></mat-datepicker>
+            <mat-error *ngIf="field.error != null">{{field.error}}</mat-error>
           </mat-form-field>
-          <mat-error *ngIf="field.error != null">{{field.error}}</mat-error>
         </div>
       </ng-container>
 

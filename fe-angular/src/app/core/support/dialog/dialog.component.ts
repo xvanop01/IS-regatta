@@ -67,24 +67,26 @@ export class DialogComponent {
   }
 
   public addField(field: DialogField): void {
-    switch (field.type) {
-      case DialogFieldType.ENUM:
-        field.fc.setValue(this.data[field.field]?.value);
-        break;
-      case DialogFieldType.ENUM_MULTIPLE:
-        let enums = [];
-        for (const e of this.data[field.field]) {
-          enums.push(e.value);
-        }
-        field.fc.setValue(enums);
-        break;
-      case DialogFieldType.STRING:
-      case DialogFieldType.NUMBER:
-      case DialogFieldType.BOOLEAN:
-      case DialogFieldType.PASSWORD:
-      case DialogFieldType.DATE:
-        field.fc.setValue(this.data[field.field]);
-        break;
+    if (this.data != null) {
+      switch (field.type) {
+        case DialogFieldType.ENUM:
+          field.fc.setValue(this.data[field.field]?.value);
+          break;
+        case DialogFieldType.ENUM_MULTIPLE:
+          let enums = [];
+          for (const e of this.data[field.field]) {
+            enums.push(e.value);
+          }
+          field.fc.setValue(enums);
+          break;
+        case DialogFieldType.STRING:
+        case DialogFieldType.NUMBER:
+        case DialogFieldType.BOOLEAN:
+        case DialogFieldType.PASSWORD:
+        case DialogFieldType.DATE:
+          field.fc.setValue(this.data[field.field]);
+          break;
+      }
     }
     this.fields.push(field);
   }
@@ -109,7 +111,7 @@ export class DialogComponent {
   }
 
   public validateField(field: DialogField): void {
-    if (field.required && field.fc.value === null) {
+    if (field.required && (field.fc.value === null || field.fc.value === '')) {
       field.error = 'Field is required';
     } else {
       field.error = null;
@@ -118,7 +120,7 @@ export class DialogComponent {
 
   public isFieldInvalid(): boolean {
     for (const field of this.fields) {
-      if (field.required && field.fc.value === null) {
+      if (field.required && (field.fc.value === null || field.fc.value === '')) {
         return true;
       }
     }
