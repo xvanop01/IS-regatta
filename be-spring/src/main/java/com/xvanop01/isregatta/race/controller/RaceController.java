@@ -3,7 +3,6 @@ package com.xvanop01.isregatta.race.controller;
 import com.xvanop01.isregatta.api.race.RacesApi;
 import com.xvanop01.isregatta.api.race.model.CreateUpdateRaceDto;
 import com.xvanop01.isregatta.api.race.model.RaceDetailDto;
-import com.xvanop01.isregatta.base.exception.HttpReturnCode;
 import com.xvanop01.isregatta.base.exception.HttpException;
 import com.xvanop01.isregatta.base.exception.HttpExceptionHandler;
 import com.xvanop01.isregatta.base.security.PrincipalService;
@@ -32,7 +31,7 @@ public class RaceController implements RacesApi {
         log.info("createRace: {}", createRaceDto);
         Race race = raceMapper.map(createRaceDto);
         try {
-            securityService.hasRole(SecurityService.ROLE_ORGANIZER);
+            securityService.hasAnyRole(SecurityService.ROLE_ADMIN, SecurityService.ROLE_ORGANIZER);
             race = raceService.createRace(race);
         } catch (HttpException e) {
             return HttpExceptionHandler.resolve(e);
@@ -57,7 +56,7 @@ public class RaceController implements RacesApi {
         log.info("updateRace: raceId: {}, updateRaceDto: {}", raceId, updateRaceDto);
         Race race = raceMapper.map(updateRaceDto);
         try {
-            securityIsOrganizerAndHasRole(raceId, SecurityService.ROLE_ORGANIZER);
+            securityIsMainOrganizerOrAdmin(raceId);
             race = raceService.updateRace(raceId, race);
         } catch (HttpException e) {
             return HttpExceptionHandler.resolve(e);
@@ -65,11 +64,12 @@ public class RaceController implements RacesApi {
         return ResponseEntity.ok(raceMapper.map(race));
     }
 
-    private void securityIsOrganizerAndHasRole(Integer raceId, String role) throws HttpException {
-        log.info("securityIsOrganizerAndHasRole: raceId: {}, role: {}", raceId, role);
-        securityService.hasRole(role);
-        if (!raceService.isMainOrganizer(raceId, PrincipalService.getPrincipalId())) {
-            throw new HttpException(HttpReturnCode.FORBIDDEN, "User is not main organizer of the race.");
+    private void securityIsMainOrganizerOrAdmin(Integer raceId) throws HttpException {
+        log.info("securityIsMainOrganizerOrAdmin: raceId: {}", raceId);
+        Race race = raceService.getRaceById(raceId);
+        if (race.getOrganizer().getId().equals(PrincipalService.getPrincipalId())) {
+            return;
         }
+        securityService.hasRole(SecurityService.ROLE_ADMIN);
     }
 }
