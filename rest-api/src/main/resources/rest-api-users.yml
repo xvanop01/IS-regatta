@@ -11,35 +11,6 @@ servers:
         default: 'http://localhost:8080'
 
 paths:
-  /users:
-    post:
-      tags:
-        - user-controller
-      summary: Create new user
-      operationId: createUser
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateUserDto'
-      responses:
-        201:
-          description: User successfully created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserDetailDto'
-        400:
-          description: Bad request
-        401:
-          description: Unauthorized
-        403:
-          description: Forbidden
-        409:
-          description: Conflict
-        500:
-          description: Internal server error
   /users/user/{userId}:
     get:
       tags:
@@ -204,12 +175,6 @@ paths:
 
 components:
   schemas:
-    CreateUserDto:
-      properties:
-        username:
-          type: string
-        password:
-          type: string
     UpdateUserDto:
       properties:
         username:

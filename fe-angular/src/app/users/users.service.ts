@@ -2,7 +2,6 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import {
-  CreateUserDto,
   RoleListDto,
   UpdateUserDto,
   UserDetailDto
@@ -21,10 +20,6 @@ export class UsersService {
 
   public register(credentials: any): Observable<UserDetailDto> {
     return this.http.post<UserDetailDto>(`http://localhost:8080/register`, credentials, {headers: {'Content-Type': 'application/x-www-form-urlencoded'}});
-  }
-
-  public createUser(createUserDto: CreateUserDto): Observable<UserDetailDto> {
-    return this.http.post<UserDetailDto>(`${this.apiUrl}`, createUserDto, {withCredentials: true});
   }
 
   public getUser(userId: number): Observable<UserDetailDto> {
