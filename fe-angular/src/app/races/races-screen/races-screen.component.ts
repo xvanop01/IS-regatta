@@ -5,11 +5,11 @@ import { LoggedUserService } from "../../users/logged-user.service";
 import { TableComponent } from "../../core/support/table/table.component";
 import { TableColumnDirective } from "../../core/support/table/table-column.directive";
 import {NgFor, NgIf} from "@angular/common";
-import {MatButton, MatButtonModule} from "@angular/material/button";
+import {MatButtonModule} from "@angular/material/button";
 import {TableSearchDirective} from "../../core/support/table/table-search.directive";
-import {SearchType} from "../../core/support/table/table.model";
 import {MatDialog, MatDialogModule} from "@angular/material/dialog";
 import {RacesCreateUpdateDialogComponent} from "../races-create-update-dialog/races-create-update-dialog.component";
+import {RacesTableComponent} from "../races-table/races-table.component";
 
 @Component({
   selector: 'app-races',
@@ -22,19 +22,17 @@ import {RacesCreateUpdateDialogComponent} from "../races-create-update-dialog/ra
     NgFor,
     RouterLink,
     MatButtonModule,
-    MatButton,
     TableSearchDirective,
     MatDialogModule,
-    NgIf
+    NgIf,
+    RacesTableComponent
   ]
 })
 export class RacesScreenComponent implements OnInit {
 
-  @ViewChild('racesTable') racesTableComponent?: TableComponent;
+  @ViewChild('racesTable') racesTableComponent?: RacesTableComponent;
 
   protected isOrganizer: boolean = false;
-
-  protected readonly SearchType = SearchType;
 
   protected readonly detail = 'DETAIL';
 
@@ -71,8 +69,8 @@ export class RacesScreenComponent implements OnInit {
   createRace(): void {
     const crDialogRef = this.dialog.open(RacesCreateUpdateDialogComponent);
     crDialogRef.afterClosed().subscribe(result => {
-      if (this.racesTableComponent) {
-        this.racesTableComponent.tableDataRefresh();
+      if (this.racesTableComponent && this.racesTableComponent.table) {
+        this.racesTableComponent.table.tableDataRefresh();
       }
     });
   }

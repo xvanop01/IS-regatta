@@ -1,0 +1,14 @@
+<div class="table-wrapper">
+  <app-table #table [serviceName]="'race-table'" (onButtonClick)="buttonClicked($event)">
+    <app-table-search [title]="'Name'" [column]="'name'"></app-table-search>
+    <app-table-search [title]="'Race date'" [column]="'date'" [type]="SearchType.MONTH"></app-table-search>
+
+    <app-table-column [title]="'Id'" [field]="'id'" [width]="50"></app-table-column>
+    <app-table-column [title]="'Name'" [field]="'name'"></app-table-column>
+    <app-table-column [title]="'Location'" [field]="'location'"></app-table-column>
+    <app-table-column [title]="'Race date'" [field]="'date'"></app-table-column>
+    <app-table-column [title]="'Sign up until'" [field]="'signUpUntil'"></app-table-column>
+
+    <app-table-column [field]="detail" [icon]="'fas fa-angle-right'" [isButton]="true"></app-table-column>
+  </app-table>
+</div>
