@@ -54,6 +54,9 @@ export class TableComponent implements OnInit {
   @Input()
   public serviceName: string = "";
 
+  @Input()
+  public staticFilters: Array<any> = [];
+
   @Output()
   public onButtonClick = new EventEmitter();
 
@@ -91,6 +94,7 @@ export class TableComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.filters = this.staticFilters;
     this.tableDataRefresh();
   }
 
@@ -120,7 +124,7 @@ export class TableComponent implements OnInit {
   }
 
   public doFilter() {
-    this.filters = [];
+    this.filters = this.staticFilters;
     for (const search of this.searchColumns) {
       if (search.fc.value != '') {
         const filter = {
