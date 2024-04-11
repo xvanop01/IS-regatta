@@ -34,8 +34,6 @@ export class RacesScreenComponent implements OnInit {
 
   protected isOrganizer: boolean = false;
 
-  protected readonly detail = 'DETAIL';
-
   constructor(private dialog: MatDialog,
               private router: Router,
               private racesService: RacesService,
@@ -56,14 +54,6 @@ export class RacesScreenComponent implements OnInit {
         }
       }
     )
-  }
-
-  buttonClicked(data: any) {
-    switch (data?.action) {
-      case this.detail:
-        this.router.navigate(['/race', data?.rowData?.id]);
-        break;
-    }
   }
 
   createRace(): void {

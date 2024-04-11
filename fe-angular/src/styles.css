@@ -43,7 +43,7 @@ h1 {
 
 .table-wrapper {
   position: absolute;
-  top: 53px;
+  top: 0;
   bottom: 0;
   width: 100%;
 }
@@ -99,4 +99,15 @@ a, a:visited {
 
 .detail-text-wrapper p {
   margin: 0;
+}
+
+mat-tab-group {
+  position: absolute;
+  top: 107px;
+  bottom: 0;
+  width: 100%;
+}
+
+.mat-mdc-tab-body-wrapper {
+  height: 100%;
 }

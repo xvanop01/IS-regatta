@@ -1,5 +1,5 @@
 <div class="table-wrapper">
-  <app-table #table [serviceName]="'race-table'" (onButtonClick)="buttonClicked($event)">
+  <app-table #table [serviceName]="'race-table'" [staticFilters]="staticFilters" (onButtonClick)="buttonClicked($event)">
     <app-table-search [title]="'Name'" [column]="'name'"></app-table-search>
     <app-table-search [title]="'Race date'" [column]="'date'" [type]="SearchType.MONTH"></app-table-search>
 

@@ -1,4 +1,4 @@
-import {Component, ViewChild} from "@angular/core";
+import {Component, Input, ViewChild} from "@angular/core";
 import { Router, RouterLink } from "@angular/router";
 import { TableComponent } from "../../core/support/table/table.component";
 import { TableColumnDirective } from "../../core/support/table/table-column.directive";
@@ -27,6 +27,9 @@ import {MatDialog, MatDialogModule} from "@angular/material/dialog";
 export class RacesTableComponent {
 
   @ViewChild('table') table?: TableComponent;
+
+  @Input()
+  public staticFilters: Array<any> = [];
 
   protected readonly SearchType = SearchType;
 

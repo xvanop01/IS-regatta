@@ -7,4 +7,6 @@ public class RaceTableDataFilter {
     public String name;
 
     public LocalDate date;
+
+    public Integer userId;
 }

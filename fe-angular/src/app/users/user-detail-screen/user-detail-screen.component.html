@@ -7,6 +7,7 @@
       <p class="detail-header-info">{{ role.role }}</p>
     </ng-container>
   </div>
+
   <div class="detail-wrapper">
     <div class="detail-text-wrapper">
       <label>Name</label>
@@ -23,4 +24,12 @@
       <button mat-flat-button color="primary" (click)="updateUser()">Update user info</button>
     </div>
   </div>
+
+  <mat-tab-group animationDuration="0ms">
+    <mat-tab label="Participated in races">
+      <ng-template matTabContent>
+        <app-races-table [staticFilters]="filters"></app-races-table>
+      </ng-template>
+    </mat-tab>
+  </mat-tab-group>
 </ng-container>

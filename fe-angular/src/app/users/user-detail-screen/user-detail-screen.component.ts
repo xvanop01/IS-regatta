@@ -8,6 +8,9 @@ import {MatButton} from "@angular/material/button";
 import {UserUpdateDialogComponent} from "../user-update-dialog/user-update-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
 import {RolesUpdateDialogComponent} from "../roles-update-dialog/roles-update-dialog.component";
+import {MatTabsModule} from "@angular/material/tabs";
+import {RacesTableComponent} from "../../races/races-table/races-table.component";
+import {SearchType} from "../../core/support/table/table.model";
 
 @Component({
   selector: 'app-user-detail',
@@ -18,7 +21,9 @@ import {RolesUpdateDialogComponent} from "../roles-update-dialog/roles-update-di
     NgFor,
     NgIf,
     RouterLink,
-    MatButton
+    MatButton,
+    MatTabsModule,
+    RacesTableComponent
   ]
 })
 export class UserDetailScreenComponent implements OnInit {
@@ -30,6 +35,8 @@ export class UserDetailScreenComponent implements OnInit {
   public allRoles: any;
 
   public isActiveAdmin: boolean = false;
+
+  public filters: Array<any> = [];
 
   constructor(protected loggedUserService: LoggedUserService,
               protected usersService: UsersService,
@@ -54,6 +61,13 @@ export class UserDetailScreenComponent implements OnInit {
         } else {
           if (userId == null) {
             this.user = result;
+            this.filters.push({
+              title: '',
+              column: 'userId',
+              type: SearchType.STRING,
+              value: result.id
+            });
+            this.cd.detectChanges();
           }
           this.usersService.getUserRoles(result.id).subscribe(
             result => {
@@ -82,6 +96,13 @@ export class UserDetailScreenComponent implements OnInit {
         let snackBarRef = this.snackBar.open(error.status + ': ' + error.error, 'X');
       });
     if (userId != null) {
+      this.filters.push({
+        title: '',
+        column: 'userId',
+        type: SearchType.STRING,
+        value: userId
+      });
+      this.cd.detectChanges();
       this.usersService.getUser(Number(userId)).subscribe(
         result => {
           this.user = result;
