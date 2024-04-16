@@ -16,6 +16,7 @@ export interface RaceDetailDto {
   description: string;
   isPublic: boolean;
   mainOrganizerId: number;
+  mainOrganizerName: string;
 }
 
 export interface RaceUserInfoDto {

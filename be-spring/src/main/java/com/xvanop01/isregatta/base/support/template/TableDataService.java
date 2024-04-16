@@ -77,4 +77,8 @@ public abstract class TableDataService<E, R extends JpaRepository<E, ?> & JpaSpe
             this.specification = this.specification.and(spec);
         }
     }
+
+    protected Specification<E> getSpecification() {
+        return this.specification;
+    }
 }

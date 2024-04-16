@@ -10,6 +10,8 @@ import com.xvanop01.isregatta.race.repository.RaceRepository;
 import com.xvanop01.isregatta.race.tableDataService.filter.RaceTableDataFilter;
 import java.time.temporal.TemporalAdjusters;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 @Slf4j
 @TableData("race-table")
@@ -21,7 +23,7 @@ public class RaceTableDataService
     }
 
     @Override
-    public void doFilter(Object filter) {
+    protected void doFilter(Object filter) {
         if (filter instanceof RaceTableDataFilter f) {
             if (f.name != null && !f.name.isEmpty()) {
                 String searchFormatted = "%" + f.name.toLowerCase() + "%";
@@ -38,5 +40,15 @@ public class RaceTableDataService
                 );
             }
         }
+    }
+
+    @Override
+    protected Page<Race> fetch(Pageable pageable, Object filter) {
+        if (filter instanceof RaceTableDataFilter f) {
+            if (f.userId != null) {
+                return repository.findByUserId(f.userId, getSpecification(), pageable);
+            }
+        }
+        return super.fetch(pageable, filter);
     }
 }

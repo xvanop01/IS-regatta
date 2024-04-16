@@ -15,7 +15,8 @@ import org.mapstruct.Mappings;
 public abstract class RaceMapper extends TableDataResponseMapper<Race, RaceDetailDto> {
 
     @Mappings({
-            @Mapping(target = "mainOrganizerId", source = "organizer.id")
+            @Mapping(target = "mainOrganizerId", source = "organizer.id"),
+            @Mapping(target = "mainOrganizerName", source = "organizer.fullName")
     })
     public abstract RaceDetailDto map(Race race);
 

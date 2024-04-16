@@ -238,6 +238,8 @@ components:
         mainOrganizerId:
           type: integer
           format: int32
+        mainOrganizerName:
+          type: string
     RaceDetailListDto:
       properties:
         races:
