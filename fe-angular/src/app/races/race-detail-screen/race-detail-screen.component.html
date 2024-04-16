@@ -32,9 +32,12 @@
         <button mat-flat-button color="primary" (click)="updateRaceDetail()">Update race detail</button>
       </ng-container>
       <ng-container *ngIf="race.mainOrganizerId !== userId && isOpenForRegistration">
-        <ng-container *ngIf="signedInfo == null">
+        <ng-container *ngIf="signedInfo == null; else signed">
           <button mat-flat-button color="primary" (click)="signUpForRace()">Sign up for race</button>
         </ng-container>
+        <ng-template #signed>
+          <button mat-flat-button color="primary" (click)="cancelRegistration()">Cancel registration</button>
+        </ng-template>
       </ng-container>
     </div>
   </div>

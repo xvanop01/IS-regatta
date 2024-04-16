@@ -30,6 +30,13 @@ public class RaceController implements RacesApi {
     private final RaceMapper raceMapper;
 
     @Override
+    public ResponseEntity<Void> cancelRegistration(Integer raceId) {
+        log.info("cancelRegistration: {}", raceId);
+        raceService.cancelActive(raceId);
+        return ResponseEntity.ok().build();
+    }
+
+    @Override
     public ResponseEntity<RaceDetailDto> createRace(CreateUpdateRaceDto createRaceDto) {
         log.info("createRace: {}", createRaceDto);
         Race race = raceMapper.map(createRaceDto);

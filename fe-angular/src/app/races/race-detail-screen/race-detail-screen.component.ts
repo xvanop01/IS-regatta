@@ -29,6 +29,8 @@ export class RaceDetailScreenComponent implements OnInit {
   public canDoChanges: boolean = false;
   public isOpenForRegistration: boolean = false;
 
+  protected readonly RaceUserStatus = RaceUserStatus;
+
   constructor(private route: ActivatedRoute,
               private router: Router,
               private snackBar: MatSnackBar,
@@ -89,8 +91,14 @@ export class RaceDetailScreenComponent implements OnInit {
       this.signedInfo = signedInfo;
     }, error => {
       let snackBarRef = this.snackBar.open(error.status + ': ' + error.error, 'X');
-    })
+    });
   }
 
-  protected readonly RaceUserStatus = RaceUserStatus;
+  public cancelRegistration(): void {
+    this.racesService.cancelRegistration(this.race.id).subscribe(result => {
+      this.signedInfo = null;
+    }, error => {
+      let snackBarRef = this.snackBar.open(error.status + ': ' + error.error, 'X');
+    });
+  }
 }

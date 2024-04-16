@@ -23,22 +23,22 @@ export class UsersService {
   }
 
   public getUser(userId: number): Observable<UserDetailDto> {
-    return this.http.get<UserDetailDto>(`${this.apiUrl}/user/${userId}`, {withCredentials: true});
+    return this.http.get<UserDetailDto>(`${this.apiUrl}/user/${userId}`);
   }
 
   public updateUser(userId: number, updateUserDto: UpdateUserDto): Observable<UserDetailDto> {
-    return this.http.patch<UserDetailDto>(`${this.apiUrl}/user/${userId}`, updateUserDto, {withCredentials: true});
+    return this.http.patch<UserDetailDto>(`${this.apiUrl}/user/${userId}`, updateUserDto);
   }
 
   public getUserRoles(userId: number): Observable<RoleListDto> {
-    return this.http.get<RoleListDto>(`${this.apiUrl}/user/${userId}/roles`, {withCredentials: true});
+    return this.http.get<RoleListDto>(`${this.apiUrl}/user/${userId}/roles`);
   }
 
   public updateUserRoles(userId: number, roleListDto: RoleListDto): Observable<RoleListDto> {
-    return this.http.put<RoleListDto>(`${this.apiUrl}/user/${userId}/roles`, roleListDto, {withCredentials: true});
+    return this.http.put<RoleListDto>(`${this.apiUrl}/user/${userId}/roles`, roleListDto);
   }
 
   public getAllRoles(): Observable<RoleListDto> {
-    return this.http.get<RoleListDto>(`${this.apiUrl}/roles`, { withCredentials: true });
+    return this.http.get<RoleListDto>(`${this.apiUrl}/roles`);
   }
 }

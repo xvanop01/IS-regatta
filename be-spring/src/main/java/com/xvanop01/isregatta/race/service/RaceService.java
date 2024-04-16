@@ -91,6 +91,9 @@ public class RaceService {
         if (race == null) {
             throw new HttpException(HttpReturnCode.NOT_FOUND, "Race not found by id: " + raceId);
         }
+        if (isSignedUp(raceId) != null) {
+            throw new HttpException(HttpReturnCode.CONFLICT, "User is already signed up.");
+        }
         RaceSigned raceSigned = new RaceSigned();
         raceSigned.setUser(user);
         raceSigned.setRace(race);
@@ -101,6 +104,12 @@ public class RaceService {
         }
         raceSigned = raceSignedRepository.save(raceSigned);
         return raceSigned;
+    }
+
+    @Transactional
+    public void cancelActive(Integer raceId) {
+        log.info("cancelActive: {}", raceId);
+        raceSignedRepository.deleteByRaceIdAndUserId(raceId, PrincipalService.getPrincipalId());
     }
 
     public RaceSigned isSignedUp(Integer raceId) {

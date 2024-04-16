@@ -49,6 +49,7 @@ CREATE TABLE race_race_signed (
     `user_id` int(10) NOT NULL,
     `status` varchar(15) DEFAULT NULL,
     CONSTRAINT PK_race_race_signed_id PRIMARY KEY (`id`),
+    UNIQUE KEY UK_race_race_signed__race_user_unique (`race_id`, `user_id`),
     CONSTRAINT FK_race_race_signed__race_id FOREIGN KEY (`race_id`) REFERENCES `race_race` (`id`),
     CONSTRAINT FK_race_race_signed__user_id FOREIGN KEY (`user_id`) REFERENCES `user_user` (`id`)
 ) ENGINE = InnoDB

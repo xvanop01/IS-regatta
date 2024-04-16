@@ -27,7 +27,6 @@ export class CoreService {
     }
     let params = new HttpParams()
       .set('tableDataRequestDto', JSON.stringify(paramObject));
-    return this.http.get<any>(`${this.apiUrl}table-data-service/${serviceName}`,
-      {withCredentials: true, params: params});
+    return this.http.get<any>(`${this.apiUrl}table-data-service/${serviceName}`, {params: params});
   }
 }

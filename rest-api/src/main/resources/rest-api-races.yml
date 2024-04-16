@@ -170,6 +170,33 @@ paths:
           description: Conflict
         500:
           description: Internal server error
+  /races/race/{raceId}/cancel-registration:
+    post:
+      tags:
+        - race-controller
+      summary: Cancel registration of the active user
+      operationId: cancelRegistration
+      parameters:
+        - name: raceId
+          in: path
+          required: true
+          description: Race's ID
+          schema:
+            type: integer
+            format: int32
+      responses:
+        200:
+          description: Registration cancelled
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        409:
+          description: Conflict
+        500:
+          description: Internal server error
 
 components:
   schemas:

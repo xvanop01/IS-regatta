@@ -8,4 +8,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 public interface RaceSignedRepository extends JpaRepository<RaceSigned, Integer>, JpaSpecificationExecutor<RaceSigned> {
 
     Optional<RaceSigned> findByRaceIdAndUserId(Integer raceId, Integer userId);
+
+    void deleteByRaceIdAndUserId(Integer raceId, Integer userId);
 }

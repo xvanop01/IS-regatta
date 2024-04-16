@@ -10,12 +10,14 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "race_race_signed")
+@Table(name = "race_race_signed", uniqueConstraints = {
+        @UniqueConstraint(columnNames = {"race_id", "user_id"})})
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
