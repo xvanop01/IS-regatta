@@ -3,10 +3,11 @@ import {RacesService} from "../races.service";
 import {ActivatedRoute, Router} from "@angular/router";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {MatButton} from "@angular/material/button";
-import {DatePipe, NgForOf, NgIf} from "@angular/common";
+import {DatePipe, formatDate, NgForOf, NgIf} from "@angular/common";
 import {LoggedUserService} from "../../users/logged-user.service";
 import {RacesCreateUpdateDialogComponent} from "../races-create-update-dialog/races-create-update-dialog.component";
 import {MatDialog} from "@angular/material/dialog";
+import {RaceUserInfoDto, RaceUserStatus} from "../races.model";
 
 @Component({
   selector: 'app-race-detail',
@@ -23,7 +24,10 @@ import {MatDialog} from "@angular/material/dialog";
 export class RaceDetailScreenComponent implements OnInit {
 
   public race: any;
+  public userId: any;
+  public signedInfo: RaceUserInfoDto | null = null;
   public canDoChanges: boolean = false;
+  public isOpenForRegistration: boolean = false;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -37,7 +41,10 @@ export class RaceDetailScreenComponent implements OnInit {
     const raceId = this.route.snapshot.paramMap.get('raceId');
     this.racesService.getRace(Number(raceId)).subscribe(race => {
       this.race = race;
+      this.isOpenForRegistration = formatDate(new Date(), 'yyyy-MM-dd', 'en_US')
+        <= formatDate(this.race.signUpUntil, 'yyyy-MM-dd', 'en_US');
       this.loggedUserService.getLoggedUser().subscribe(user => {
+        this.userId = user.id;
         if (this.race.mainOrganizerId === user.id) {
           this.canDoChanges = true;
         } else {
@@ -50,6 +57,11 @@ export class RaceDetailScreenComponent implements OnInit {
           });
         }
       });
+      this.racesService.isSignedUp(Number(raceId)).subscribe(signedInfo => {
+        this.signedInfo = signedInfo;
+      }, error => {
+        let snackBarRef = this.snackBar.open(error.status + ': ' + error.error, 'X');
+      })
     }, error => {
       if (error.status === 401) {
         let snackBarRef = this.snackBar.open('User unauthorised', 'Log In');
@@ -71,4 +83,14 @@ export class RaceDetailScreenComponent implements OnInit {
       }
     });
   }
+
+  public signUpForRace(): void {
+    this.racesService.signUpActiveUser(this.race.id).subscribe(signedInfo => {
+      this.signedInfo = signedInfo;
+    }, error => {
+      let snackBarRef = this.snackBar.open(error.status + ': ' + error.error, 'X');
+    })
+  }
+
+  protected readonly RaceUserStatus = RaceUserStatus;
 }

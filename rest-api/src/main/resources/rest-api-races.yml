@@ -109,6 +109,67 @@ paths:
           description: Conflict
         500:
           description: Internal server error
+  /races/race/{raceId}/sign-up:
+    post:
+      tags:
+        - race-controller
+      summary: Sign up active user to the race
+      operationId: signUpActive
+      parameters:
+        - name: raceId
+          in: path
+          required: true
+          description: Race's ID
+          schema:
+            type: integer
+            format: int32
+      responses:
+        201:
+          description: Successfully signed up
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RaceUserInfoDto'
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        409:
+          description: Conflict
+        500:
+          description: Internal server error
+    get:
+      tags:
+        - race-controller
+      summary: Get info if the active user is signed up
+      operationId: isSignedUp
+      parameters:
+        - name: raceId
+          in: path
+          required: true
+          description: Race's ID
+          schema:
+            type: integer
+            format: int32
+      responses:
+        200:
+          description: User's race's info
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RaceUserInfoDto'
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        409:
+          description: Conflict
+        500:
+          description: Internal server error
 
 components:
   schemas:
@@ -164,3 +225,18 @@ components:
         signUpUntil:
           type: string
           format: date
+    RaceUserInfoDto:
+      properties:
+        raceId:
+          type: integer
+          format: int32
+        userId:
+          type: integer
+          format: int32
+        status:
+          $ref: '#/components/schemas/RaceUserStatusEnum'
+    RaceUserStatusEnum:
+      type: string
+      enum:
+        - APPLIED
+        - SIGNED_UP

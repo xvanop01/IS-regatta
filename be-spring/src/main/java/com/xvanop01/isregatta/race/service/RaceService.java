@@ -4,8 +4,12 @@ import com.xvanop01.isregatta.base.exception.HttpReturnCode;
 import com.xvanop01.isregatta.base.exception.HttpException;
 import com.xvanop01.isregatta.base.security.PrincipalService;
 import com.xvanop01.isregatta.race.model.Race;
+import com.xvanop01.isregatta.race.model.RaceSigned;
+import com.xvanop01.isregatta.race.model.RaceSignedStatus;
+import com.xvanop01.isregatta.race.repository.RaceSignedRepository;
 import com.xvanop01.isregatta.user.model.User;
 import com.xvanop01.isregatta.user.service.UserService;
+import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -18,6 +22,7 @@ public class RaceService {
 
     private final RacePersistenceService racePersistenceService;
     private final UserService userService;
+    private final RaceSignedRepository raceSignedRepository;
 
     @Transactional(rollbackFor = HttpException.class)
     public Race createRace(Race race) throws HttpException {
@@ -75,9 +80,32 @@ public class RaceService {
         return racePersistenceService.persist(race);
     }
 
-    public Boolean isMainOrganizer(Integer raceId, Integer organizerId) {
-        log.info("isMainOrganizer: raceId: {}, organizerId: {}", raceId, organizerId);
-        Race race = racePersistenceService.getRaceByIdAndOrganizerId(raceId, organizerId);
-        return race != null;
+    @Transactional(rollbackFor = HttpException.class)
+    public RaceSigned signUpActive(Integer raceId) throws HttpException {
+        log.info("signUpActive: {}", raceId);
+        User user = userService.getUserById(PrincipalService.getPrincipalId());
+        if (user == null) {
+            throw new HttpException(HttpReturnCode.UNAUTHORIZED, "User not logged in.");
+        }
+        Race race = racePersistenceService.findById(raceId);
+        if (race == null) {
+            throw new HttpException(HttpReturnCode.NOT_FOUND, "Race not found by id: " + raceId);
+        }
+        RaceSigned raceSigned = new RaceSigned();
+        raceSigned.setUser(user);
+        raceSigned.setRace(race);
+        if (race.getIsPublic() == null || !race.getIsPublic()) {
+            raceSigned.setStatus(RaceSignedStatus.APPLIED);
+        } else {
+            raceSigned.setStatus(RaceSignedStatus.SIGNED_UP);
+        }
+        raceSigned = raceSignedRepository.save(raceSigned);
+        return raceSigned;
+    }
+
+    public RaceSigned isSignedUp(Integer raceId) {
+        log.info("isSignedUp: {}", raceId);
+        Integer userId = PrincipalService.getPrincipalId();
+        return raceSignedRepository.findByRaceIdAndUserId(raceId, userId).orElse(null);
     }
 }

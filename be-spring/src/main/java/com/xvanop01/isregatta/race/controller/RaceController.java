@@ -3,15 +3,18 @@ package com.xvanop01.isregatta.race.controller;
 import com.xvanop01.isregatta.api.race.RacesApi;
 import com.xvanop01.isregatta.api.race.model.CreateUpdateRaceDto;
 import com.xvanop01.isregatta.api.race.model.RaceDetailDto;
+import com.xvanop01.isregatta.api.race.model.RaceUserInfoDto;
 import com.xvanop01.isregatta.base.exception.HttpException;
 import com.xvanop01.isregatta.base.exception.HttpExceptionHandler;
 import com.xvanop01.isregatta.base.security.PrincipalService;
 import com.xvanop01.isregatta.base.security.SecurityService;
 import com.xvanop01.isregatta.race.mapper.RaceMapper;
 import com.xvanop01.isregatta.race.model.Race;
+import com.xvanop01.isregatta.race.model.RaceSigned;
 import com.xvanop01.isregatta.race.service.RaceService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,12 +39,12 @@ public class RaceController implements RacesApi {
         } catch (HttpException e) {
             return HttpExceptionHandler.resolve(e);
         }
-        return ResponseEntity.status(201).body(raceMapper.map(race));
+        return ResponseEntity.status(HttpStatus.CREATED).body(raceMapper.map(race));
     }
 
     @Override
     public ResponseEntity<RaceDetailDto> getRace(Integer raceId) {
-        log.info("getRace");
+        log.info("getRace: raceId: {}", raceId);
         Race race;
         try {
             race = raceService.getRaceById(raceId);
@@ -49,6 +52,25 @@ public class RaceController implements RacesApi {
             return HttpExceptionHandler.resolve(e);
         }
         return ResponseEntity.ok(raceMapper.map(race));
+    }
+
+    @Override
+    public ResponseEntity<RaceUserInfoDto> isSignedUp(Integer raceId) {
+        log.info("isSignedUp: raceId: {}", raceId);
+        RaceSigned raceSigned = raceService.isSignedUp(raceId);
+        return ResponseEntity.ok(raceMapper.map(raceSigned));
+    }
+
+    @Override
+    public ResponseEntity<RaceUserInfoDto> signUpActive(Integer raceId) {
+        log.info("signUpActive: raceId: {}", raceId);
+        RaceSigned raceSigned;
+        try {
+            raceSigned = raceService.signUpActive(raceId);
+        } catch (HttpException e) {
+            return HttpExceptionHandler.resolve(e);
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(raceMapper.map(raceSigned));
     }
 
     @Override

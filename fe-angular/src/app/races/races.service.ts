@@ -3,7 +3,8 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import {
   CreateUdateRaceDto,
-  RaceDetailDto
+  RaceDetailDto,
+  RaceUserInfoDto
 } from "./races.model";
 
 @Injectable({
@@ -27,5 +28,13 @@ export class RacesService {
 
   public updateRace(raceId: number, updateRaceDto: CreateUdateRaceDto): Observable<RaceDetailDto> {
     return this.http.patch<RaceDetailDto>(`${this.apiUrl}/race/${raceId}`, updateRaceDto, {withCredentials: true});
+  }
+
+  public signUpActiveUser(raceId: number): Observable<RaceUserInfoDto> {
+    return this.http.post<RaceUserInfoDto>(`${this.apiUrl}/race/${raceId}/sign-up`, null);
+  }
+
+  public isSignedUp(raceId: number): Observable<RaceUserInfoDto> {
+    return this.http.get<RaceUserInfoDto>(`${this.apiUrl}/race/${raceId}/sign-up`);
   }
 }

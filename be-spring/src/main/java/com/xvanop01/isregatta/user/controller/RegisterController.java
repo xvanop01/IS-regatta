@@ -8,6 +8,7 @@ import com.xvanop01.isregatta.user.model.User;
 import com.xvanop01.isregatta.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -31,7 +32,7 @@ public class RegisterController {
         } catch (HttpException e) {
             return HttpExceptionHandler.resolve(e);
         }
-        return ResponseEntity.status(201).body(userMapper.map(user));
+        return ResponseEntity.status(HttpStatus.CREATED).body(userMapper.map(user));
     }
 
 

@@ -4,6 +4,11 @@
       {{ race.name }}
     </h1>
     <p class="detail-header-info">{{ race.isPublic ? 'Public' : 'Private' }}</p>
+    <ng-container *ngIf="race.mainOrganizerId !== userId">
+      <ng-container *ngIf="signedInfo != null">
+        <p class="detail-header-info">{{ RaceUserStatus[signedInfo.status] }}</p>
+      </ng-container>
+    </ng-container>
   </div>
   <div class="detail-wrapper">
     <div class="detail-text-wrapper">
@@ -25,6 +30,11 @@
     <div class="detail-button-wrapper">
       <ng-container *ngIf="canDoChanges">
         <button mat-flat-button color="primary" (click)="updateRaceDetail()">Update race detail</button>
+      </ng-container>
+      <ng-container *ngIf="race.mainOrganizerId !== userId && isOpenForRegistration">
+        <ng-container *ngIf="signedInfo == null">
+          <button mat-flat-button color="primary" (click)="signUpForRace()">Sign up for race</button>
+        </ng-container>
       </ng-container>
     </div>
   </div>

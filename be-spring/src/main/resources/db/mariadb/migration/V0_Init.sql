@@ -42,3 +42,14 @@ CREATE TABLE race_race (
     CONSTRAINT FK_race_race__organizer_id FOREIGN KEY (`organizer_id`) REFERENCES `user_user` (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
+
+CREATE TABLE race_race_signed (
+    `id` int(10) NOT NULL AUTO_INCREMENT,
+    `race_id` int(10) NOT NULL,
+    `user_id` int(10) NOT NULL,
+    `status` varchar(15) DEFAULT NULL,
+    CONSTRAINT PK_race_race_signed_id PRIMARY KEY (`id`),
+    CONSTRAINT FK_race_race_signed__race_id FOREIGN KEY (`race_id`) REFERENCES `race_race` (`id`),
+    CONSTRAINT FK_race_race_signed__user_id FOREIGN KEY (`user_id`) REFERENCES `user_user` (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4;
