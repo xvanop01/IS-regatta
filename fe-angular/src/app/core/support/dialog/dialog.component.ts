@@ -98,8 +98,6 @@ export class DialogComponent implements OnInit {
   }
 
   public onSubmitButtonClick(): void {
-    console.log(this.data);
-    console.log(this.fields);
     for (const field of this.fields) {
       switch (field.type) {
         case DialogFieldType.STRING:
