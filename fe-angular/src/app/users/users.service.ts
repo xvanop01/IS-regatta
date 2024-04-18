@@ -27,7 +27,7 @@ export class UsersService {
   }
 
   public updateUser(userId: number, updateUserDto: UpdateUserDto): Observable<UserDetailDto> {
-    return this.http.patch<UserDetailDto>(`${this.apiUrl}/user/${userId}`, updateUserDto);
+    return this.http.put<UserDetailDto>(`${this.apiUrl}/user/${userId}`, updateUserDto);
   }
 
   public getUserRoles(userId: number): Observable<RoleListDto> {

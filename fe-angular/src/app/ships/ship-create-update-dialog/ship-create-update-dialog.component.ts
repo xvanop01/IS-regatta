@@ -4,14 +4,14 @@ import {MatButtonModule} from "@angular/material/button";
 import {DialogComponent} from "../../core/support/dialog/dialog.component";
 import {DialogFieldDirective} from "../../core/support/dialog/dialog-field.directive";
 import {DialogFieldType} from "../../core/support/dialog/dialog.model";
-import {RacesService} from "../races.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import {ShipsService} from "../ships.service";
 
 @Component({
-  selector: 'app-races-create-update-dialog',
+  selector: 'app-ships-create-update-dialog',
   standalone: true,
-  templateUrl: './races-create-update-dialog.component.html',
-  styleUrls: ['./races-create-update-dialog.component.css'],
+  templateUrl: './ship-create-update-dialog.component.html',
+  styleUrls: ['./ship-create-update-dialog.component.css'],
   imports: [
     MatDialogModule,
     MatButtonModule,
@@ -19,36 +19,32 @@ import {MatSnackBar} from "@angular/material/snack-bar";
     DialogFieldDirective
   ]
 })
-export class RacesCreateUpdateDialogComponent {
+export class ShipCreateUpdateDialogComponent {
 
-  public raceId: number | undefined;
+  public shipId: number | undefined;
 
   protected readonly DialogFieldType = DialogFieldType;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
-              public dialogRef: MatDialogRef<RacesCreateUpdateDialogComponent>,
-              protected racesService: RacesService,
+              public dialogRef: MatDialogRef<ShipCreateUpdateDialogComponent>,
+              protected shipsService: ShipsService,
               private snackBar: MatSnackBar) {
-    this.raceId = data?.id;
+    this.shipId = data?.id;
   }
 
   public onSubmitButtonClick(data: any): void {
     const dto = {
       name: data?.name,
-      location: data?.location,
-      date: data?.date,
-      signUpUntil: data?.signUpUntil,
-      description: data?.description,
-      isPublic: data?.isPublic
+      registration: data?.registration
     }
-    if (this.raceId === undefined) {
-      this.racesService.createRace(dto).subscribe(result => {
+    if (this.shipId === undefined) {
+      this.shipsService.createShip(dto).subscribe(result => {
         this.dialogRef.close(result);
       }, error => {
         let snackBarRef = this.snackBar.open(error.status + ': ' + error.error, 'X');
       });
     } else {
-      this.racesService.updateRace(this.raceId, dto).subscribe(result => {
+      this.shipsService.updateShip(this.shipId, dto).subscribe(result => {
         this.dialogRef.close(result);
       }, error => {
         let snackBarRef = this.snackBar.open(error.status + ': ' + error.error, 'X');

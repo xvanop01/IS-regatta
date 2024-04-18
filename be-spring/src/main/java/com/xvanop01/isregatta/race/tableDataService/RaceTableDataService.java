@@ -9,11 +9,9 @@ import com.xvanop01.isregatta.race.model.Race_;
 import com.xvanop01.isregatta.race.repository.RaceRepository;
 import com.xvanop01.isregatta.race.tableDataService.filter.RaceTableDataFilter;
 import java.time.temporal.TemporalAdjusters;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-@Slf4j
 @TableData("race-table")
 public class RaceTableDataService
         extends TableDataService<Race, RaceRepository, RaceTableDataFilter, RaceDetailDto, RaceMapper> {

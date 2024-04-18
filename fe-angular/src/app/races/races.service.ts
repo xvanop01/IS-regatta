@@ -27,7 +27,7 @@ export class RacesService {
   }
 
   public updateRace(raceId: number, updateRaceDto: CreateUdateRaceDto): Observable<RaceDetailDto> {
-    return this.http.patch<RaceDetailDto>(`${this.apiUrl}/race/${raceId}`, updateRaceDto);
+    return this.http.put<RaceDetailDto>(`${this.apiUrl}/race/${raceId}`, updateRaceDto);
   }
 
   public signUpActiveUser(raceId: number): Observable<RaceUserInfoDto> {

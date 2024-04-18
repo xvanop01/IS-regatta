@@ -6,6 +6,7 @@ import { LoginScreenComponent } from "./users/login-screen/login-screen.componen
 import { UsersManagementScreenComponent } from "./users/users-management-screen/users-management-screen.component";
 import { RacesScreenComponent } from "./races/races-screen/races-screen.component";
 import {RaceDetailScreenComponent} from "./races/race-detail-screen/race-detail-screen.component";
+import {ShipsScreenComponent} from "./ships/ships-screen/ships-screen.component";
 
 export const routes: Routes = [
   {path: '', component: IndexComponent},
@@ -15,5 +16,6 @@ export const routes: Routes = [
   {path: 'user/:userId', component: UserDetailScreenComponent},
   {path: 'users', component: UsersManagementScreenComponent},
   {path: 'races', component: RacesScreenComponent},
-  {path: 'race/:raceId', component: RaceDetailScreenComponent}
+  {path: 'race/:raceId', component: RaceDetailScreenComponent},
+  {path: 'ships', component: ShipsScreenComponent}
 ];

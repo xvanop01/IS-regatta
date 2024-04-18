@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output} from "@angular/core";
+import {Component, EventEmitter, Input, OnInit, Output} from "@angular/core";
 import {MatDialogModule} from "@angular/material/dialog";
 import {MatButtonModule} from "@angular/material/button";
 import {DialogField, DialogFieldType} from "./dialog.model";
@@ -47,7 +47,7 @@ export const MONTH_FORMAT = {
     MatCheckbox
   ]
 })
-export class DialogComponent {
+export class DialogComponent implements OnInit {
 
   @Input()
   public data: {[key: string]: any} = {};
@@ -64,6 +64,12 @@ export class DialogComponent {
 
   constructor(private datePipe: DatePipe) {
 
+  }
+
+  public ngOnInit(): void {
+    if (this.data == null) {
+      this.data = {};
+    }
   }
 
   public addField(field: DialogField): void {
@@ -92,21 +98,21 @@ export class DialogComponent {
   }
 
   public onSubmitButtonClick(): void {
+    console.log(this.data);
+    console.log(this.fields);
     for (const field of this.fields) {
-      if (this.data[field.field]) {
-        switch (field.type) {
-          case DialogFieldType.STRING:
-          case DialogFieldType.NUMBER:
-          case DialogFieldType.BOOLEAN:
-          case DialogFieldType.ENUM:
-          case DialogFieldType.ENUM_MULTIPLE:
-          case DialogFieldType.PASSWORD:
-            this.data[field.field] = field.fc.value;
-            break;
-          case DialogFieldType.DATE:
-            this.data[field.field] = this.datePipe.transform(field.fc.value, 'YYYY-MM-dd');
-            break;
-        }
+      switch (field.type) {
+        case DialogFieldType.STRING:
+        case DialogFieldType.NUMBER:
+        case DialogFieldType.BOOLEAN:
+        case DialogFieldType.ENUM:
+        case DialogFieldType.ENUM_MULTIPLE:
+        case DialogFieldType.PASSWORD:
+          this.data[field.field] = field.fc.value;
+          break;
+        case DialogFieldType.DATE:
+          this.data[field.field] = this.datePipe.transform(field.fc.value, 'YYYY-MM-dd');
+          break;
       }
     }
     this.submitButtonClick.emit(this.data);

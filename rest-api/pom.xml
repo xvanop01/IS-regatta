@@ -67,7 +67,7 @@
                             <library>spring-cloud</library>
                             <apiPackage>com.xvanop01.isregatta.api.base</apiPackage>
                             <modelPackage>com.xvanop01.isregatta.api.base.model</modelPackage>
-                            <output>${project.build.directory}/generated-sources/spring/base</output>
+                            <output>${project.build.directory}/generated-sources/api</output>
                             <configOptions>
                                 <useSpringBoot3>true</useSpringBoot3>
                                 <interfaceOnly>true</interfaceOnly>
@@ -88,7 +88,7 @@
                             <library>spring-cloud</library>
                             <apiPackage>com.xvanop01.isregatta.api.user</apiPackage>
                             <modelPackage>com.xvanop01.isregatta.api.user.model</modelPackage>
-                            <output>${project.build.directory}/generated-sources/spring/users</output>
+                            <output>${project.build.directory}/generated-sources/api</output>
                             <configOptions>
                                 <useSpringBoot3>true</useSpringBoot3>
                                 <interfaceOnly>true</interfaceOnly>
@@ -109,7 +109,28 @@
                             <library>spring-cloud</library>
                             <apiPackage>com.xvanop01.isregatta.api.race</apiPackage>
                             <modelPackage>com.xvanop01.isregatta.api.race.model</modelPackage>
-                            <output>${project.build.directory}/generated-sources/spring/users</output>
+                            <output>${project.build.directory}/generated-sources/api</output>
+                            <configOptions>
+                                <useSpringBoot3>true</useSpringBoot3>
+                                <interfaceOnly>true</interfaceOnly>
+                            </configOptions>
+                            <typeMappings>
+                                <typeMapping>Float=java.math.BigDecimal</typeMapping>
+                            </typeMappings>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>ship-module</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <configuration>
+                            <inputSpec>${project.basedir}/src/main/resources/rest-api-ships.yml</inputSpec>
+                            <generatorName>spring</generatorName>
+                            <library>spring-cloud</library>
+                            <apiPackage>com.xvanop01.isregatta.api.ship</apiPackage>
+                            <modelPackage>com.xvanop01.isregatta.api.ship.model</modelPackage>
+                            <output>${project.build.directory}/generated-sources/api</output>
                             <configOptions>
                                 <useSpringBoot3>true</useSpringBoot3>
                                 <interfaceOnly>true</interfaceOnly>

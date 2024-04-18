@@ -1,0 +1,131 @@
+openapi: 3.0.0
+info:
+  title: IS Regatta Ship REST API
+  description: REST API for Ship management
+  version: 0.0.1
+
+servers:
+  - url: '{server}/api'
+    variables:
+      server:
+        default: 'http://localhost:8080'
+
+paths:
+  /ships:
+    post:
+      tags:
+        - ship-controller
+      summary: Create new ship
+      operationId: createShip
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUpdateShipDto'
+      responses:
+        201:
+          description: Ship successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShipDetailDto'
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        409:
+          description: Conflict
+        500:
+          description: Internal server error
+  /ships/ship/{shipId}:
+    get:
+      tags:
+        - ship-controller
+      summary: Get ship's info
+      operationId: getShip
+      parameters:
+        - name: shipId
+          in: path
+          required: true
+          description: Ship's ID
+          schema:
+            type: integer
+            format: int32
+      responses:
+        200:
+          description: Ship's info retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShipDetailDto'
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        404:
+          description: Race not found
+        500:
+          description: Internal server error
+    put:
+      tags:
+        - ship-controller
+      summary: Update ship's info
+      operationId: updateShip
+      parameters:
+        - name: shipId
+          in: path
+          required: true
+          description: Ship's ID
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUpdateShipDto'
+      responses:
+        200:
+          description: Ship's info updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ShipDetailDto'
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        404:
+          description: User not found
+        409:
+          description: Conflict
+        500:
+          description: Internal server error
+
+components:
+  schemas:
+    CreateUpdateShipDto:
+      properties:
+        name:
+          type: string
+        registration:
+          type: string
+    ShipDetailDto:
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+        registration:
+          type: string
+        ownerName:
+          type: string

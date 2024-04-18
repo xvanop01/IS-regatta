@@ -9,7 +9,6 @@ import com.xvanop01.isregatta.race.model.RaceSignedStatus;
 import com.xvanop01.isregatta.race.repository.RaceSignedRepository;
 import com.xvanop01.isregatta.user.model.User;
 import com.xvanop01.isregatta.user.service.UserService;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

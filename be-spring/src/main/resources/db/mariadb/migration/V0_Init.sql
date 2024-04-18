@@ -54,3 +54,13 @@ CREATE TABLE race_race_signed (
     CONSTRAINT FK_race_race_signed__user_id FOREIGN KEY (`user_id`) REFERENCES `user_user` (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
+
+CREATE TABLE ship_ship (
+    `id` int(10) NOT NULL AUTO_INCREMENT,
+    `name` varchar(50) DEFAULT NULL,
+    `registration` varchar(50) DEFAULT NULL,
+    `owner_id` int(10) DEFAULT NULL,
+    CONSTRAINT PK_ship_ship_id PRIMARY KEY (`id`),
+    CONSTRAINT FK_ship_ship__owner_id FOREIGN KEY (`owner_id`) REFERENCES `user_user` (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4;
