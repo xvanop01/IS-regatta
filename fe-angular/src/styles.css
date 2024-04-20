@@ -110,4 +110,5 @@ mat-tab-group {
 
 .mat-mdc-tab-body-wrapper {
   height: 100%;
+  padding-top: 10px;
 }

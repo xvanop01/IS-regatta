@@ -11,6 +11,7 @@ import {RolesUpdateDialogComponent} from "../roles-update-dialog/roles-update-di
 import {MatTabsModule} from "@angular/material/tabs";
 import {RacesTableComponent} from "../../races/races-table/races-table.component";
 import {SearchType} from "../../core/support/table/table.model";
+import {ShipsTableComponent} from "../../ships/ships-table/ships-table.component";
 
 @Component({
   selector: 'app-user-detail',
@@ -23,12 +24,15 @@ import {SearchType} from "../../core/support/table/table.model";
     RouterLink,
     MatButton,
     MatTabsModule,
-    RacesTableComponent
+    RacesTableComponent,
+    ShipsTableComponent
   ]
 })
 export class UserDetailScreenComponent implements OnInit {
 
   public user: any;
+
+  public userId: any;
 
   public userRoles: any;
 

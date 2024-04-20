@@ -2,7 +2,7 @@ package com.xvanop01.isregatta.ship.tableDataService.filter;
 
 public class ShipTableDataFilter {
 
-    public Integer ownerId;
+    public Integer userId;
 
     public String name;
 

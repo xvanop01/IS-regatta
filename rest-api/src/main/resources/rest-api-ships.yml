@@ -123,6 +123,8 @@ components:
         id:
           type: integer
           format: int32
+        canChange:
+          type: boolean
         name:
           type: string
         registration:

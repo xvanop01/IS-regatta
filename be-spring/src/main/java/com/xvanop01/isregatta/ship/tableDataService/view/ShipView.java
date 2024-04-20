@@ -11,7 +11,8 @@ import org.hibernate.annotations.Subselect;
 @Entity
 @Immutable
 @Subselect("SELECT ship.id, "
-        + "  owner.id as owner_id, "
+        + "  owner.id as user_id, "
+        + "  false as can_change, "
         + "  ship.name, "
         + "  ship.registration, "
         + "  IFNULL(owner.full_name, owner.username) as owner_name "
@@ -25,7 +26,9 @@ public class ShipView {
     @Id
     private Integer id;
 
-    private Integer ownerId;
+    private Integer userId;
+
+    private Boolean canChange;
 
     private String name;
 

@@ -86,7 +86,7 @@ export class TableComponent implements OnInit {
 
   private filters: Array<Filter> = [];
 
-  constructor(private cd: ChangeDetectorRef,
+  constructor(public cd: ChangeDetectorRef,
               private coreService: CoreService,
               private router: Router,
               private snackBar: MatSnackBar,
