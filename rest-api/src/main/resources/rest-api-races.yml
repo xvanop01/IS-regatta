@@ -109,27 +109,27 @@ paths:
           description: Conflict
         500:
           description: Internal server error
-  /races/race/{raceId}/sign-up:
+  /races/crew/{crewId}/accept:
     post:
       tags:
-        - race-controller
-      summary: Sign up active user to the race
-      operationId: signUpActive
+        - ship-controller
+      summary: Accept crew to race
+      operationId: acceptCrewToRace
       parameters:
-        - name: raceId
+        - name: crewId
           in: path
           required: true
-          description: Race's ID
+          description: Crew's ID
           schema:
             type: integer
             format: int32
       responses:
-        201:
-          description: Successfully signed up
+        200:
+          description: Ship successfully accepted
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RaceUserInfoDto'
+                $ref: '#/components/schemas/CrewDetailDto'
         400:
           description: Bad request
         401:
@@ -140,11 +140,39 @@ paths:
           description: Conflict
         500:
           description: Internal server error
+  /races/crew/{crewId}/remove:
+    post:
+      tags:
+        - ship-controller
+      summary: Remove crew from race
+      operationId: removeCrewFromRace
+      parameters:
+        - name: crewId
+          in: path
+          required: true
+          description: Crew's ID
+          schema:
+            type: integer
+            format: int32
+      responses:
+        200:
+          description: Crew successfully removed
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        409:
+          description: Conflict
+        500:
+          description: Internal server error
+  /races/race/{raceId}/ships:
     get:
       tags:
-        - race-controller
-      summary: Get info if the active user is signed up
-      operationId: isSignedUp
+        - ship-controller
+      summary: Get ships' suitable for race registration
+      operationId: getShipsForRace
       parameters:
         - name: raceId
           in: path
@@ -155,27 +183,26 @@ paths:
             format: int32
       responses:
         200:
-          description: User's race's info
+          description: Ships' info retrieved
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RaceUserInfoDto'
+                $ref: '#/components/schemas/CrewDetailListDto'
         400:
           description: Bad request
         401:
           description: Unauthorized
         403:
           description: Forbidden
-        409:
-          description: Conflict
+        404:
+          description: Race not found
         500:
           description: Internal server error
-  /races/race/{raceId}/cancel-registration:
     post:
       tags:
-        - race-controller
-      summary: Cancel registration of the active user
-      operationId: cancelRegistration
+        - ship-controller
+      summary: Sign up ships for the race
+      operationId: signUpShipsForRace
       parameters:
         - name: raceId
           in: path
@@ -184,9 +211,19 @@ paths:
           schema:
             type: integer
             format: int32
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShipSignUpListDto'
       responses:
-        200:
-          description: Registration cancelled
+        201:
+          description: Ship successfully registered
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CrewDetailListDto'
         400:
           description: Bad request
         401:
@@ -254,18 +291,34 @@ components:
         signUpUntil:
           type: string
           format: date
-    RaceUserInfoDto:
+    ShipSignUpListDto:
       properties:
-        raceId:
+        ships:
+          type: array
+          items:
+            type: integer
+            format: int32
+    CrewDetailDto:
+      properties:
+        id:
           type: integer
           format: int32
-        userId:
-          type: integer
-          format: int32
+        shipName:
+          type: string
+        shipRegistration:
+          type: string
+        shipOwnerName:
+          type: string
         status:
-          $ref: '#/components/schemas/RaceUserStatusEnum'
-    RaceUserStatusEnum:
+          $ref: '#/components/schemas/CrewStatusEnum'
+    CrewStatusEnum:
       type: string
       enum:
         - APPLIED
-        - SIGNED_UP
+        - REGISTERED
+    CrewDetailListDto:
+      properties:
+        crews:
+          type: array
+          items:
+            $ref: '#/components/schemas/CrewDetailDto'

@@ -41,6 +41,16 @@ public class SecurityService {
         throw new HttpException(HttpReturnCode.FORBIDDEN, "You don't have permission.");
     }
 
+    public Boolean isAdmin() throws HttpException {
+        List<Role> userRoles = userService.getUsersRoles(PrincipalService.getPrincipalId());
+        for (Role r : userRoles) {
+            if (r.getRole().equals(ROLE_ADMIN)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void hasRoleOrIsUser(Integer userId, String role) throws HttpException {
         Integer loggedUserId = PrincipalService.getPrincipalId();
         if (loggedUserId.equals(userId)) {

@@ -30,6 +30,7 @@ import {LoggedUserService} from "../../users/logged-user.service";
 export class ShipsScreenComponent implements OnInit {
 
   @ViewChild('shipsTable') shipsTableComponent?: ShipsTableComponent;
+
   protected loggedUser: any = null;
 
   constructor(private dialog: MatDialog,
@@ -43,8 +44,8 @@ export class ShipsScreenComponent implements OnInit {
   }
 
   createShip(): void {
-    const crDialogRef = this.dialog.open(ShipCreateUpdateDialogComponent);
-    crDialogRef.afterClosed().subscribe(result => {
+    const dialogRef = this.dialog.open(ShipCreateUpdateDialogComponent);
+    dialogRef.afterClosed().subscribe(result => {
       if (this.shipsTableComponent && this.shipsTableComponent.table) {
         this.shipsTableComponent.table.tableDataRefresh();
       }

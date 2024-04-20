@@ -29,4 +29,10 @@ public abstract class PersistenceService<E, R extends JpaRepository<E, Integer> 
         log.info("findAll");
         return repository.findAll();
     }
+
+    @Transactional
+    public void removeById(Integer id) {
+        log.info("removeById: {}", id);
+        repository.deleteById(id);
+    }
 }

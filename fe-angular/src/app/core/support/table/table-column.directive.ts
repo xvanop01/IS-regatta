@@ -22,18 +22,27 @@ export class TableColumnDirective implements OnInit {
   @Input()
   public isButton = false;
 
+  @Input()
+  public ifField:  string | undefined;
+
+  @Input()
+  public ifValue:  any;
+
   protected table: TableComponent;
 
   constructor(@Host() parent: TableComponent) {
     this.table = parent;
   }
+
   ngOnInit(): void {
     this.table.addColumn({
       title: this.title === undefined ? '' : this.title,
       field: this.field === undefined ? '' : this.field,
       width: this.width === undefined ? 'auto' : this.width,
       icon: this.icon === undefined ? '' : this.icon,
-      isButton: this.isButton
+      isButton: this.isButton,
+      ifField: this.ifField,
+      ifValue: this.ifValue
     })
   }
 }

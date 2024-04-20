@@ -18,7 +18,9 @@ public abstract class ShipMapper extends TableDataResponseMapper<Ship, ShipDetai
     public abstract Ship map(CreateUpdateShipDto dto);
 
     @Mappings({
-            @Mapping(target = "ownerName", source = "owner.fullName")
+            @Mapping(target = "ownerName", expression =
+                    "java(ship.getOwner().getFullName() == null || ship.getOwner().getFullName().isEmpty() ? "
+                            + "ship.getOwner().getUsername() : ship.getOwner().getFullName())")
     })
     public abstract ShipDetailDto map(Ship ship);
 }

@@ -57,8 +57,8 @@ export class RacesScreenComponent implements OnInit {
   }
 
   createRace(): void {
-    const crDialogRef = this.dialog.open(RacesCreateUpdateDialogComponent);
-    crDialogRef.afterClosed().subscribe(result => {
+    const dialogRef = this.dialog.open(RacesCreateUpdateDialogComponent);
+    dialogRef.afterClosed().subscribe(result => {
       if (this.racesTableComponent && this.racesTableComponent.table) {
         this.racesTableComponent.table.tableDataRefresh();
       }

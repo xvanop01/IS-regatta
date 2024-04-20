@@ -39,9 +39,9 @@ export class ShipsTableComponent {
   buttonClicked(data: any) {
     switch (data?.action) {
       case this.edit:
-        const crDialogRef = this.dialog.open(ShipCreateUpdateDialogComponent,
+        const dialogRef = this.dialog.open(ShipCreateUpdateDialogComponent,
           {data: data.rowData});
-        crDialogRef.afterClosed().subscribe(result => {
+        dialogRef.afterClosed().subscribe(result => {
           if (this.table) {
             this.table.tableDataRefresh();
           }

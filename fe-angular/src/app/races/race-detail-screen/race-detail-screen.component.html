@@ -5,11 +5,9 @@
     </h1>
     <p class="detail-header-info">{{ race.isPublic ? 'Public' : 'Private' }}</p>
     <ng-container *ngIf="race.mainOrganizerId !== userId">
-      <ng-container *ngIf="signedInfo != null">
-        <p class="detail-header-info">{{ RaceUserStatus[signedInfo.status] }}</p>
-      </ng-container>
     </ng-container>
   </div>
+
   <div class="detail-wrapper">
     <div class="detail-text-wrapper">
       <label>Date</label>
@@ -31,18 +29,22 @@
       <label>Organizer</label>
       <p>{{ race.mainOrganizerName }}</p>
     </div>
+
     <div class="detail-button-wrapper">
       <ng-container *ngIf="canDoChanges">
         <button mat-flat-button color="primary" (click)="updateRaceDetail()">Update race detail</button>
       </ng-container>
-      <ng-container *ngIf="race.mainOrganizerId !== userId && isOpenForRegistration">
-        <ng-container *ngIf="signedInfo == null; else signed">
-          <button mat-flat-button color="primary" (click)="signUpForRace()">Sign up for race</button>
-        </ng-container>
-        <ng-template #signed>
-          <button mat-flat-button color="primary" (click)="cancelRegistration()">Cancel registration</button>
-        </ng-template>
+      <ng-container *ngIf="isOpenForRegistration">
+        <button mat-flat-button color="primary" (click)="signUpShips()">Sign up ships</button>
       </ng-container>
     </div>
   </div>
+
+  <mat-tab-group animationDuration="0ms">
+    <mat-tab label="Crews">
+      <ng-template matTabContent>
+        <app-crews-table #crewsTable [staticFilters]="filters" [canManageCrews]="canDoChanges" [isPrivate]="!(race?.isPublic)"></app-crews-table>
+      </ng-template>
+    </mat-tab>
+  </mat-tab-group>
 </ng-container>

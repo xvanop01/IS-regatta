@@ -2,16 +2,21 @@ package com.xvanop01.isregatta.race.controller;
 
 import com.xvanop01.isregatta.api.race.RacesApi;
 import com.xvanop01.isregatta.api.race.model.CreateUpdateRaceDto;
+import com.xvanop01.isregatta.api.race.model.CrewDetailDto;
+import com.xvanop01.isregatta.api.race.model.CrewDetailListDto;
 import com.xvanop01.isregatta.api.race.model.RaceDetailDto;
-import com.xvanop01.isregatta.api.race.model.RaceUserInfoDto;
+import com.xvanop01.isregatta.api.race.model.ShipSignUpListDto;
 import com.xvanop01.isregatta.base.exception.HttpException;
 import com.xvanop01.isregatta.base.exception.HttpExceptionHandler;
 import com.xvanop01.isregatta.base.security.PrincipalService;
 import com.xvanop01.isregatta.base.security.SecurityService;
 import com.xvanop01.isregatta.race.mapper.RaceMapper;
 import com.xvanop01.isregatta.race.model.Race;
-import com.xvanop01.isregatta.race.model.RaceSigned;
 import com.xvanop01.isregatta.race.service.RaceService;
+import com.xvanop01.isregatta.race.mapper.CrewMapper;
+import com.xvanop01.isregatta.race.model.Crew;
+import com.xvanop01.isregatta.ship.model.Ship;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -28,12 +33,18 @@ public class RaceController implements RacesApi {
     private final RaceService raceService;
     private final SecurityService securityService;
     private final RaceMapper raceMapper;
+    private final CrewMapper crewMapper;
 
     @Override
-    public ResponseEntity<Void> cancelRegistration(Integer raceId) {
-        log.info("cancelRegistration: {}", raceId);
-        raceService.cancelActive(raceId);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<CrewDetailDto> acceptCrewToRace(Integer crewId) {
+        log.info("acceptCrewToRace: crewId: {}", crewId);
+        Crew crew;
+        try {
+            crew = raceService.acceptCrew(crewId);
+        } catch (HttpException e) {
+            return HttpExceptionHandler.resolve(e);
+        }
+        return ResponseEntity.ok(crewMapper.map(crew));
     }
 
     @Override
@@ -62,22 +73,40 @@ public class RaceController implements RacesApi {
     }
 
     @Override
-    public ResponseEntity<RaceUserInfoDto> isSignedUp(Integer raceId) {
-        log.info("isSignedUp: raceId: {}", raceId);
-        RaceSigned raceSigned = raceService.isSignedUp(raceId);
-        return ResponseEntity.ok(raceMapper.map(raceSigned));
-    }
-
-    @Override
-    public ResponseEntity<RaceUserInfoDto> signUpActive(Integer raceId) {
-        log.info("signUpActive: raceId: {}", raceId);
-        RaceSigned raceSigned;
+    public ResponseEntity<CrewDetailListDto> getShipsForRace(Integer raceId) {
+        log.info("getShipsForRace: raceId: {}", raceId);
+        CrewDetailListDto crewDetailListDto;
         try {
-            raceSigned = raceService.signUpActive(raceId);
+            List<Ship> ships = raceService.getShipsForRace(raceId);
+            crewDetailListDto = crewMapper.mapShipsListDto(ships);
         } catch (HttpException e) {
             return HttpExceptionHandler.resolve(e);
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(raceMapper.map(raceSigned));
+        return ResponseEntity.ok(crewDetailListDto);
+    }
+
+    @Override
+    public ResponseEntity<Void> removeCrewFromRace(Integer crewId) {
+        log.info("removeCrewFromRace: crewId: {}", crewId);
+        try {
+            raceService.removeCrew(crewId);
+        } catch (HttpException e) {
+            return HttpExceptionHandler.resolve(e);
+        }
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @Override
+    public ResponseEntity<CrewDetailListDto> signUpShipsForRace(Integer raceId, ShipSignUpListDto shipSignUpListDto) {
+        log.info("signUpShipsForRace: raceId: {}, shipSignUpListDto: {}", raceId, shipSignUpListDto);
+        CrewDetailListDto crewDetailListDto;
+        try {
+            List<Crew> crews = raceService.signUpShipsForRace(raceId, shipSignUpListDto.getShips());
+            crewDetailListDto = crewMapper.mapCrewsListDto(crews);
+        } catch (HttpException e) {
+            return HttpExceptionHandler.resolve(e);
+        }
+        return ResponseEntity.ok(crewDetailListDto);
     }
 
     @Override

@@ -73,7 +73,7 @@ export class DialogComponent implements OnInit {
   }
 
   public addField(field: DialogField): void {
-    if (this.data != null) {
+    if (this.data != null && this.data[field.field]) {
       switch (field.type) {
         case DialogFieldType.ENUM:
           field.fc.setValue(this.data[field.field]?.value);

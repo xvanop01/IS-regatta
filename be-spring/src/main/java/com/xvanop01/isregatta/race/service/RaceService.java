@@ -3,12 +3,18 @@ package com.xvanop01.isregatta.race.service;
 import com.xvanop01.isregatta.base.exception.HttpReturnCode;
 import com.xvanop01.isregatta.base.exception.HttpException;
 import com.xvanop01.isregatta.base.security.PrincipalService;
+import com.xvanop01.isregatta.base.security.SecurityService;
+import com.xvanop01.isregatta.race.model.Crew;
+import com.xvanop01.isregatta.race.model.CrewStatus;
 import com.xvanop01.isregatta.race.model.Race;
-import com.xvanop01.isregatta.race.model.RaceSigned;
-import com.xvanop01.isregatta.race.model.RaceSignedStatus;
-import com.xvanop01.isregatta.race.repository.RaceSignedRepository;
+import com.xvanop01.isregatta.ship.model.Ship;
+import com.xvanop01.isregatta.ship.service.ShipPersistenceService;
 import com.xvanop01.isregatta.user.model.User;
 import com.xvanop01.isregatta.user.service.UserService;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,8 +26,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class RaceService {
 
     private final RacePersistenceService racePersistenceService;
+    private final CrewPersistenceService crewPersistenceService;
+    private final ShipPersistenceService shipPersistenceService;
+    private final SecurityService securityService;
     private final UserService userService;
-    private final RaceSignedRepository raceSignedRepository;
 
     @Transactional(rollbackFor = HttpException.class)
     public Race createRace(Race race) throws HttpException {
@@ -58,62 +66,96 @@ public class RaceService {
         if (race == null) {
             throw new HttpException(HttpReturnCode.NOT_FOUND, "Race not found by id: " + raceId);
         }
-        if (updateRace.getName() != null && !updateRace.getName().isEmpty()) {
-            race.setName(updateRace.getName());
+        if (!race.getIsPublic() && updateRace.getIsPublic()) {
+            crewPersistenceService.acceptAllByRaceId(raceId);
         }
-        if (updateRace.getLocation() != null && !updateRace.getLocation().isEmpty()) {
-            race.setLocation(updateRace.getLocation());
-        }
-        if (updateRace.getDate() != null) {
-            race.setDate(updateRace.getDate());
-        }
-        if (updateRace.getSignUpUntil() != null) {
-            race.setSignUpUntil(updateRace.getSignUpUntil());
-        }
-        if (updateRace.getDescription() != null && !updateRace.getDescription().isEmpty()) {
-            race.setDescription(updateRace.getDescription());
-        }
-        if (updateRace.getIsPublic() != null) {
-            race.setIsPublic(updateRace.getIsPublic());
-        }
+        race.setName(updateRace.getName());
+        race.setLocation(updateRace.getLocation());
+        race.setDate(updateRace.getDate());
+        race.setSignUpUntil(updateRace.getSignUpUntil());
+        race.setDescription(updateRace.getDescription());
+        race.setIsPublic(updateRace.getIsPublic());
         return racePersistenceService.persist(race);
     }
 
     @Transactional(rollbackFor = HttpException.class)
-    public RaceSigned signUpActive(Integer raceId) throws HttpException {
-        log.info("signUpActive: {}", raceId);
-        User user = userService.getUserById(PrincipalService.getPrincipalId());
-        if (user == null) {
-            throw new HttpException(HttpReturnCode.UNAUTHORIZED, "User not logged in.");
+    public List<Ship> getShipsForRace(Integer raceId) throws HttpException {
+        log.info("getShipsForRace: raceId: {}", raceId);
+        Integer userId = PrincipalService.getPrincipalId();
+        if (userId == null) {
+            throw new HttpException(HttpReturnCode.UNAUTHORIZED, "User is not authenticated.");
+        }
+        if (raceId == null) {
+            throw new HttpException(HttpReturnCode.BAD_REQUEST, "Missing raceId.");
+        }
+        return shipPersistenceService.findAllByUserIdNotInRace(userId, raceId);
+    }
+
+    @Transactional(rollbackFor = HttpException.class)
+    public List<Crew> signUpShipsForRace(Integer raceId, List<Integer> shipsIds) throws HttpException {
+        log.info("signUpShipsForRace: raceId: {}, shipIds: {}", raceId, shipsIds);
+        if (crewPersistenceService.existsByRaceIdAndShipIdIn(raceId, shipsIds)) {
+            throw new HttpException(HttpReturnCode.CONFLICT, "One of the ships already registered.");
+        }
+        Integer userId = PrincipalService.getPrincipalId();
+        Boolean isAdmin = securityService.isAdmin();
+        if (userId == null) {
+            throw new HttpException(HttpReturnCode.UNAUTHORIZED, "User is not authenticated.");
         }
         Race race = racePersistenceService.findById(raceId);
         if (race == null) {
             throw new HttpException(HttpReturnCode.NOT_FOUND, "Race not found by id: " + raceId);
         }
-        if (isSignedUp(raceId) != null) {
-            throw new HttpException(HttpReturnCode.CONFLICT, "User is already signed up.");
+        if (race.getSignUpUntil() == null || race.getSignUpUntil().isBefore(LocalDate.now())) {
+            throw new HttpException(HttpReturnCode.CONFLICT, "Registration is closed.");
         }
-        RaceSigned raceSigned = new RaceSigned();
-        raceSigned.setUser(user);
-        raceSigned.setRace(race);
-        if (race.getIsPublic() == null || !race.getIsPublic()) {
-            raceSigned.setStatus(RaceSignedStatus.APPLIED);
-        } else {
-            raceSigned.setStatus(RaceSignedStatus.SIGNED_UP);
+        CrewStatus status = race.getIsPublic() ? CrewStatus.REGISTERED : CrewStatus.APPLIED;
+        List<Crew> crews = new ArrayList<>();
+        for (Integer shipId : shipsIds) {
+            Ship ship = shipPersistenceService.findById(shipId);
+            if (ship == null) {
+                throw new HttpException(HttpReturnCode.NOT_FOUND, "Ship not found by id: " + shipId);
+            }
+            if (!Objects.equals(ship.getOwner().getId(), userId) && !isAdmin) {
+                throw new HttpException(HttpReturnCode.CONFLICT,
+                        "You do not have permission to register a ship with id: " + shipId);
+            }
+            Crew crew = new Crew();
+            crew.setShip(ship);
+            crew.setRace(race);
+            crew.setStatus(status);
+            crews.add(crew);
         }
-        raceSigned = raceSignedRepository.save(raceSigned);
-        return raceSigned;
+        return crewPersistenceService.persistAll(crews);
     }
 
-    @Transactional
-    public void cancelActive(Integer raceId) {
-        log.info("cancelActive: {}", raceId);
-        raceSignedRepository.deleteByRaceIdAndUserId(raceId, PrincipalService.getPrincipalId());
+    @Transactional(rollbackFor = HttpException.class)
+    public Crew acceptCrew(Integer crewId) throws HttpException {
+        log.info("acceptCrew: crewId: {}", crewId);
+        Crew crew = crewPersistenceService.findById(crewId);
+        if (crew == null) {
+            throw new HttpException(HttpReturnCode.NOT_FOUND, "Crew not found by id: " + crewId);
+        }
+        if (!Objects.equals(crew.getRace().getOrganizer().getId(), PrincipalService.getPrincipalId())
+                && !securityService.isAdmin()) {
+            throw new HttpException(HttpReturnCode.FORBIDDEN, "You do not have permission to accept a crew.");
+        }
+        crew.setStatus(CrewStatus.REGISTERED);
+        return crewPersistenceService.persist(crew);
     }
 
-    public RaceSigned isSignedUp(Integer raceId) {
-        log.info("isSignedUp: {}", raceId);
-        Integer userId = PrincipalService.getPrincipalId();
-        return raceSignedRepository.findByRaceIdAndUserId(raceId, userId).orElse(null);
+    @Transactional(rollbackFor = HttpException.class)
+    public void removeCrew(Integer crewId) throws HttpException {
+        log.info("removeCrew: crewId: {}", crewId);
+        Crew crew = crewPersistenceService.findById(crewId);
+        if (crew == null) {
+            throw new HttpException(HttpReturnCode.NOT_FOUND,
+                    "Crew not found by id: " + crewId);
+        }
+        if (!Objects.equals(crew.getRace().getOrganizer().getId(), PrincipalService.getPrincipalId())
+                && !securityService.isAdmin()) {
+            throw new HttpException(HttpReturnCode.FORBIDDEN, "You do not have permission to remove a crew.");
+        }
+        crewPersistenceService.removeById(crewId);
     }
 }

@@ -125,9 +125,9 @@ export class UserDetailScreenComponent implements OnInit {
   }
 
   public updateUser(): void {
-    const uuDialogRef = this.dialog.open(UserUpdateDialogComponent,
+    const dialogRef = this.dialog.open(UserUpdateDialogComponent,
       {data: this.user});
-    uuDialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.user = result;
         this.cd.detectChanges();
@@ -136,13 +136,13 @@ export class UserDetailScreenComponent implements OnInit {
   }
 
   public updateRoles(): void {
-    const ruDialogRef = this.dialog.open(RolesUpdateDialogComponent,
+    const dialogRef = this.dialog.open(RolesUpdateDialogComponent,
       {data: {
           id: this.user.id,
           allRoles: this.allRoles,
           userRoles: this.userRoles
         }});
-    ruDialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe(result => {
       if (result) {
         this.userRoles = result.roles;
         this.cd.detectChanges();

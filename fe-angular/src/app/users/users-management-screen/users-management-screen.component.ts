@@ -54,9 +54,9 @@ export class UsersManagementScreenComponent {
         this.router.navigate(['/user', data?.rowData?.id]);
         break;
       case Action.EditUser:
-        const uuDialogRef = this.dialog.open(UserUpdateDialogComponent,
+        const dialogRef = this.dialog.open(UserUpdateDialogComponent,
           {data: data?.rowData});
-        uuDialogRef.afterClosed().subscribe(result => {
+        dialogRef.afterClosed().subscribe(result => {
           if (this.usersTableComponent && result) {
             this.usersTableComponent.tableDataRefresh();
           }
@@ -64,13 +64,13 @@ export class UsersManagementScreenComponent {
         break;
       case Action.ChangePermissions:
         this.usersService.getUserRoles(data?.rowData?.id).subscribe(result => {
-          const ruDialogRef = this.dialog.open(RolesUpdateDialogComponent,
+          const dialogRef = this.dialog.open(RolesUpdateDialogComponent,
             {data: {
                 id: data?.rowData?.id,
                 allRoles: this.roles,
                 userRoles: result?.roles
               }});
-          ruDialogRef.afterClosed().subscribe(result => {
+          dialogRef.afterClosed().subscribe(result => {
             if (this.usersTableComponent && result) {
               this.usersTableComponent.tableDataRefresh();
             }

@@ -6,6 +6,8 @@ export interface TableColumn {
   width: number | string;
   icon: string;
   isButton: boolean;
+  ifField: any;
+  ifValue: any;
 }
 
 export interface TableSearch {

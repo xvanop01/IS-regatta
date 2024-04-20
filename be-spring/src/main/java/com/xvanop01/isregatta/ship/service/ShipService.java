@@ -48,12 +48,8 @@ public class ShipService {
         if (ship == null) {
             throw new HttpException(HttpReturnCode.NOT_FOUND, "Ship not found by id: " + shipId);
         }
-        if (updateShip.getName() != null && !updateShip.getName().isEmpty()) {
-            ship.setName(updateShip.getName());
-        }
-        if (updateShip.getRegistration() != null && !updateShip.getRegistration().isEmpty()) {
-            ship.setRegistration(updateShip.getRegistration());
-        }
+        ship.setName(updateShip.getName());
+        ship.setRegistration(updateShip.getRegistration());
         return shipPersistenceService.persist(ship);
     }
 }

@@ -68,6 +68,10 @@ export class RegisterScreenComponent {
         snackBarRef.onAction().subscribe(
           () => this.router.navigate(['/login'])
         );
+        this.registerForm.patchValue({
+          username: '',
+          password: ''}
+        );
       },
       error => {
         let snackBarRef = this.snackBar.open(error.status + ': ' + error.error, 'X');
