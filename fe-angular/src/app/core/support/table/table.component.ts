@@ -124,7 +124,10 @@ export class TableComponent implements OnInit {
   }
 
   public doFilter() {
-    this.filters = this.staticFilters;
+    this.filters = [];
+    for (const f of this.staticFilters) {
+      this.filters.push(f);
+    }
     for (const search of this.searchColumns) {
       if (search.fc.value != '') {
         const filter = {

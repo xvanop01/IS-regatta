@@ -15,9 +15,9 @@ public interface RaceRepository extends JpaRepository<Race, Integer>, JpaSpecifi
     Optional<Race> findByIdAndOrganizerId(Integer raceId, Integer organizerId);
 
     @Query(value = "SELECT race.* "
-            + "FROM race_crew_user crew_user "
-            + "  LEFT JOIN race_crew crew ON crew_user.crew_id = crew.id "
-            + "  LEFT JOIN race_race race ON crew.race_id = race.id "
+            + "FROM race_race race "
+            + "  RIGHT JOIN race_crew crew ON race.id = crew.race_id "
+            + "  RIGHT JOIN race_crew_user crew_user ON crew.id = crew_user.crew_id "
             + "WHERE crew_user.user_id = ?1 "
             + "ORDER BY race.id", nativeQuery = true)
     Page<Race> findByUserId(Integer userId, Specification<Race> specification, Pageable pageable);

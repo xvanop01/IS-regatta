@@ -10,7 +10,10 @@ import com.xvanop01.isregatta.race.repository.RaceRepository;
 import com.xvanop01.isregatta.race.tableDataService.filter.RaceTableDataFilter;
 import java.time.temporal.TemporalAdjusters;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Order;
 
 @TableData("race-table")
 public class RaceTableDataService
@@ -44,6 +47,11 @@ public class RaceTableDataService
     protected Page<Race> fetch(Pageable pageable, Object filter) {
         if (filter instanceof RaceTableDataFilter f) {
             if (f.userId != null) {
+                Order order = pageable.getSort().iterator().next();
+                if (order.getProperty().equals("signUpUntil")) {
+                    Sort sort = Sort.by(order.getDirection(), "sign_up_until");
+                    pageable = PageRequest.of(pageable.getPageNumber(), pageable.getPageSize(), sort);
+                }
                 return repository.findByUserId(f.userId, getSpecification(), pageable);
             }
         }

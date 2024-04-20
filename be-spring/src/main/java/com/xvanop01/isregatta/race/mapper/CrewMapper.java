@@ -3,7 +3,6 @@ package com.xvanop01.isregatta.race.mapper;
 import com.xvanop01.isregatta.api.race.model.CrewDetailDto;
 import com.xvanop01.isregatta.api.race.model.CrewDetailListDto;
 import com.xvanop01.isregatta.api.race.model.CrewStatusEnum;
-import com.xvanop01.isregatta.base.support.template.TableDataResponseMapper;
 import com.xvanop01.isregatta.race.model.Crew;
 import com.xvanop01.isregatta.race.model.CrewStatus;
 import com.xvanop01.isregatta.ship.model.Ship;
@@ -13,7 +12,7 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
 @Mapper(componentModel = "spring")
-public abstract class CrewMapper extends TableDataResponseMapper<Crew, CrewDetailDto> {
+public abstract class CrewMapper {
 
     @Mappings({
             @Mapping(target = "shipName", source = "ship.name"),

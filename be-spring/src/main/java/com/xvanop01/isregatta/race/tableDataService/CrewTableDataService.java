@@ -3,53 +3,44 @@ package com.xvanop01.isregatta.race.tableDataService;
 import com.xvanop01.isregatta.api.race.model.CrewDetailDto;
 import com.xvanop01.isregatta.base.support.template.TableData;
 import com.xvanop01.isregatta.base.support.template.TableDataService;
-import com.xvanop01.isregatta.race.mapper.CrewMapper;
-import com.xvanop01.isregatta.race.model.Crew;
-import com.xvanop01.isregatta.race.model.Crew_;
-import com.xvanop01.isregatta.ship.model.Ship_;
-import com.xvanop01.isregatta.race.repository.CrewRepository;
+import com.xvanop01.isregatta.race.tableDataService.mapper.CrewTableDataMapper;
+import com.xvanop01.isregatta.race.tableDataService.view.CrewView;
+import com.xvanop01.isregatta.race.tableDataService.view.CrewView_;
+import com.xvanop01.isregatta.race.tableDataService.viewRepository.CrewViewRepository;
 import com.xvanop01.isregatta.race.tableDataService.filter.CrewTableDataFilter;
-import com.xvanop01.isregatta.user.model.User_;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 
 @TableData("crew-table")
-public class CrewTableDataService
-        extends TableDataService<Crew, CrewRepository, CrewTableDataFilter, CrewDetailDto, CrewMapper> {
+public class CrewTableDataService extends TableDataService<CrewView, CrewViewRepository, CrewTableDataFilter,
+        CrewDetailDto, CrewTableDataMapper> {
 
-    public CrewTableDataService(CrewRepository repository, CrewMapper mapper) {
+    public CrewTableDataService(CrewViewRepository repository, CrewTableDataMapper mapper) {
         super(repository, mapper);
-    }
-
-    @Override
-    protected Page<Crew> fetch(Pageable pageable, Object filter) {
-        if (filter instanceof CrewTableDataFilter f) {
-            if (f.raceId != null) {
-                return repository.findAllByRaceId(f.raceId, getSpecification(), pageable);
-            }
-        }
-        return super.fetch(pageable, filter);
     }
 
     @Override
     protected void doFilter(Object filter) {
         if (filter instanceof CrewTableDataFilter f) {
+            if (f.raceId != null) {
+                specAnd(((root, query, criteriaBuilder) ->
+                        criteriaBuilder.equal(root.get(CrewView_.raceId), f.raceId))
+                );
+            }
             if (f.shipName != null && !f.shipName.isEmpty()) {
                 String searchFormatted = "%" + f.shipName.toLowerCase() + "%";
                 specAnd((root, query, criteriaBuilder) ->
-                        criteriaBuilder.like(root.get(Crew_.ship).get(Ship_.name), searchFormatted)
+                        criteriaBuilder.like(root.get(CrewView_.shipName), searchFormatted)
                 );
             }
             if (f.shipRegistration != null && !f.shipRegistration.isEmpty()) {
                 String searchFormatted = "%" + f.shipRegistration.toLowerCase() + "%";
                 specAnd((root, query, criteriaBuilder) ->
-                        criteriaBuilder.like(root.get(Crew_.ship).get(Ship_.registration), searchFormatted)
+                        criteriaBuilder.like(root.get(CrewView_.shipRegistration), searchFormatted)
                 );
             }
             if (f.shipOwnerName != null && !f.shipOwnerName.isEmpty()) {
                 String searchFormatted = "%" + f.shipOwnerName.toLowerCase() + "%";
                 specAnd((root, query, criteriaBuilder) ->
-                        criteriaBuilder.like(root.get(Crew_.ship).get(Ship_.owner).get(User_.fullName), searchFormatted)
+                        criteriaBuilder.like(root.get(CrewView_.shipOwnerName), searchFormatted)
                 );
             }
         }
