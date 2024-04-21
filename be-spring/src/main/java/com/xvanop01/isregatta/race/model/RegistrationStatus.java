@@ -1,6 +1,6 @@
 package com.xvanop01.isregatta.race.model;
 
-public enum CrewStatus {
+public enum RegistrationStatus {
     APPLIED,
     REGISTERED
 }

@@ -71,6 +71,7 @@ CREATE TABLE race_crew_user (
     `id` int(10) NOT NULL AUTO_INCREMENT,
     `crew_id` int(10) DEFAULT NULL,
     `user_id` int(10) DEFAULT NULL,
+    `status` varchar(15) DEFAULT NULL,
     CONSTRAINT PK_race_crew_user_id PRIMARY KEY (`id`),
     UNIQUE KEY UK_race_crew_user__crew_user_unique (`crew_id`, `user_id`),
     CONSTRAINT FK_race_crew_user__crew_id FOREIGN KEY (`crew_id`) REFERENCES `race_crew` (`id`),

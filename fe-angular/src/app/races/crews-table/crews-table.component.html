@@ -11,7 +11,7 @@
     <app-table-column [title]="'Status'" [field]="'status'"></app-table-column>
 
     <app-table-column [field]="Action.RedirectToDetail" [icon]="'fas fa-angle-right'" [isButton]="true"></app-table-column>
-    <app-table-column *ngIf="canManageCrews && isPrivate" [field]="Action.AcceptCrew" [icon]="'fa-solid fa-check'" [isButton]="true" [ifField]="'status'" [ifValue]="CrewStatusEnum.APPLIED"></app-table-column>
+    <app-table-column *ngIf="canManageCrews && isPrivate" [field]="Action.AcceptCrew" [icon]="'fa-solid fa-check'" [isButton]="true" [ifField]="'status'" [ifValue]="RegistrationStatusEnum.APPLIED"></app-table-column>
     <app-table-column *ngIf="canManageCrews" [field]="Action.DeclineCrew" [icon]="'fa-solid fa-xmark'" [isButton]="true"></app-table-column>
   </app-table>
 </div>

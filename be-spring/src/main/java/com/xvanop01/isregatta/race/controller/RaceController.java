@@ -6,11 +6,13 @@ import com.xvanop01.isregatta.api.race.model.CrewDetailDto;
 import com.xvanop01.isregatta.api.race.model.CrewDetailListDto;
 import com.xvanop01.isregatta.api.race.model.RaceDetailDto;
 import com.xvanop01.isregatta.api.race.model.ShipSignUpListDto;
+import com.xvanop01.isregatta.api.race.model.UserRaceInfoDto;
 import com.xvanop01.isregatta.base.exception.HttpException;
 import com.xvanop01.isregatta.base.exception.HttpExceptionHandler;
 import com.xvanop01.isregatta.base.security.PrincipalService;
 import com.xvanop01.isregatta.base.security.SecurityService;
 import com.xvanop01.isregatta.race.mapper.RaceMapper;
+import com.xvanop01.isregatta.race.model.CrewUser;
 import com.xvanop01.isregatta.race.model.Race;
 import com.xvanop01.isregatta.race.service.RaceService;
 import com.xvanop01.isregatta.race.mapper.CrewMapper;
@@ -58,6 +60,25 @@ public class RaceController implements RacesApi {
             return HttpExceptionHandler.resolve(e);
         }
         return ResponseEntity.status(HttpStatus.CREATED).body(raceMapper.map(race));
+    }
+
+    @Override
+    public ResponseEntity<UserRaceInfoDto> getActiveUserRaceInfo(Integer raceId) {
+        log.info("getActiveUserRaceInfo: raceId: {}", raceId);
+        CrewUser crewUser = raceService.getCrewForActive(raceId);
+        return ResponseEntity.ok(crewMapper.map(crewUser));
+    }
+
+    @Override
+    public ResponseEntity<CrewDetailDto> getCrew(Integer crewId) {
+        log.info("getCrew: crewId: {}", crewId);
+        Crew crew;
+        try {
+            crew = raceService.getCrewById(crewId);
+        } catch (HttpException e) {
+            return HttpExceptionHandler.resolve(e);
+        }
+        return ResponseEntity.ok(crewMapper.map(crew));
     }
 
     @Override

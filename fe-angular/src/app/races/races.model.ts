@@ -19,33 +19,24 @@ export interface RaceDetailDto {
   mainOrganizerName: string;
 }
 
-export interface RaceUserInfoDto {
-  raceId: number;
-  userId: number;
-  status: RaceUserStatusEnum;
-}
-
-export enum RaceUserStatusEnum {
+export enum RegistrationStatusEnum {
   APPLIED = 'APPLIED',
   REGISTERED = 'REGISTERED'
 }
 
-export const RaceUserStatus = {
-  [RaceUserStatusEnum.APPLIED]: 'Applied',
-  [RaceUserStatusEnum.REGISTERED]: 'Registered'
-}
-
-export enum CrewStatusEnum {
-  APPLIED = 'APPLIED',
-  REGISTERED = 'REGISTERED'
+export const RegistrationStatus = {
+  [RegistrationStatusEnum.APPLIED]: 'applied',
+  [RegistrationStatusEnum.REGISTERED]: 'registered'
 }
 
 export interface CrewDetailDto {
   id: number;
+  raceId: number;
   shipName: string;
   shipRegistration: string;
   shipOwnerName: string;
-  status: CrewStatusEnum
+  raceName: string;
+  status: RegistrationStatusEnum;
 }
 
 export interface ShipSignUpListDto {
@@ -54,4 +45,10 @@ export interface ShipSignUpListDto {
 
 export interface CrewDetailListDto {
   crews: Array<CrewDetailDto>;
+}
+
+export interface UserRaceInfoDto {
+  crewId: number;
+  raceId: number;
+  status: RegistrationStatusEnum;
 }

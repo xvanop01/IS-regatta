@@ -4,7 +4,8 @@
       {{ race.name }}
     </h1>
     <p class="detail-header-info">{{ race.isPublic ? 'Public' : 'Private' }}</p>
-    <ng-container *ngIf="race.mainOrganizerId !== userId">
+    <ng-container *ngIf="userRace">
+      <p class="detail-header-info">Crew {{ RegistrationStatus[userRace.status] }}</p>
     </ng-container>
   </div>
 

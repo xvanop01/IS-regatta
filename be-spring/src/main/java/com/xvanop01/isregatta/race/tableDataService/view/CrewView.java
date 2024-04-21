@@ -1,6 +1,6 @@
 package com.xvanop01.isregatta.race.tableDataService.view;
 
-import com.xvanop01.isregatta.race.model.CrewStatus;
+import com.xvanop01.isregatta.race.model.RegistrationStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -18,10 +18,12 @@ import org.hibernate.annotations.Subselect;
         + "  ship.name as ship_name, "
         + "  ship.registration as ship_registration, "
         + "  IFNULL(owner.full_name, owner.username) as ship_owner_name, "
+        + "  race.name as race_name, "
         + "  crew.status "
         + "FROM race_crew crew "
         + "  LEFT JOIN ship_ship ship ON crew.ship_id = ship.id "
-        + "  LEFT JOIN user_user owner ON ship.owner_id = owner.id ")
+        + "  LEFT JOIN user_user owner ON ship.owner_id = owner.id "
+        + "  LEFT JOIN race_race race ON crew.race_id = race.id")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
@@ -38,7 +40,9 @@ public class CrewView {
 
     private String shipOwnerName;
 
+    private String raceName;
+
     @Enumerated(EnumType.STRING)
-    private CrewStatus status;
+    private RegistrationStatus status;
 
 }

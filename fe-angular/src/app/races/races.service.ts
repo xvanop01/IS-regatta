@@ -5,7 +5,7 @@ import {
   CreateUdateRaceDto,
   CrewDetailDto, CrewDetailListDto,
   RaceDetailDto,
-  ShipSignUpListDto
+  ShipSignUpListDto, UserRaceInfoDto
 } from "./races.model";
 
 @Injectable({
@@ -33,12 +33,20 @@ export class RacesService {
     return this.http.put<RaceDetailDto>(`${this.apiUrl}/race/${raceId}`, updateRaceDto);
   }
 
+  public getActiveUserRaceInfo(raceId: number): Observable<UserRaceInfoDto> {
+    return this.http.get<UserRaceInfoDto>(`${this.apiUrl}/race/${raceId}/active-user`);
+  }
+
   public getShipsForRace(raceId: number): Observable<CrewDetailListDto> {
     return this.http.get<CrewDetailListDto>(`${this.apiUrl}/race/${raceId}/ships`);
   }
 
   public signUpShipsForRace(raceId: number, dto: ShipSignUpListDto): Observable<CrewDetailListDto> {
     return this.http.post<CrewDetailListDto>(`${this.apiUrl}/race/${raceId}/ships`, dto);
+  }
+
+  public getCrew(crewId: number): Observable<CrewDetailDto> {
+    return this.http.get<CrewDetailDto>(`${this.apiUrl}/crew/${crewId}`);
   }
 
   public acceptCrew(crewId: number): Observable<CrewDetailDto> {

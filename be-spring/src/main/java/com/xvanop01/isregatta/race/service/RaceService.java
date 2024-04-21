@@ -5,7 +5,8 @@ import com.xvanop01.isregatta.base.exception.HttpException;
 import com.xvanop01.isregatta.base.security.PrincipalService;
 import com.xvanop01.isregatta.base.security.SecurityService;
 import com.xvanop01.isregatta.race.model.Crew;
-import com.xvanop01.isregatta.race.model.CrewStatus;
+import com.xvanop01.isregatta.race.model.CrewUser;
+import com.xvanop01.isregatta.race.model.RegistrationStatus;
 import com.xvanop01.isregatta.race.model.Race;
 import com.xvanop01.isregatta.ship.model.Ship;
 import com.xvanop01.isregatta.ship.service.ShipPersistenceService;
@@ -27,6 +28,7 @@ public class RaceService {
 
     private final RacePersistenceService racePersistenceService;
     private final CrewPersistenceService crewPersistenceService;
+    private final CrewUserPersistnceService crewUserPersistnceService;
     private final ShipPersistenceService shipPersistenceService;
     private final SecurityService securityService;
     private final UserService userService;
@@ -109,7 +111,7 @@ public class RaceService {
         if (race.getSignUpUntil() == null || race.getSignUpUntil().isBefore(LocalDate.now())) {
             throw new HttpException(HttpReturnCode.CONFLICT, "Registration is closed.");
         }
-        CrewStatus status = race.getIsPublic() ? CrewStatus.REGISTERED : CrewStatus.APPLIED;
+        RegistrationStatus status = race.getIsPublic() ? RegistrationStatus.REGISTERED : RegistrationStatus.APPLIED;
         List<Crew> crews = new ArrayList<>();
         for (Integer shipId : shipsIds) {
             Ship ship = shipPersistenceService.findById(shipId);
@@ -129,6 +131,15 @@ public class RaceService {
         return crewPersistenceService.persistAll(crews);
     }
 
+    public Crew getCrewById(Integer crewId) throws HttpException {
+        log.info("getCrewById: crewId: {}", crewId);
+        Crew crew = crewPersistenceService.findById(crewId);
+        if (crew == null) {
+            throw new HttpException(HttpReturnCode.NOT_FOUND, "Crew not found by id: " + crewId);
+        }
+        return crew;
+    }
+
     @Transactional(rollbackFor = HttpException.class)
     public Crew acceptCrew(Integer crewId) throws HttpException {
         log.info("acceptCrew: crewId: {}", crewId);
@@ -140,7 +151,7 @@ public class RaceService {
                 && !securityService.isAdmin()) {
             throw new HttpException(HttpReturnCode.FORBIDDEN, "You do not have permission to accept a crew.");
         }
-        crew.setStatus(CrewStatus.REGISTERED);
+        crew.setStatus(RegistrationStatus.REGISTERED);
         return crewPersistenceService.persist(crew);
     }
 
@@ -157,5 +168,11 @@ public class RaceService {
             throw new HttpException(HttpReturnCode.FORBIDDEN, "You do not have permission to remove a crew.");
         }
         crewPersistenceService.removeById(crewId);
+    }
+
+    public CrewUser getCrewForActive(Integer raceId) {
+        log.info("getCrewForActive: raceId: {}", raceId);
+        Integer userId = PrincipalService.getPrincipalId();
+        return crewUserPersistnceService.getByUserIdAndRaceId(userId, raceId);
     }
 }

@@ -2,6 +2,8 @@ package com.xvanop01.isregatta.race.model;
 
 import com.xvanop01.isregatta.user.model.User;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -30,4 +32,7 @@ public class CrewUser {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @Enumerated(EnumType.STRING)
+    private RegistrationStatus status;
 }

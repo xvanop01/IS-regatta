@@ -7,6 +7,7 @@ import { UsersManagementScreenComponent } from "./users/users-management-screen/
 import { RacesScreenComponent } from "./races/races-screen/races-screen.component";
 import {RaceDetailScreenComponent} from "./races/race-detail-screen/race-detail-screen.component";
 import {ShipsScreenComponent} from "./ships/ships-screen/ships-screen.component";
+import {CrewDetailScreenComponent} from "./races/crew-detail-screen/crew-detail-screen.component";
 
 export const routes: Routes = [
   {path: '', component: IndexComponent},
@@ -17,5 +18,6 @@ export const routes: Routes = [
   {path: 'users', component: UsersManagementScreenComponent},
   {path: 'races', component: RacesScreenComponent},
   {path: 'race/:raceId', component: RaceDetailScreenComponent},
-  {path: 'ships', component: ShipsScreenComponent}
+  {path: 'ships', component: ShipsScreenComponent},
+  {path: 'crew/:crewId', component: CrewDetailScreenComponent}
 ];

@@ -2,7 +2,7 @@ package com.xvanop01.isregatta.race.service;
 
 import com.xvanop01.isregatta.base.support.template.PersistenceService;
 import com.xvanop01.isregatta.race.model.Crew;
-import com.xvanop01.isregatta.race.model.CrewStatus;
+import com.xvanop01.isregatta.race.model.RegistrationStatus;
 import com.xvanop01.isregatta.race.repository.CrewRepository;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -31,11 +31,11 @@ public class CrewPersistenceService extends PersistenceService<Crew, CrewReposit
     @Transactional
     public List<Crew> acceptAllByRaceId(Integer raceId) {
         log.info("acceptAllByRaceId: raceId: {}", raceId);
-        List<Crew> crews = repository.findAllByRaceIdAndStatus(raceId, CrewStatus.APPLIED);
+        List<Crew> crews = repository.findAllByRaceIdAndStatus(raceId, RegistrationStatus.APPLIED);
         if (crews == null || crews.isEmpty()) {
             return null;
         }
-        crews.forEach(crew -> crew.setStatus(CrewStatus.REGISTERED));
+        crews.forEach(crew -> crew.setStatus(RegistrationStatus.REGISTERED));
         return repository.saveAll(crews);
     }
 }

@@ -35,7 +35,7 @@ public class Crew {
     private Race race;
 
     @Enumerated(EnumType.STRING)
-    private CrewStatus status;
+    private RegistrationStatus status;
 
     private Integer position;
 
