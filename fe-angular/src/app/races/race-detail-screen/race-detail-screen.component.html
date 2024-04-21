@@ -47,5 +47,10 @@
         <app-crews-table #crewsTable [staticFilters]="filters" [canManageCrews]="canDoChanges" [isPrivate]="!(race?.isPublic)"></app-crews-table>
       </ng-template>
     </mat-tab>
+    <mat-tab label="Participants">
+      <ng-template matTabContent>
+        <app-crew-users-table #crewUsersTable [staticFilters]="filters"></app-crew-users-table>
+      </ng-template>
+    </mat-tab>
   </mat-tab-group>
 </ng-container>

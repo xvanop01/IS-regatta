@@ -391,11 +391,18 @@ components:
             $ref: '#/components/schemas/CrewDetailDto'
     UserRaceInfoDto:
       properties:
+        id:
+          type: integer
+          format: int32
         raceId:
           type: integer
           format: int32
         crewId:
           type: integer
           format: int32
+        name:
+          type: string
+        email:
+          type: string
         status:
           $ref: '#/components/schemas/RegistrationStatusEnum'

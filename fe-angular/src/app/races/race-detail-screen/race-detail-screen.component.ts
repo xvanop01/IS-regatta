@@ -12,6 +12,7 @@ import {MatTabsModule} from "@angular/material/tabs";
 import {SearchType} from "../../core/support/table/table.model";
 import {CrewsTableComponent} from "../crews-table/crews-table.component";
 import {RegistrationStatus, UserRaceInfoDto} from "../races.model";
+import {CrewUsersTableComponent} from "../crew-users-table/crew-users-table.component";
 
 @Component({
   selector: 'app-race-detail',
@@ -24,12 +25,15 @@ import {RegistrationStatus, UserRaceInfoDto} from "../races.model";
     NgIf,
     DatePipe,
     MatTabsModule,
-    CrewsTableComponent
+    CrewsTableComponent,
+    CrewUsersTableComponent
   ]
 })
 export class RaceDetailScreenComponent implements OnInit {
 
   @ViewChild('crewsTable') crewsTableComponent?: CrewsTableComponent;
+
+  @ViewChild('crewUsersTable') crewUsersTableComponent?: CrewUsersTableComponent;
 
   public race: any;
 
@@ -42,6 +46,8 @@ export class RaceDetailScreenComponent implements OnInit {
   public isOpenForRegistration: boolean = false;
 
   public filters: Array<any> = [];
+
+  protected readonly RegistrationStatus = RegistrationStatus;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -123,6 +129,4 @@ export class RaceDetailScreenComponent implements OnInit {
       this.snackBar.open(error.status + ': ' + error.error, 'X');
     });
   }
-
-  protected readonly RegistrationStatus = RegistrationStatus;
 }

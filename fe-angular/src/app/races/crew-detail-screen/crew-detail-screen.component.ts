@@ -1,10 +1,12 @@
-import {Component, OnInit} from "@angular/core";
+import {Component, OnInit, ViewChild} from "@angular/core";
 import {CrewDetailDto, RegistrationStatus, UserRaceInfoDto} from "../races.model";
 import {MatButtonModule} from "@angular/material/button";
 import {ActivatedRoute, Router} from "@angular/router";
 import {RacesService} from "../races.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {NgIf} from "@angular/common";
+import {CrewUsersTableComponent} from "../crew-users-table/crew-users-table.component";
+import {SearchType} from "../../core/support/table/table.model";
 
 @Component({
   selector: 'app-crew-detail',
@@ -13,14 +15,19 @@ import {NgIf} from "@angular/common";
   styleUrls: ['crew-detail-screen.component.css'],
   imports: [
     MatButtonModule,
-    NgIf
+    NgIf,
+    CrewUsersTableComponent
   ]
 })
 export class CrewDetailScreenComponent implements OnInit {
 
+  @ViewChild("crewUsersTable") crewUserTableComponent?: CrewUsersTableComponent;
+
   public crew: CrewDetailDto | undefined;
 
   public userRace: UserRaceInfoDto | undefined;
+
+  public filters: Array<any> = [];
 
   protected readonly RegistrationStatus = RegistrationStatus;
 
@@ -32,6 +39,12 @@ export class CrewDetailScreenComponent implements OnInit {
 
   ngOnInit(): void {
     const crewId = Number(this.route.snapshot.paramMap.get('crewId'));
+    this.filters.push({
+      title: '',
+      column: 'crewId',
+      type: SearchType.STRING,
+      value: crewId
+    });
     this.racesService.getCrew(crewId).subscribe(crewDetailDto => {
       this.crew = crewDetailDto;
       this.racesService.getActiveUserRaceInfo(crewDetailDto.raceId).subscribe(userRaceInfoDto => {

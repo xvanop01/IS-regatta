@@ -21,8 +21,8 @@ public class CrewTableDataService extends TableDataService<CrewView, CrewViewRep
     protected void doFilter(Object filter) {
         if (filter instanceof CrewTableDataFilter f) {
             if (f.raceId != null) {
-                specAnd(((root, query, criteriaBuilder) ->
-                        criteriaBuilder.equal(root.get(CrewView_.raceId), f.raceId))
+                specAnd((root, query, criteriaBuilder) ->
+                        criteriaBuilder.equal(root.get(CrewView_.raceId), f.raceId)
                 );
             }
             if (f.shipName != null && !f.shipName.isEmpty()) {

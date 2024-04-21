@@ -36,7 +36,7 @@ export class ShipsTableComponent {
   constructor(private dialog: MatDialog) {
   }
 
-  buttonClicked(data: any) {
+  buttonClicked(data: any): void {
     switch (data?.action) {
       case this.edit:
         const dialogRef = this.dialog.open(ShipCreateUpdateDialogComponent,
