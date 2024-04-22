@@ -8,6 +8,8 @@ import {UserUpdateDialogComponent} from "../user-update-dialog/user-update-dialo
 import {UsersService} from "../users.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {RolesUpdateDialogComponent} from "../roles-update-dialog/roles-update-dialog.component";
+import {LoggedUserService} from "../logged-user.service";
+import {NgIf} from "@angular/common";
 
 enum Action {
   RedirectToDetail = 'DETAIL',
@@ -18,16 +20,17 @@ enum Action {
 @Component({
   selector: 'app-users-management',
   standalone: true,
-  templateUrl: './users-management-screen.component.html',
-  styleUrls: ['./users-management-screen.component.css'],
+  templateUrl: './users-screen.component.html',
+  styleUrls: ['./users-screen.component.css'],
   imports: [
     TableComponent,
     TableColumnDirective,
     TableSearchDirective,
-    MatDialogModule
+    MatDialogModule,
+    NgIf
   ]
 })
-export class UsersManagementScreenComponent {
+export class UsersScreenComponent {
 
   @ViewChild('usersTable') usersTableComponent?: TableComponent;
 
@@ -37,15 +40,23 @@ export class UsersManagementScreenComponent {
 
   protected roles: any;
 
+  protected isAdmin: boolean = false;
+
   constructor(private router: Router,
               private dialog: MatDialog,
               private usersService: UsersService,
+              private loggedUserService: LoggedUserService,
               private snackBar: MatSnackBar) {
-    usersService.getAllRoles().subscribe(result => {
-        this.roles = result.roles;
-      }, error => {
-        let snackBarRef = this.snackBar.open(error.status + ': ' + error.error, 'X');
-      });
+    this.usersService.getAllRoles().subscribe(result => {
+      this.roles = result.roles;
+    });
+    this.loggedUserService.getLoggedUserRoles().subscribe(result => {
+      for (let i = 0; i < result.roles.length; i++) {
+        if (result.roles.at(i)?.role == 'ADMIN') {
+          this.isAdmin = true;
+        }
+      }
+    });
   }
 
   public buttonClicked(data: any): void {

@@ -26,12 +26,20 @@ export class ToolbarComponent {
               private router: Router) {
   }
 
-  protected redirectToIndex(): void {
-    this.router.navigate(['/']);
+  protected redirectToHome(): void {
+    this.router.navigate(['/home'])
   }
 
-  protected redirectToUser(): void {
-    this.router.navigate(['/home'])
+  protected redirectToUsers(): void {
+    this.router.navigate(['/users'])
+  }
+
+  protected redirectToRaces(): void {
+    this.router.navigate(['/races'])
+  }
+
+  protected redirectToShips(): void {
+    this.router.navigate(['/ships'])
   }
 
   protected redirectToLogin(): void {

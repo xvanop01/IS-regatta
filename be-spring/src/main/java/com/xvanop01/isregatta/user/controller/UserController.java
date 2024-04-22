@@ -51,7 +51,6 @@ public class UserController implements UsersApi {
         log.info("getUser: {}", userId);
         User user;
         try {
-            securityService.hasRoleOrIsUser(userId, SecurityService.ROLE_ADMIN);
             user = userService.getUserById(userId);
         } catch (HttpException e) {
             return HttpExceptionHandler.resolve(e);

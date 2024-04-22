@@ -1,15 +1,24 @@
 <div class="toolbar">
   <div class="toolbar-wrapper">
     <div class="toolbar-left">
-      <button mat-icon-button (click)="redirectToIndex()">
-        <i class="fa-solid fa-house"></i>
-      </button>
+      <ng-container *ngIf="authenticated">
+        <button mat-icon-button (click)="redirectToHome()">
+          <i class="fa-solid fa-house"></i>
+        </button>
+        <button mat-icon-button (click)="redirectToUsers()">
+          <i class="fa-solid fa-users"></i>
+        </button>
+        <button mat-icon-button (click)="redirectToRaces()">
+          <i class="fa-solid fa-flag-checkered"></i>
+        </button>
+        <button mat-icon-button (click)="redirectToShips()">
+          <i class="fa-solid fa-sailboat"></i>
+        </button>
+      </ng-container>
     </div>
     <div class="toolbar-right">
+      <p>IS Regatta</p>
       <ng-container *ngIf="authenticated; else loginLink">
-        <button mat-icon-button (click)="redirectToUser()">
-          <i class="fa-solid fa-user"></i>
-        </button>
         <button mat-icon-button (click)="redirectToLogout()">
           <i class="fa-solid fa-arrow-right-from-bracket"></i>
         </button>

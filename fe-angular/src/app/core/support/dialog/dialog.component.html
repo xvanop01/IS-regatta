@@ -48,7 +48,7 @@
       </ng-container>
 
       <ng-container *ngIf="field.type == DialogFieldType.PASSWORD">
-        <div class="datepicker-wrapper">
+        <div class="field-wrapper">
           <mat-form-field>
             <mat-label>{{field?.title}}</mat-label>
             <input [type]="field.pswdVisible ? 'text' : 'password'" matInput [formControl]="field.fc" [required]="field.required" (blur)="validateField(field)">
