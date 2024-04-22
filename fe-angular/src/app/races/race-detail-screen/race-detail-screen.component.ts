@@ -13,6 +13,7 @@ import {SearchType} from "../../core/support/table/table.model";
 import {CrewsTableComponent} from "../crews-table/crews-table.component";
 import {RegistrationStatus, UserRaceInfoDto} from "../races.model";
 import {ParticipantsTableComponent} from "../participants-table/participants-table.component";
+import {ResultsTableComponent} from "../results-table/results-table.component";
 
 @Component({
   selector: 'app-race-detail',
@@ -26,7 +27,8 @@ import {ParticipantsTableComponent} from "../participants-table/participants-tab
     DatePipe,
     MatTabsModule,
     CrewsTableComponent,
-    ParticipantsTableComponent
+    ParticipantsTableComponent,
+    ResultsTableComponent
   ]
 })
 export class RaceDetailScreenComponent implements OnInit {
@@ -35,6 +37,8 @@ export class RaceDetailScreenComponent implements OnInit {
 
   @ViewChild('participantsTable') participantsTableComponent?: ParticipantsTableComponent;
 
+  @ViewChild('resultsTable') resultsTableComponent?: ResultsTableComponent;
+
   public race: any;
 
   public userRace: UserRaceInfoDto | undefined;
@@ -42,6 +46,8 @@ export class RaceDetailScreenComponent implements OnInit {
   public userId: any;
 
   public canDoChanges: boolean = false;
+
+  public isAfterRace: boolean = false;
 
   public isOpenForRegistration: boolean = false;
 
@@ -69,6 +75,8 @@ export class RaceDetailScreenComponent implements OnInit {
       this.race = race;
       this.isOpenForRegistration = formatDate(new Date(), 'yyyy-MM-dd', 'en_US')
         <= formatDate(this.race.signUpUntil, 'yyyy-MM-dd', 'en_US');
+      this.isAfterRace = formatDate(new Date(), 'yyyy-MM-dd', 'en_US')
+        >= formatDate(this.race.date, 'yyyy-MM-dd', 'en_US');
       this.loggedUserService.getLoggedUser().subscribe(user => {
         this.userId = user.id;
         if (this.race.mainOrganizerId === user.id) {

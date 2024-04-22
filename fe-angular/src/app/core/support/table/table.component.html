@@ -40,8 +40,8 @@
       </tr>
 
       <!-- Data container -->
-      <ng-container *ngFor="let row of rows" class="table-data-container">
-        <tr style="width: 100%; height: 50px;">
+      <ng-container *ngFor="let row of rows; let i = index" class="table-data-container">
+        <tr style="width: 100%; height: 50px;" [class]="(i % 2) === 0 ? 'even-row' : 'odd-row'">
           <ng-container *ngFor="let column of columns">
             <ng-container *ngIf="column?.isButton; else field">
               <th [width]="50">

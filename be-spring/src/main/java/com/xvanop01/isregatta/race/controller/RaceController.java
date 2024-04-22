@@ -4,6 +4,8 @@ import com.xvanop01.isregatta.api.race.RacesApi;
 import com.xvanop01.isregatta.api.race.model.CreateUpdateRaceDto;
 import com.xvanop01.isregatta.api.race.model.CrewDetailDto;
 import com.xvanop01.isregatta.api.race.model.CrewDetailListDto;
+import com.xvanop01.isregatta.api.race.model.CrewResultsDetailDto;
+import com.xvanop01.isregatta.api.race.model.CrewResultsUpdateDto;
 import com.xvanop01.isregatta.api.race.model.RaceDetailDto;
 import com.xvanop01.isregatta.api.race.model.ShipSignUpListDto;
 import com.xvanop01.isregatta.api.race.model.UserRaceInfoDto;
@@ -106,6 +108,18 @@ public class RaceController implements RacesApi {
     }
 
     @Override
+    public ResponseEntity<CrewResultsDetailDto> getCrewResults(Integer crewId) {
+        log.info("getCrewResults: crewId: {}", crewId);
+        Crew crew;
+        try {
+            crew = raceService.getCrewById(crewId);
+        } catch (HttpException e) {
+            return HttpExceptionHandler.resolve(e);
+        }
+        return ResponseEntity.ok(crewMapper.mapResults(crew));
+    }
+
+    @Override
     public ResponseEntity<RaceDetailDto> getRace(Integer raceId) {
         log.info("getRace: raceId: {}", raceId);
         Race race;
@@ -174,6 +188,18 @@ public class RaceController implements RacesApi {
             return HttpExceptionHandler.resolve(e);
         }
         return ResponseEntity.ok(crewDetailListDto);
+    }
+
+    @Override
+    public ResponseEntity<CrewResultsDetailDto> updateCrewResults(Integer crewId,
+            CrewResultsUpdateDto crewResultsUpdateDto) {
+        Crew crew = crewMapper.map(crewResultsUpdateDto);
+        try {
+            crew = raceService.updateResults(crewId, crew);
+        } catch (HttpException e) {
+            return HttpExceptionHandler.resolve(e);
+        }
+        return ResponseEntity.ok(crewMapper.mapResults(crew));
     }
 
     @Override

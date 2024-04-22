@@ -59,7 +59,7 @@ CREATE TABLE race_crew (
     `race_id` int(10) DEFAULT NULL,
     `status` varchar(15) DEFAULT NULL,
     `position` int(10) DEFAULT NULL,
-    `finishing_time` datetime DEFAULT NULL,
+    `finishing_time` time DEFAULT NULL,
     CONSTRAINT PK_race_crew_id PRIMARY KEY (`id`),
     UNIQUE KEY UK_race_crew__ship_race_unique (`ship_id`, `race_id`),
     CONSTRAINT FK_race_crew__ship_id FOREIGN KEY (`ship_id`) REFERENCES `ship_ship` (`id`),

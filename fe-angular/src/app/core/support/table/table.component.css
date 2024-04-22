@@ -83,3 +83,11 @@ table {
   text-align: right;
   padding-right: 10px;
 }
+
+.odd-row {
+  background-color: rgba(0, 0, 0, 0.20);
+}
+
+.even-row {
+  background-color: rgba(0, 0, 0, 0.10);
+}

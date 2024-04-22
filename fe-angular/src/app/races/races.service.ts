@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import {
   CreateUdateRaceDto,
-  CrewDetailDto, CrewDetailListDto,
+  CrewDetailDto, CrewDetailListDto, CrewResultsDetailDto, CrewResultsUpdateDto,
   RaceDetailDto,
   ShipSignUpListDto, UserRaceInfoDto
 } from "./races.model";
@@ -69,5 +69,13 @@ export class RacesService {
 
   public declineUserFromCrew(crewUserId: number): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/crew-user/${crewUserId}/remove`);
+  }
+
+  public getCrewResults(crewId: number): Observable<CrewResultsDetailDto> {
+    return this.http.get<CrewResultsDetailDto>(`${this.apiUrl}/crew/${crewId}/results`);
+  }
+
+  public updateCrewResults(crewId: number, dto: CrewResultsUpdateDto): Observable<CrewResultsDetailDto> {
+    return this.http.put<CrewResultsDetailDto>(`${this.apiUrl}/crew/${crewId}/results`, dto);
   }
 }

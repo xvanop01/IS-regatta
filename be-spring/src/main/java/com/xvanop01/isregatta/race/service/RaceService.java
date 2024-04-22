@@ -42,6 +42,9 @@ public class RaceService {
         if (race.getIsPublic() == null || !race.getIsPublic()) {
             race.setIsPublic(false);
         }
+        if (race.getSignUpUntil() != null && race.getDate() != null && race.getSignUpUntil().isAfter(race.getDate())) {
+            throw new HttpException(HttpReturnCode.CONFLICT, "Race date is before registration closing.");
+        }
         User user = userService.getUserById(PrincipalService.getPrincipalId());
         race.setOrganizer(user);
         return racePersistenceService.persist(race);
@@ -68,7 +71,11 @@ public class RaceService {
         if (race == null) {
             throw new HttpException(HttpReturnCode.NOT_FOUND, "Race not found by id: " + raceId);
         }
-        if (!race.getIsPublic() && updateRace.getIsPublic()) {
+        if (updateRace.getSignUpUntil() != null && updateRace.getDate() != null
+                && updateRace.getSignUpUntil().isAfter(updateRace.getDate())) {
+            throw new HttpException(HttpReturnCode.CONFLICT, "Race date is before registration closing.");
+        }
+        if (!race.getIsPublic() && updateRace.getIsPublic() != null && updateRace.getIsPublic()) {
             crewPersistenceService.acceptAllByRaceId(raceId);
         }
         race.setName(updateRace.getName());
@@ -76,7 +83,7 @@ public class RaceService {
         race.setDate(updateRace.getDate());
         race.setSignUpUntil(updateRace.getSignUpUntil());
         race.setDescription(updateRace.getDescription());
-        race.setIsPublic(updateRace.getIsPublic());
+        race.setIsPublic(updateRace.getIsPublic() != null && updateRace.getIsPublic());
         return racePersistenceService.persist(race);
     }
 
@@ -228,5 +235,20 @@ public class RaceService {
             throw new HttpException(HttpReturnCode.FORBIDDEN, "You do not have permission to remove a user.");
         }
         crewUserPersistnceService.removeById(crewUser.getId());
+    }
+
+    @Transactional(rollbackFor = HttpException.class)
+    public Crew updateResults(Integer crewId, Crew results) throws HttpException {
+        log.info("updateResults: crewId: {}, results: {}", crewId, results);
+        Crew crew = crewPersistenceService.findById(crewId);
+        if (crew == null) {
+            throw new HttpException(HttpReturnCode.NOT_FOUND, "Crew not found by id: " + crewId);
+        }
+        if (results.getPosition() != null && results.getPosition() <= 0) {
+            throw new HttpException(HttpReturnCode.CONFLICT, "Position must be positive number.");
+        }
+        crew.setPosition(results.getPosition());
+        crew.setFinishingTime(results.getFinishingTime());
+        return crewPersistenceService.persist(crew);
     }
 }

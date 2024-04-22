@@ -53,3 +53,15 @@ export interface UserRaceInfoDto {
   raceId: number;
   status: RegistrationStatusEnum;
 }
+
+export interface CrewResultsDetailDto{
+  id: number;
+  crewName: number;
+  position: number;
+  time: string;
+}
+
+export interface CrewResultsUpdateDto {
+  position: number;
+  time: string;
+}

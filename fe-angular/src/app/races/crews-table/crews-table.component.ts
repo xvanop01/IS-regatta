@@ -8,9 +8,12 @@ import {NgIf} from "@angular/common";
 import {RegistrationStatusEnum} from "../races.model";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {RacesService} from "../races.service";
+import {MatDialog} from "@angular/material/dialog";
+import {ResultUpdateDialogComponent} from "../result-update-dialog/result-update-dialog.component";
 
 enum Action {
   RedirectToDetail = 'DETAIL',
+  UpdateResults = 'RESULTS',
   AcceptCrew = 'ACCEPT',
   DeclineCrew = 'DECLINE'
 }
@@ -40,6 +43,9 @@ export class CrewsTableComponent {
   public canManageCrews: boolean = false;
 
   @Input()
+  public isAfterRace: boolean = false;
+
+  @Input()
   public isPrivate: boolean = false;
 
   protected readonly Action = Action;
@@ -48,6 +54,7 @@ export class CrewsTableComponent {
 
   constructor(private router: Router,
               private racesService: RacesService,
+              private dialog: MatDialog,
               private snackBar: MatSnackBar) {
   }
 
@@ -55,6 +62,15 @@ export class CrewsTableComponent {
     switch (data?.action) {
       case Action.RedirectToDetail:
         this.router.navigate(['/crew', data?.rowData?.id]);
+        break;
+      case Action.UpdateResults:
+        this.racesService.getCrewResults(data.rowData?.id).subscribe(result => {
+          const dialogRef = this.dialog.open(ResultUpdateDialogComponent,
+            {data: result});
+          dialogRef.afterClosed().subscribe(result => {
+            this.table?.tableDataRefresh();
+          });
+        })
         break;
       case Action.AcceptCrew:
         this.racesService.acceptCrew(data?.rowData?.id).subscribe(result => {

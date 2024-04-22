@@ -2,6 +2,8 @@ package com.xvanop01.isregatta.race.mapper;
 
 import com.xvanop01.isregatta.api.race.model.CrewDetailDto;
 import com.xvanop01.isregatta.api.race.model.CrewDetailListDto;
+import com.xvanop01.isregatta.api.race.model.CrewResultsDetailDto;
+import com.xvanop01.isregatta.api.race.model.CrewResultsUpdateDto;
 import com.xvanop01.isregatta.api.race.model.RegistrationStatusEnum;
 import com.xvanop01.isregatta.api.race.model.UserRaceInfoDto;
 import com.xvanop01.isregatta.race.model.Crew;
@@ -32,9 +34,10 @@ public abstract class CrewMapper {
             @Mapping(target = "shipName", source = "ship.name"),
             @Mapping(target = "shipRegistration", source = "ship.registration"),
             @Mapping(target = "shipOwnerName", ignore = true),
+            @Mapping(target = "shipOwnerId", ignore = true),
             @Mapping(target = "status", ignore = true),
             @Mapping(target = "raceId", ignore = true),
-            @Mapping(target = "raceName", ignore = true)
+            @Mapping(target = "raceName", ignore = true),
     })
     public abstract CrewDetailDto map(Ship ship);
 
@@ -48,6 +51,21 @@ public abstract class CrewMapper {
             @Mapping(target = "email", ignore = true)
     })
     public abstract UserRaceInfoDto map(CrewUser crewUser);
+
+    @Mappings({
+            @Mapping(target = "finishingTime", source = "time"),
+            @Mapping(target = "id", ignore = true),
+            @Mapping(target = "ship", ignore = true),
+            @Mapping(target = "race", ignore = true),
+            @Mapping(target = "status", ignore = true),
+    })
+    public abstract Crew map(CrewResultsUpdateDto dto);
+
+    @Mappings({
+            @Mapping(target = "crewName", source = "ship.name"),
+            @Mapping(target = "time", source = "finishingTime")
+    })
+    public abstract CrewResultsDetailDto mapResults(Crew crew);
 
     public abstract List<CrewDetailDto> mapCrewsList(List<Crew> crews);
 
