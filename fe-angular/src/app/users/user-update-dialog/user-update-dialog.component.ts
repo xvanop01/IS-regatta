@@ -5,6 +5,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {Component, Inject} from "@angular/core";
 import {DialogComponent} from "../../core/support/dialog/dialog.component";
 import {DialogFieldDirective} from "../../core/support/dialog/dialog-field.directive";
+import {Validators} from "@angular/forms";
 
 @Component({
   selector: 'app-user-update-dialog',
@@ -19,6 +20,8 @@ import {DialogFieldDirective} from "../../core/support/dialog/dialog-field.direc
 export class UserUpdateDialogComponent {
 
   protected readonly DialogFieldType = DialogFieldType;
+
+  protected readonly Validators = Validators;
 
   constructor(@Inject(MAT_DIALOG_DATA) public data: any,
               public dialogRef: MatDialogRef<UserUpdateDialogComponent>,

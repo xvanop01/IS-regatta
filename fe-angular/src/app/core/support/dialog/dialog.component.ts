@@ -119,6 +119,8 @@ export class DialogComponent implements OnInit {
   public validateField(field: DialogField): void {
     if (field.required && (field.fc.value === null || field.fc.value === '')) {
       field.error = 'Field is required';
+    } else if (field.fc.errors != null) {
+      field.error = field.errorMassage;
     } else {
       field.error = null;
     }

@@ -8,7 +8,9 @@ export interface DialogField {
   pswdVisible: boolean,
   required: boolean,
   error: string | null,
-  fc: FormControl
+  fc: FormControl,
+  info: string,
+  errorMassage: string
 }
 
 export enum DialogFieldType {

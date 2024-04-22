@@ -27,13 +27,28 @@ export class DialogFieldDirective implements OnInit {
   @Input()
   public required: boolean = false;
 
-  protected dialog: DialogComponent;
+  @Input()
+  public validators: any;
+
+  @Input()
+  public info: any;
+
+  @Input()
+  public errorMessage: any;
+
+  private dialog: DialogComponent;
 
   constructor(@Host() parent: DialogComponent) {
     this.dialog = parent;
   }
 
   ngOnInit(): void {
+    let fc;
+    if (this.validators) {
+      fc = new FormControl(this.value, this.validators);
+    } else {
+      fc = new FormControl(this.value);
+    }
     this.dialog.addField({
       title: this.title === undefined ? '' : this.title,
       field: this.field,
@@ -42,7 +57,9 @@ export class DialogFieldDirective implements OnInit {
       pswdVisible: false,
       required: this.required,
       error: null,
-      fc: new FormControl(this.value)
+      fc: fc,
+      info: this.info === undefined ? '' : this.info,
+      errorMassage: this.errorMessage === undefined ? '' : this.errorMessage
     })
   }
 
