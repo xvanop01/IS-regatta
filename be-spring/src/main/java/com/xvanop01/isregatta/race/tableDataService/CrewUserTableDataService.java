@@ -36,6 +36,12 @@ public class CrewUserTableDataService extends TableDataService<CrewUserView, Cre
                         criteriaBuilder.like(root.get(CrewUserView_.name), searchFormatted)
                 );
             }
+            if (f.shipName != null && !f.shipName.isEmpty()) {
+                String searchFormatted = "%" + f.shipName.toLowerCase() + "%";
+                specAnd((root, query, criteriaBuilder) ->
+                        criteriaBuilder.like(root.get(CrewUserView_.shipName), searchFormatted)
+                );
+            }
         }
     }
 }

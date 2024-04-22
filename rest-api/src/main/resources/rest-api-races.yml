@@ -203,7 +203,7 @@ paths:
         500:
           description: Internal server error
   /races/crew/{crewId}/remove:
-    post:
+    delete:
       tags:
         - ship-controller
       summary: Remove crew from race
@@ -219,6 +219,64 @@ paths:
       responses:
         200:
           description: Crew successfully removed
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        409:
+          description: Conflict
+        500:
+          description: Internal server error
+  /races/crew/{crewId}/apply:
+    post:
+      tags:
+        - ship-controller
+      summary: Apply to crew
+      operationId: applyToCrew
+      parameters:
+        - name: crewId
+          in: path
+          required: true
+          description: Crew's ID
+          schema:
+            type: integer
+            format: int32
+      responses:
+        201:
+          description: Successfully apply to crew
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRaceInfoDto'
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        409:
+          description: Conflict
+        500:
+          description: Internal server error
+  /races/crew/{crewId}/leave:
+    delete:
+      tags:
+        - ship-controller
+      summary: Leave crew
+      operationId: leaveCrew
+      parameters:
+        - name: crewId
+          in: path
+          required: true
+          description: Crew's ID
+          schema:
+            type: integer
+            format: int32
+      responses:
+        200:
+          description: Successfully leaved crew
         400:
           description: Bad request
         401:
@@ -400,6 +458,8 @@ components:
         crewId:
           type: integer
           format: int32
+        shipName:
+          type: string
         name:
           type: string
         email:

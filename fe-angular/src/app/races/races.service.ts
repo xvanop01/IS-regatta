@@ -14,11 +14,9 @@ import {
 export class RacesService {
 
   protected apiUrl;
-  protected shipApiUrl;
 
   constructor(protected http: HttpClient) {
     this.apiUrl = 'http://localhost:8080/api/races';
-    this.shipApiUrl = 'http://localhost:8080/api/ships';
   }
 
   public createRace(createRaceDto: CreateUdateRaceDto): Observable<RaceDetailDto> {
@@ -54,6 +52,14 @@ export class RacesService {
   }
 
   public declineCrew(crewId: number): Observable<any> {
-    return this.http.post<CrewDetailDto>(`${this.apiUrl}/crew/${crewId}/remove`, null);
+    return this.http.delete<CrewDetailDto>(`${this.apiUrl}/crew/${crewId}/remove`);
+  }
+
+  public applyToCrew(crewId: number): Observable<UserRaceInfoDto> {
+    return this.http.post<UserRaceInfoDto>(`${this.apiUrl}/crew/${crewId}/apply`, null);
+  }
+
+  public leaveCrew(crewId: number): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/crew/${crewId}/leave`);
   }
 }

@@ -18,4 +18,9 @@ public class CrewUserPersistnceService extends PersistenceService<CrewUser, Crew
         log.info("getByUserIdAndRaceId: userId: {}, raceId: {}", userId, raceId);
         return repository.findByUserIdAndCrewRaceId(userId, raceId).orElse(null);
     }
+
+    public CrewUser getByCrewIdAndUserId(Integer crewId, Integer userId) {
+        log.info("getByCrewIdAndUserId: crewId: {}, userId: {}", crewId, userId);
+        return repository.findByCrewIdAndUserId(crewId, userId).orElse(null);
+    }
 }

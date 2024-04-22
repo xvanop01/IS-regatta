@@ -12,7 +12,7 @@ import {MatTabsModule} from "@angular/material/tabs";
 import {SearchType} from "../../core/support/table/table.model";
 import {CrewsTableComponent} from "../crews-table/crews-table.component";
 import {RegistrationStatus, UserRaceInfoDto} from "../races.model";
-import {CrewUsersTableComponent} from "../crew-users-table/crew-users-table.component";
+import {ParticipantsTableComponent} from "../participants-table/participants-table.component";
 
 @Component({
   selector: 'app-race-detail',
@@ -26,14 +26,14 @@ import {CrewUsersTableComponent} from "../crew-users-table/crew-users-table.comp
     DatePipe,
     MatTabsModule,
     CrewsTableComponent,
-    CrewUsersTableComponent
+    ParticipantsTableComponent
   ]
 })
 export class RaceDetailScreenComponent implements OnInit {
 
   @ViewChild('crewsTable') crewsTableComponent?: CrewsTableComponent;
 
-  @ViewChild('crewUsersTable') crewUsersTableComponent?: CrewUsersTableComponent;
+  @ViewChild('participantsTable') participantsTableComponent?: ParticipantsTableComponent;
 
   public race: any;
 

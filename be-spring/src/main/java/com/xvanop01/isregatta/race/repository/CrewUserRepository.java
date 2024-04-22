@@ -8,4 +8,6 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 public interface CrewUserRepository extends JpaRepository<CrewUser, Integer>, JpaSpecificationExecutor<CrewUser> {
 
     Optional<CrewUser> findByUserIdAndCrewRaceId(Integer userId, Integer raceId);
+
+    Optional<CrewUser> findByCrewIdAndUserId(Integer crewId, Integer userId);
 }

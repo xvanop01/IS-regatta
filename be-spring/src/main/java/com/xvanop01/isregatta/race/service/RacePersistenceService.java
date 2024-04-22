@@ -13,9 +13,4 @@ public class RacePersistenceService extends PersistenceService<Race, RaceReposit
     public RacePersistenceService(RaceRepository repository) {
         super(repository);
     }
-
-    public Race getRaceByIdAndOrganizerId(Integer raceId, Integer organizerId) {
-        log.info("getRaceByIdAndOrganizerId: raceId: {}, organizerId: {}", raceId, organizerId);
-        return repository.findByIdAndOrganizerId(raceId, organizerId).orElse(null);
-    }
 }

@@ -41,7 +41,10 @@ public abstract class CrewMapper {
 
     @Mappings({
             @Mapping(target = "raceId", source = "crew.race.id"),
-            @Mapping(target = "crewId", source = "crew.id")
+            @Mapping(target = "crewId", source = "crew.id"),
+            @Mapping(target = "shipName", source = "crew.ship.name"),
+            @Mapping(target = "name", ignore = true),
+            @Mapping(target = "email", ignore = true)
     })
     public abstract UserRaceInfoDto map(CrewUser crewUser);
 

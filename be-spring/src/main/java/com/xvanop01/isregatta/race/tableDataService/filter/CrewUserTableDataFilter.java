@@ -7,4 +7,6 @@ public class CrewUserTableDataFilter {
     public Integer raceId;
 
     public String name;
+
+    public String shipName;
 }

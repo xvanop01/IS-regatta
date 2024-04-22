@@ -175,4 +175,29 @@ public class RaceService {
         Integer userId = PrincipalService.getPrincipalId();
         return crewUserPersistnceService.getByUserIdAndRaceId(userId, raceId);
     }
+
+    @Transactional(rollbackFor = HttpException.class)
+    public CrewUser applyToCrew(Integer crewId) throws HttpException {
+        log.info("applyToCrew: crewId: {}", crewId);
+        Crew crew = crewPersistenceService.findById(crewId);
+        if (crew == null) {
+            throw new HttpException(HttpReturnCode.NOT_FOUND, "Crew not found by id: " + crewId);
+        }
+        User user = userService.getUserById(PrincipalService.getPrincipalId());
+        CrewUser crewUser = new CrewUser();
+        crewUser.setCrew(crew);
+        crewUser.setUser(user);
+        crewUser.setStatus(RegistrationStatus.APPLIED);
+        return crewUserPersistnceService.persist(crewUser);
+    }
+
+    @Transactional(rollbackFor = HttpException.class)
+    public void leaveCrew(Integer crewId) throws HttpException {
+        log.info("leaveCrew: crewId: {}", crewId);
+        CrewUser crewUser = crewUserPersistnceService.getByCrewIdAndUserId(crewId, PrincipalService.getPrincipalId());
+        if (crewUser == null) {
+            throw new HttpException(HttpReturnCode.NOT_FOUND, "Crew user not found by crewId: " + crewId);
+        }
+        crewUserPersistnceService.removeById(crewUser.getId());
+    }
 }

@@ -49,7 +49,6 @@ export class CrewDetailScreenComponent implements OnInit {
       this.crew = crewDetailDto;
       this.racesService.getActiveUserRaceInfo(crewDetailDto.raceId).subscribe(userRaceInfoDto => {
         this.userRace = userRaceInfoDto;
-        console.log(this.userRace);
       }, error => {
         this.snackBar.open(error.status + ': ' + error.error, 'X');
       });
@@ -60,16 +59,30 @@ export class CrewDetailScreenComponent implements OnInit {
           () => this.router.navigate(['/login'])
         );
       } else {
-        let snackBarRef = this.snackBar.open(error.status + ': ' + error.error, 'X');
+        this.snackBar.open(error.status + ': ' + error.error, 'X');
       }
     });
   }
 
   public applyToCrew(): void {
-
+    if (this.crew) {
+      this.racesService.applyToCrew(this.crew.id).subscribe(result => {
+        this.userRace = result;
+        this.crewUserTableComponent?.table?.tableDataRefresh();
+      }, error => {
+        this.snackBar.open(error.status + ': ' + error.error, 'X');
+      });
+    }
   }
 
   public leaveCrew(): void {
-
+    if (this.crew) {
+      this.racesService.leaveCrew(this.crew.id).subscribe(result => {
+        this.userRace = undefined;
+        this.crewUserTableComponent?.table?.tableDataRefresh();
+      }, error => {
+        this.snackBar.open(error.status + ': ' + error.error, 'X');
+      });
+    }
   }
 }
