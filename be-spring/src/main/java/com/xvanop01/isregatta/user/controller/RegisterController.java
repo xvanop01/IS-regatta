@@ -1,33 +1,25 @@
 package com.xvanop01.isregatta.user.controller;
 
-import com.xvanop01.isregatta.api.dto.CreateUserDto;
-import com.xvanop01.isregatta.api.dto.UserDetailDto;
+import com.xvanop01.isregatta.api.user.model.UserDetailDto;
 import com.xvanop01.isregatta.base.exception.HttpException;
 import com.xvanop01.isregatta.base.exception.HttpExceptionHandler;
 import com.xvanop01.isregatta.user.mapper.UserMapper;
 import com.xvanop01.isregatta.user.model.User;
 import com.xvanop01.isregatta.user.service.UserService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-
-import javax.validation.Valid;
 
 @Controller
 @Slf4j
+@RequiredArgsConstructor
 public class RegisterController {
 
-    @Autowired
-    private UserService userService;
-
-    @Autowired
-    private HttpExceptionHandler httpExceptionHandler;
-
-    @Autowired
-    private UserMapper userMapper;
+    private final UserService userService;
+    private final UserMapper userMapper;
 
     @PostMapping("/register")
     public ResponseEntity<UserDetailDto> registerUser(String username, String password) {
@@ -38,9 +30,9 @@ public class RegisterController {
         try {
             user = userService.createUser(user);
         } catch (HttpException e) {
-            return httpExceptionHandler.resolve(e);
+            return HttpExceptionHandler.resolve(e);
         }
-        return ResponseEntity.status(201).body(userMapper.map(user));
+        return ResponseEntity.status(HttpStatus.CREATED).body(userMapper.map(user));
     }
 
 

@@ -1,10 +1,13 @@
 package com.xvanop01.isregatta.user.controller;
 
-import com.xvanop01.isregatta.api.dto.UserDetailDto;
+import com.xvanop01.isregatta.api.user.model.RoleListDto;
+import com.xvanop01.isregatta.api.user.model.UserDetailDto;
+import com.xvanop01.isregatta.user.mapper.RoleMapper;
 import com.xvanop01.isregatta.user.mapper.UserMapper;
-import com.xvanop01.isregatta.user.service.UserPersistanceService;
+import com.xvanop01.isregatta.user.service.RolePersistenceService;
+import com.xvanop01.isregatta.user.service.UserPersistenceService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,13 +19,13 @@ import java.security.Principal;
 @Controller
 @RequestMapping("/api")
 @Slf4j
+@RequiredArgsConstructor
 public class LoggedUserController {
 
-    @Autowired
-    private UserPersistanceService userPersistanceService;
-
-    @Autowired
-    private UserMapper userMapper;
+    private final UserPersistenceService userPersistenceService;
+    private final RolePersistenceService rolePersistenceService;
+    private final UserMapper userMapper;
+    private final RoleMapper roleMapper;
 
     @RequestMapping(value = "/user", method = RequestMethod.GET)
     @ResponseBody
@@ -31,6 +34,17 @@ public class LoggedUserController {
         if (principal == null) {
             return ResponseEntity.ok(null);
         }
-        return ResponseEntity.ok(userMapper.map(userPersistanceService.findByUsername(principal.getName())));
+        return ResponseEntity.ok(userMapper.map(userPersistenceService.findByUsername(principal.getName())));
+    }
+
+    @RequestMapping(value = "/user/roles", method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseEntity<RoleListDto> Roles(Principal principal) {
+        log.info("currentUserDetail");
+        if (principal == null) {
+            return ResponseEntity.ok(null);
+        }
+        return ResponseEntity.ok(roleMapper.mapRoleList(
+                rolePersistenceService.getRolesByUsername(principal.getName())));
     }
 }

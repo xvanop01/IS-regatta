@@ -1,0 +1,13 @@
+<div style="height: 100%;">
+  <div class="row-2c">
+    <h1>Races</h1>
+    <div class="table-buttons">
+      <ng-container *ngIf="isOrganizer">
+        <button mat-flat-button color="primary" (click)="createRace()">Create race</button>
+      </ng-container>
+    </div>
+  </div>
+  <div class="race-table-wrapper">
+    <app-races-table #racesTable></app-races-table>
+  </div>
+</div>

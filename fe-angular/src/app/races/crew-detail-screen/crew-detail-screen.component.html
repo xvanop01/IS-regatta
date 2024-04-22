@@ -1,0 +1,45 @@
+<div style="height: 100%;">
+  <ng-container *ngIf="crew">
+    <div class="detail-header-wrapper">
+      <h1>
+        Crew {{ crew.shipName }}
+      </h1>
+      <p class="detail-header-info">Crew {{ RegistrationStatus[crew.status] }}</p>
+      <ng-container *ngIf="userRace && crew.id === userRace?.crewId">
+        <p class="detail-header-info">User {{ RegistrationStatus[userRace.status] }}</p>
+      </ng-container>
+    </div>
+
+    <div class="detail-wrapper">
+      <div class="detail-text-wrapper">
+        <label>Race name</label>
+        <p>{{ crew.raceName }}</p>
+      </div>
+      <div class="detail-text-wrapper">
+        <label>Ship</label>
+        <p>{{ crew.shipName }}</p>
+      </div>
+      <div class="detail-text-wrapper">
+        <label>Registration</label>
+        <p>{{ crew.shipRegistration }}</p>
+      </div>
+      <div class="detail-text-wrapper">
+        <label>Owner</label>
+        <p>{{ crew.shipOwnerName }}</p>
+      </div>
+
+      <div class="detail-button-wrapper">
+        <ng-container *ngIf="!userRace">
+          <button mat-flat-button color="primary" (click)="applyToCrew()">Apply to the crew</button>
+        </ng-container>
+        <ng-container *ngIf="userRace && crew.id === userRace?.crewId">
+          <button mat-flat-button color="primary" (click)="leaveCrew()">Leave the crew</button>
+        </ng-container>
+      </div>
+    </div>
+
+    <div class="crew-users-table-wrapper">
+      <app-crew-users-table #crewUsersTable [staticFilters]="filters" [canManageCrewUsers]="canManageCrewUsers"></app-crew-users-table>
+    </div>
+  </ng-container>
+</div>

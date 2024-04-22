@@ -1,0 +1,15 @@
+<div class="table-wrapper">
+  <app-table #table [serviceName]="'crew-user-table'" [staticFilters]="staticFilters" (onButtonClick)="buttonClicked($event)">
+    <app-table-search [title]="'Name'" [column]="'name'"></app-table-search>
+
+    <app-table-column [title]="'Id'" [field]="'id'" [width]="50"></app-table-column>
+    <app-table-column [title]="'Name'" [field]="'name'"></app-table-column>
+    <app-table-column [title]="'E-mail'" [field]="'email'"></app-table-column>
+    <app-table-column [title]="'Status'" [field]="'status'"></app-table-column>
+
+    <ng-container *ngIf="canManageCrewUsers">
+      <app-table-column [field]="Action.AcceptUser" [icon]="'fa-solid fa-check'" [isButton]="true" [ifField]="'status'" [ifValue]="RegistrationStatusEnum.APPLIED"></app-table-column>
+      <app-table-column [field]="Action.DeclineUser" [icon]="'fa-solid fa-xmark'" [isButton]="true"></app-table-column>
+    </ng-container>
+  </app-table>
+</div>

@@ -1,0 +1,61 @@
+<ng-container *ngIf="race">
+  <div class="detail-header-wrapper">
+    <h1>
+      {{ race.name }}
+    </h1>
+    <p class="detail-header-info">{{ race.isPublic ? 'Public' : 'Private' }}</p>
+    <ng-container *ngIf="userRace">
+      <p class="detail-header-info">User {{ RegistrationStatus[userRace.status] }}</p>
+    </ng-container>
+  </div>
+
+  <div class="detail-wrapper">
+    <div class="detail-text-wrapper">
+      <label>Date</label>
+      <p>{{ race.date | date }}</p>
+    </div>
+    <div class="detail-text-wrapper">
+      <label>Sign up until</label>
+      <p>{{ race.signUpUntil | date }}</p>
+    </div>
+    <div class="detail-text-wrapper">
+      <label>Location</label>
+      <p>{{ race.location }}</p>
+    </div>
+    <div class="detail-text-wrapper">
+      <label>Description</label>
+      <p>{{ race.description }}</p>
+    </div>
+    <div class="detail-text-wrapper">
+      <label>Organizer</label>
+      <p>{{ race.mainOrganizerName }}</p>
+    </div>
+
+    <div class="detail-button-wrapper">
+      <ng-container *ngIf="canDoChanges">
+        <button mat-flat-button color="primary" (click)="updateRaceDetail()">Update race detail</button>
+      </ng-container>
+      <ng-container *ngIf="isOpenForRegistration">
+        <button mat-flat-button color="primary" (click)="signUpShips()">Sign up ships</button>
+      </ng-container>
+    </div>
+  </div>
+
+  <mat-tab-group animationDuration="0ms">
+    <mat-tab label="Crews">
+      <ng-template matTabContent>
+        <app-crews-table #crewsTable [staticFilters]="filters" [canManageCrews]="canDoChanges" [isAfterRace]="isAfterRace" [isPrivate]="!(race?.isPublic)"></app-crews-table>
+      </ng-template>
+    </mat-tab>
+    <mat-tab label="Participants">
+      <ng-template matTabContent>
+        <app-participants-table #participantsTable [staticFilters]="filters"></app-participants-table>
+      </ng-template>
+    </mat-tab>
+    <mat-tab label="Results">
+      <ng-template matTabContent>
+        <app-results-table #resultsTable [staticFilters]="filters"></app-results-table>
+      </ng-template>
+    </mat-tab>
+  </mat-tab-group>
+</ng-container>

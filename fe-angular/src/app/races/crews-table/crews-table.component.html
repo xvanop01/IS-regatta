@@ -1,0 +1,18 @@
+<div class="table-wrapper">
+  <app-table #table [serviceName]="'crew-table'" [staticFilters]="staticFilters" (onButtonClick)="buttonClicked($event)">
+    <app-table-search [title]="'Name'" [column]="'shipName'"></app-table-search>
+    <app-table-search [title]="'Registration'" [column]="'shipRegistration'"></app-table-search>
+    <app-table-search [title]="'Owner'" [column]="'shipOwnerName'"></app-table-search>
+
+    <app-table-column [title]="'Id'" [field]="'id'" [width]="50"></app-table-column>
+    <app-table-column [title]="'Name'" [field]="'shipName'"></app-table-column>
+    <app-table-column [title]="'Registration'" [field]="'shipRegistration'"></app-table-column>
+    <app-table-column [title]="'Ship\'s owner'" [field]="'shipOwnerName'"></app-table-column>
+    <app-table-column [title]="'Status'" [field]="'status'"></app-table-column>
+
+    <app-table-column [field]="Action.RedirectToDetail" [icon]="'fas fa-angle-right'" [isButton]="true"></app-table-column>
+    <app-table-column *ngIf="canManageCrews && isAfterRace" [field]="Action.UpdateResults" [icon]="'fa-solid fa-medal'" [isButton]="true"></app-table-column>
+    <app-table-column *ngIf="canManageCrews && isPrivate" [field]="Action.AcceptCrew" [icon]="'fa-solid fa-check'" [isButton]="true" [ifField]="'status'" [ifValue]="RegistrationStatusEnum.APPLIED"></app-table-column>
+    <app-table-column *ngIf="canManageCrews" [field]="Action.DeclineCrew" [icon]="'fa-solid fa-xmark'" [isButton]="true"></app-table-column>
+  </app-table>
+</div>

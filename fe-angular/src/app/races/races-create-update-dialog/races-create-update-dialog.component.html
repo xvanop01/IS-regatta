@@ -1,0 +1,8 @@
+<app-dialog [title]="raceId ? 'Update race' : 'Create race'" [data]="data" (submitButtonClick)="onSubmitButtonClick($event)">
+  <app-dialog-field [field]="'name'" [title]="'Name'" [type]="DialogFieldType.STRING" [required]="true"></app-dialog-field>
+  <app-dialog-field [field]="'location'" [title]="'Location'" [type]="DialogFieldType.STRING"></app-dialog-field>
+  <app-dialog-field [field]="'date'" [title]="'Race date'" [type]="DialogFieldType.DATE" [required]="true"></app-dialog-field>
+  <app-dialog-field [field]="'signUpUntil'" [title]="'Sign up until'" [type]="DialogFieldType.DATE"></app-dialog-field>
+  <app-dialog-field [field]="'description'" [title]="'Description'" [type]="DialogFieldType.STRING"></app-dialog-field>
+  <app-dialog-field [field]="'isPublic'" [title]="'Open for all'" [type]="DialogFieldType.BOOLEAN"></app-dialog-field>
+</app-dialog>

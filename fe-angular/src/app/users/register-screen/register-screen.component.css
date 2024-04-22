@@ -1,0 +1,15 @@
+mat-form-field {
+  width: 212px;
+  margin-bottom: 10px;
+}
+
+h1, form {
+  text-align: center;
+}
+
+.register-page-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}

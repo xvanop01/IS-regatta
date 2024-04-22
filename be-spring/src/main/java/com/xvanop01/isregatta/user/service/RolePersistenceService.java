@@ -1,9 +1,9 @@
 package com.xvanop01.isregatta.user.service;
 
+import com.xvanop01.isregatta.base.support.template.PersistenceService;
 import com.xvanop01.isregatta.user.model.Role;
 import com.xvanop01.isregatta.user.repository.RoleRepository;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,10 +12,11 @@ import java.util.List;
 
 @Service
 @Slf4j
-public class RolePersistenceService {
+public class RolePersistenceService extends PersistenceService<Role, RoleRepository> {
 
-    @Autowired
-    private RoleRepository repository;
+    public RolePersistenceService(RoleRepository repository) {
+        super(repository);
+    }
 
     public List<Role> getRolesByUserId(Integer userId) {
         log.info("getRolesByUserId: {}", userId);
@@ -25,9 +26,12 @@ public class RolePersistenceService {
         return new ArrayList<>();
     }
 
-    public List<Role> getAllRoles() {
-        log.info("getAllRoles");
-        return repository.findAll();
+    public List<Role> getRolesByUsername(String username) {
+        log.info("getRolesByUsername: {}", username);
+        if (username != null) {
+            return repository.findAllByUsername(username);
+        }
+        return new ArrayList<>();
     }
 
     @Transactional

@@ -1,0 +1,70 @@
+<h2 mat-dialog-title>{{title}}</h2>
+<mat-dialog-content>
+  <div class="dialog-template">
+    <ng-container *ngFor="let field of fields">
+
+      <ng-container *ngIf="field.type === DialogFieldType.STRING || field.type === DialogFieldType.NUMBER">
+        <div class="field-wrapper">
+          <mat-form-field>
+            <mat-label>{{field?.title}}</mat-label>
+            <input type="{{field?.type}}" matInput [formControl]="field.fc" [required]="field.required" (blur)="validateField(field)">
+            <mat-hint *ngIf="field.error === null && field.info">{{field.info}}</mat-hint>
+            <mat-error *ngIf="field.error != null">{{field.error}}</mat-error>
+          </mat-form-field>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="field.type === DialogFieldType.BOOLEAN">
+        <div class="field-wrapper">
+          <mat-checkbox color="primary" [formControl]="field.fc">{{field?.title}}</mat-checkbox>
+          <mat-error *ngIf="field.error != null">{{field.error}}</mat-error>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="field.type === DialogFieldType.ENUM || field.type === DialogFieldType.ENUM_MULTIPLE">
+        <div class="field-wrapper">
+          <mat-form-field>
+            <mat-label>{{field?.title}}</mat-label>
+            <mat-select [multiple]="field.type === DialogFieldType.ENUM_MULTIPLE" [required]="field.required" [formControl]="field.fc" (blur)="validateField(field)" (closed)="validateField(field)">
+              <ng-container *ngFor="let e of field.enum">
+                <mat-option [value]="e.value">{{e.title}}</mat-option>
+              </ng-container>
+            </mat-select>
+            <mat-error *ngIf="field.error != null">{{field.error}}</mat-error>
+          </mat-form-field>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="field.type == DialogFieldType.DATE">
+        <div class="datepicker-wrapper">
+          <mat-form-field>
+            <mat-label>{{field?.title}}</mat-label>
+            <input matInput [matDatepicker]="datepicker" [formControl]="field.fc" [required]="field.required" (blur)="validateField(field)">
+            <mat-hint *ngIf="field.error === null">DD.MM.YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="datepicker"></mat-datepicker-toggle>
+            <mat-datepicker #datepicker (closed)="validateField(field)"></mat-datepicker>
+            <mat-error *ngIf="field.error != null">{{field.error}}</mat-error>
+          </mat-form-field>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="field.type == DialogFieldType.PASSWORD">
+        <div class="field-wrapper">
+          <mat-form-field>
+            <mat-label>{{field?.title}}</mat-label>
+            <input [type]="field.pswdVisible ? 'text' : 'password'" matInput [formControl]="field.fc" [required]="field.required" (blur)="validateField(field)">
+            <button type="button" mat-icon-button matSuffix (click)="onIconClicked(field)">
+              <i class="{{field.pswdVisible ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'}}"></i>
+            </button>
+          </mat-form-field>
+          <mat-error *ngIf="field.error != null">{{field.error}}</mat-error>
+        </div>
+      </ng-container>
+
+    </ng-container>
+  </div>
+</mat-dialog-content>
+<mat-dialog-actions>
+  <button mat-button mat-stroked-button color="primary" mat-dialog-close>Cancel</button>
+  <button mat-button mat-flat-button color="primary" (click)="onSubmitButtonClick()" [disabled]="isFieldInvalid()">Submit</button>
+</mat-dialog-actions>

@@ -1,8 +1,3 @@
-export interface CreateUserDto {
-  username: string;
-  password: string;
-}
-
 export interface UpdateUserDto {
   username: string;
   password: string;
@@ -15,10 +10,6 @@ export interface UserDetailDto {
   username: string;
   email: string;
   fullName: string;
-}
-
-export interface UserDetailListDto {
-  users: Array<UserDetailDto>;
 }
 
 export interface RoleDto {

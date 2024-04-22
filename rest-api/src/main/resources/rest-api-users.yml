@@ -4,56 +4,13 @@ info:
   description: REST API for Users' management
   version: 0.0.1
 
+servers:
+  - url: '{server}/api'
+    variables:
+      server:
+        default: 'http://localhost:8080'
+
 paths:
-  /users:
-    get:
-      tags:
-        - user-controller
-      summary: Get all users
-      operationId: getAllUsers
-      responses:
-        200:
-          description: Users successfully retrieved
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserDetailListDto'
-        400:
-          description: Bad request
-        401:
-          description: Unauthorized
-        403:
-          description: Forbidden
-        500:
-          description: Internal server error
-    post:
-      tags:
-        - user-controller
-      summary: Create new user
-      operationId: createUser
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/CreateUserDto'
-      responses:
-        201:
-          description: User successfully created
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserDetailDto'
-        400:
-          description: Bad request
-        401:
-          description: Unauthorized
-        403:
-          description: Forbidden
-        409:
-          description: Conflict
-        500:
-          description: Internal server error
   /users/user/{userId}:
     get:
       tags:
@@ -85,7 +42,7 @@ paths:
           description: User not found
         500:
           description: Internal server error
-    patch:
+    put:
       tags:
         - user-controller
       summary: Update user's info
@@ -218,12 +175,6 @@ paths:
 
 components:
   schemas:
-    CreateUserDto:
-      properties:
-        username:
-          type: string
-        password:
-          type: string
     UpdateUserDto:
       properties:
         username:
@@ -245,12 +196,6 @@ components:
           type: string
         fullName:
           type: string
-    UserDetailListDto:
-      properties:
-        users:
-          type: array
-          items:
-            $ref: '#/components/schemas/UserDetailDto'
     RoleDto:
       properties:
         id:

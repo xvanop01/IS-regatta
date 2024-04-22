@@ -1,22 +1,25 @@
 package com.xvanop01.isregatta.base.config;
 
+import static org.springframework.security.web.util.matcher.RegexRequestMatcher.regexMatcher;
+
 import com.xvanop01.isregatta.user.service.UserDetailsServiceImpl;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.HttpStatusEntryPoint;
+import org.springframework.security.web.authentication.AuthenticationFailureHandler;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
 @Configuration
-@EnableWebSecurity
+@Slf4j
 public class WebSecurityConfig {
 
     private final UserDetailsServiceImpl userDetailsService;
@@ -33,23 +36,34 @@ public class WebSecurityConfig {
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
+                .requestMatchers("/index.html").permitAll()
+                .and()
+                .authorizeHttpRequests()
+                .requestMatchers(regexMatcher("/.*\\.js")).permitAll()
+                .and()
+                .authorizeHttpRequests()
+                .requestMatchers(regexMatcher("/.*\\.css")).permitAll()
+                .and()
+                .authorizeHttpRequests()
+                .requestMatchers(regexMatcher("/.*\\.ico")).permitAll()
+                .and()
+                .authorizeHttpRequests()
                 .requestMatchers("/register").permitAll()
                 .and()
                 .authorizeHttpRequests()
-                .requestMatchers("/api/user").permitAll()
+                .requestMatchers("/login").permitAll()
                 .and()
                 .authorizeHttpRequests()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .defaultSuccessUrl("http://localhost:4200/", true)
+                .loginPage("/login")
+                .defaultSuccessUrl("/", true)
+                .failureHandler(getAuthenticationFailureHandler())
                 .permitAll()
                 .and()
-                .exceptionHandling()
-                .authenticationEntryPoint(getUnauthorizedEntryPoint())
-                .and()
                 .logout()
-                .logoutSuccessUrl("http://localhost:4200/")
+                .logoutSuccessHandler(getLogoutSuccessHandler())
                 .permitAll();
         return httpSecurity.build();
     }
@@ -72,7 +86,16 @@ public class WebSecurityConfig {
         return provider;
     }
 
-    private AuthenticationEntryPoint getUnauthorizedEntryPoint() {
-        return new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED);
+    private AuthenticationFailureHandler getAuthenticationFailureHandler() {
+        return (request, response, exception) -> {
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.sendRedirect("/login?error=" + exception.getMessage());
+        };
+    }
+
+    private LogoutSuccessHandler getLogoutSuccessHandler() {
+        return (request, response, authentication) -> {
+            response.setStatus(HttpStatus.OK.value());
+        };
     }
 }

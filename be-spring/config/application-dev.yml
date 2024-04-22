@@ -12,9 +12,7 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: validate
-  thymeleaf:
-    prefix: file:./src/main/resources/templates/
-    cache: false
+    open-in-view: true
   flyway:
     enabled: false
 

@@ -1,27 +1,33 @@
 <div class="toolbar">
-  <div class="home-button">
-    <a href="index.html">
-      Home
-    </a>
-  </div>
-  <ng-container *ngIf="authenticated; else loginLink">
-    <a href="http://localhost:4200/home">
-      <ng-container *ngIf="user">
-        {{ user?.username }}
+  <div class="toolbar-wrapper">
+    <div class="toolbar-left">
+      <ng-container *ngIf="authenticated">
+        <button mat-icon-button (click)="redirectToHome()">
+          <i class="fa-solid fa-house"></i>
+        </button>
+        <button mat-icon-button (click)="redirectToUsers()">
+          <i class="fa-solid fa-users"></i>
+        </button>
+        <button mat-icon-button (click)="redirectToRaces()">
+          <i class="fa-solid fa-flag-checkered"></i>
+        </button>
+        <button mat-icon-button (click)="redirectToShips()">
+          <i class="fa-solid fa-sailboat"></i>
+        </button>
       </ng-container>
-    </a>
-    |
-    <a href="http://localhost:8080/logout">
-      Log Out
-    </a>
-  </ng-container>
-  <ng-template #loginLink>
-    <a href="http://localhost:4200/login">
-      Log In
-    </a>
-    |
-    <a href="http://localhost:4200/register">
-      Register
-    </a>
-  </ng-template>
+    </div>
+    <div class="toolbar-right">
+      <p>IS Regatta</p>
+      <ng-container *ngIf="authenticated; else loginLink">
+        <button mat-icon-button (click)="redirectToLogout()">
+          <i class="fa-solid fa-arrow-right-from-bracket"></i>
+        </button>
+      </ng-container>
+      <ng-template #loginLink>
+        <button mat-icon-button (click)="redirectToLogin()">
+          <i class="fa-solid fa-arrow-right-to-bracket"></i>
+        </button>
+      </ng-template>
+    </div>
+  </div>
 </div>

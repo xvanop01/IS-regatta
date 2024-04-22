@@ -11,11 +11,11 @@
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-devkit/build-angular:browser",
+          "builder": "@angular-devkit/build-angular:application",
           "options": {
             "outputPath": "dist/isregatta-angular",
             "index": "src/index.html",
-            "main": "src/main.ts",
+            "browser": "src/main.ts",
             "polyfills": [
               "zone.js"
             ],
@@ -34,8 +34,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kb",
-                  "maximumError": "1mb"
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -46,12 +46,9 @@
               "outputHashing": "all"
             },
             "development": {
-              "buildOptimizer": false,
               "optimization": false,
-              "vendorChunk": true,
               "extractLicenses": false,
-              "sourceMap": true,
-              "namedChunks": true
+              "sourceMap": true
             }
           },
           "defaultConfiguration": "production"
@@ -60,10 +57,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "isregatta-angular:build:production"
+              "buildTarget": "isregatta-angular:build:production"
             },
             "development": {
-              "browserTarget": "isregatta-angular:build:development"
+              "buildTarget": "isregatta-angular:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -71,7 +68,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "isregatta-angular:build"
+            "buildTarget": "isregatta-angular:build"
           }
         },
         "test": {

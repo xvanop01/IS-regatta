@@ -1,0 +1,4 @@
+<app-dialog [title]="'Set results for ' + crewName" [data]="data" (submitButtonClick)="onSubmitButtonClick($event)">
+  <app-dialog-field [field]="'position'" [title]="'Position'" [type]="DialogFieldType.NUMBER" [required]="true" [validators]="Validators.min(1)" [errorMessage]="'Must be positive number'"></app-dialog-field>
+  <app-dialog-field [field]="'time'" [value]="'00:00:00'" [title]="'Time'"  [validators]="Validators.pattern('^[0-9]?[0-9]:[0-9]?[0-9]:[0-9]?[0-9](\.[0-9][0-9]?[0-9]?)?')" [info]="'Pattern 00:00:00.000'" [errorMessage]="'Pattern 00:00:00.000'"></app-dialog-field>
+</app-dialog>

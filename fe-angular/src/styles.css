@@ -1,14 +1,114 @@
-/* You can add global styles to this file, and also import other style files */
 @import "../node_modules/@angular/material/prebuilt-themes/indigo-pink.css";
 
 .mat-mdc-snack-bar-container {
-  --mat-mdc-snack-bar-button-color: white;
   --mdc-snackbar-container-color: darkred;
   --mdc-snackbar-supporting-text-color: white;
 }
 
 .success-snack {
-  --mat-mdc-snack-bar-button-color: white;
   --mdc-snackbar-container-color: green;
   --mdc-snackbar-supporting-text-color: white;
+}
+
+.mat-mdc-snack-bar-container .mdc-button__label {
+  color: white;
+}
+
+.mat-mdc-form-field-subscript-wrapper {
+  height: 0;
+}
+
+.cdk-global-overlay-wrapper:has(simple-snack-bar) {
+  justify-content: end !important;
+  align-items: start !important;
+}
+
+.cdk-global-overlay-wrapper:not(:has(simple-snack-bar)) {
+  justify-content: center !important;
+  align-items: center !important;
+}
+
+h1 {
+  padding: 10px;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.row-2c {
+  width: 100%;
+  display: inline-grid;
+  grid-template-columns: auto auto;
+  gap: 10px;
+}
+
+.table-wrapper {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 100%;
+}
+
+.table-buttons {
+  text-align: right;
+  line-height: 53px;
+  height: 53px;
+}
+
+.table-buttons button {
+  margin-right: 10px;
+}
+
+a, a:visited {
+  color: mediumblue;
+}
+
+.detail-wrapper {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid darkgrey;
+  padding: 5px;
+}
+
+.detail-header-wrapper {
+  display: flex;
+  align-items: flex-start;
+  gap: 5px;
+}
+
+.detail-header-info {
+  color: white;
+  background-color: green;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.detail-text-wrapper {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.detail-button-wrapper {
+  display: flex;
+  align-items: flex-end;
+  gap: 5px;
+}
+
+.detail-text-wrapper label {
+  color: dimgrey;
+}
+
+.detail-text-wrapper p {
+  margin: 0;
+}
+
+mat-tab-group {
+  position: absolute;
+  top: 107px;
+  bottom: 0;
+  width: 100%;
+}
+
+.mat-mdc-tab-body-wrapper {
+  height: 100%;
+  padding-top: 10px;
 }

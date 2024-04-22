@@ -16,20 +16,20 @@ import java.util.stream.Collectors;
 @Slf4j
 public class UserDetailsServiceImpl implements UserDetailsService {
 
-    private final UserPersistanceService userPersistanceService;
+    private final UserPersistenceService userPersistenceService;
     private final RolePersistenceService rolePersistenceService;
 
-    public UserDetailsServiceImpl(UserPersistanceService userPersistanceService,
+    public UserDetailsServiceImpl(UserPersistenceService userPersistenceService,
                                   RolePersistenceService rolePersistenceService) {
         super();
-        this.userPersistanceService = userPersistanceService;
+        this.userPersistenceService = userPersistenceService;
         this.rolePersistenceService = rolePersistenceService;
     }
 
     @Override
     public UserLogin loadUserByUsername(String username) throws UsernameNotFoundException {
         log.info("loadUserByUsername: {}", username);
-        User user = userPersistanceService.findByUsername(username);
+        User user = userPersistenceService.findByUsername(username);
         if (user != null) {
             Collection<? extends GrantedAuthority> authorities = getAuthorities(user.getId());
             UserLogin userLogin = new UserLogin(user.getUsername(), user.getPassword(), !authorities.isEmpty(),

@@ -1,0 +1,4 @@
+<app-dialog [title]="shipId ? 'Update ship' : 'Create ship'" [data]="data" (submitButtonClick)="onSubmitButtonClick($event)">
+  <app-dialog-field [field]="'name'" [title]="'Name'" [type]="DialogFieldType.STRING" [required]="true"></app-dialog-field>
+  <app-dialog-field [field]="'registration'" [title]="'Registration'" [type]="DialogFieldType.STRING"></app-dialog-field>
+</app-dialog>

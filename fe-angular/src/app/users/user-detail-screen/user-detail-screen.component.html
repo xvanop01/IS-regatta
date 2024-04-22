@@ -1,0 +1,40 @@
+<ng-container *ngIf="user">
+  <div class="detail-header-wrapper">
+    <h1>
+      User {{ user.username }}
+    </h1>
+    <ng-container *ngFor="let role of userRoles">
+      <p class="detail-header-info">{{ role.role }}</p>
+    </ng-container>
+  </div>
+
+  <div class="detail-wrapper">
+    <div class="detail-text-wrapper">
+      <label>Name</label>
+      <p>{{ user.fullName }}</p>
+    </div>
+    <div class="detail-text-wrapper">
+      <label>E-mail</label>
+      <p>{{ user.email }}</p>
+    </div>
+    <div class="detail-button-wrapper">
+      <ng-container *ngIf="isActiveAdmin">
+        <button mat-flat-button color="primary" (click)="updateRoles()">Update user roles</button>
+      </ng-container>
+      <button mat-flat-button color="primary" (click)="updateUser()">Update user info</button>
+    </div>
+  </div>
+
+  <mat-tab-group animationDuration="0ms">
+    <mat-tab label="Participant in races">
+      <ng-template matTabContent>
+        <app-races-table [staticFilters]="filters"></app-races-table>
+      </ng-template>
+    </mat-tab>
+    <mat-tab label="Ships">
+      <ng-template matTabContent>
+        <app-ships-table [staticFilters]="filters"></app-ships-table>
+      </ng-template>
+    </mat-tab>
+  </mat-tab-group>
+</ng-container>

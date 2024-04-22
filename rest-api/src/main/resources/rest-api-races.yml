@@ -1,0 +1,615 @@
+openapi: 3.0.0
+info:
+  title: IS Regatta Race REST API
+  description: REST API for Race management
+  version: 0.0.1
+
+servers:
+  - url: '{server}/api'
+    variables:
+      server:
+        default: 'http://localhost:8080'
+
+paths:
+  /races:
+    post:
+      tags:
+        - race-controller
+      summary: Create new race
+      operationId: createRace
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUpdateRaceDto'
+      responses:
+        201:
+          description: Race successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RaceDetailDto'
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        409:
+          description: Conflict
+        500:
+          description: Internal server error
+  /races/race/{raceId}:
+    get:
+      tags:
+        - race-controller
+      summary: Get race's info
+      operationId: getRace
+      parameters:
+        - name: raceId
+          in: path
+          required: true
+          description: Race's ID
+          schema:
+            type: integer
+            format: int32
+      responses:
+        200:
+          description: Race's info retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RaceDetailDto'
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        404:
+          description: Race not found
+        500:
+          description: Internal server error
+    put:
+      tags:
+        - race-controller
+      summary: Update race's info
+      operationId: updateRace
+      parameters:
+        - name: raceId
+          in: path
+          required: true
+          description: Race's ID
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUpdateRaceDto'
+      responses:
+        200:
+          description: Race's info updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RaceDetailDto'
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        404:
+          description: Race not found
+        409:
+          description: Conflict
+        500:
+          description: Internal server error
+  /races/race/{raceId}/active-user:
+    get:
+      tags:
+        - race-controller
+      summary: Get info if user signed in
+      operationId: getActiveUserRaceInfo
+      parameters:
+        - name: raceId
+          in: path
+          required: true
+          description: Race's ID
+          schema:
+            type: integer
+            format: int32
+      responses:
+        200:
+          description: User's info retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRaceInfoDto'
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        404:
+          description: Race not found
+        500:
+          description: Internal server error
+  /races/crew/{crewId}:
+    get:
+      tags:
+        - race-controller
+      summary: Get crew's info
+      operationId: getCrew
+      parameters:
+        - name: crewId
+          in: path
+          required: true
+          description: Crew's ID
+          schema:
+            type: integer
+            format: int32
+      responses:
+        200:
+          description: Crew's info retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CrewDetailDto'
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        404:
+          description: Race not found
+        500:
+          description: Internal server error
+  /races/crew/{crewId}/results:
+    get:
+      tags:
+        - race-controller
+      summary: Get crew's results
+      operationId: getCrewResults
+      parameters:
+        - name: crewId
+          in: path
+          required: true
+          description: Crew's ID
+          schema:
+            type: integer
+            format: int32
+      responses:
+        200:
+          description: Crew's results retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CrewResultsDetailDto'
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        404:
+          description: Race not found
+        500:
+          description: Internal server error
+    put:
+      tags:
+        - race-controller
+      summary: Update crew's results
+      operationId: updateCrewResults
+      parameters:
+        - name: crewId
+          in: path
+          required: true
+          description: Crew's ID
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CrewResultsUpdateDto'
+      responses:
+        200:
+          description: Crew's results successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CrewResultsDetailDto'
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        409:
+          description: Conflict
+        500:
+          description: Internal server error
+  /races/crew/{crewId}/accept:
+    post:
+      tags:
+        - ship-controller
+      summary: Accept crew to race
+      operationId: acceptCrewToRace
+      parameters:
+        - name: crewId
+          in: path
+          required: true
+          description: Crew's ID
+          schema:
+            type: integer
+            format: int32
+      responses:
+        200:
+          description: Ship successfully accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CrewDetailDto'
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        409:
+          description: Conflict
+        500:
+          description: Internal server error
+  /races/crew/{crewId}/remove:
+    delete:
+      tags:
+        - ship-controller
+      summary: Remove crew from race
+      operationId: removeCrewFromRace
+      parameters:
+        - name: crewId
+          in: path
+          required: true
+          description: Crew's ID
+          schema:
+            type: integer
+            format: int32
+      responses:
+        200:
+          description: Crew successfully removed
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        409:
+          description: Conflict
+        500:
+          description: Internal server error
+  /races/crew/{crewId}/apply:
+    post:
+      tags:
+        - ship-controller
+      summary: Apply to crew
+      operationId: applyToCrew
+      parameters:
+        - name: crewId
+          in: path
+          required: true
+          description: Crew's ID
+          schema:
+            type: integer
+            format: int32
+      responses:
+        201:
+          description: Successfully apply to crew
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRaceInfoDto'
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        409:
+          description: Conflict
+        500:
+          description: Internal server error
+  /races/crew/{crewId}/leave:
+    delete:
+      tags:
+        - ship-controller
+      summary: Leave crew
+      operationId: leaveCrew
+      parameters:
+        - name: crewId
+          in: path
+          required: true
+          description: Crew's ID
+          schema:
+            type: integer
+            format: int32
+      responses:
+        200:
+          description: Successfully leaved crew
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        409:
+          description: Conflict
+        500:
+          description: Internal server error
+  /races/crew-user/{crewUserId}/accept:
+    post:
+      tags:
+        - ship-controller
+      summary: Accept user to crew
+      operationId: acceptUserToCrew
+      parameters:
+        - name: crewUserId
+          in: path
+          required: true
+          description: CrewUser's ID
+          schema:
+            type: integer
+            format: int32
+      responses:
+        200:
+          description: User successfully accepted
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRaceInfoDto'
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        409:
+          description: Conflict
+        500:
+          description: Internal server error
+  /races/crew-user/{crewUserId}/remove:
+    delete:
+      tags:
+        - ship-controller
+      summary: Remove user from crew
+      operationId: removeUserFromCrew
+      parameters:
+        - name: crewUserId
+          in: path
+          required: true
+          description: Crew's ID
+          schema:
+            type: integer
+            format: int32
+      responses:
+        200:
+          description: User successfully removed
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        409:
+          description: Conflict
+        500:
+          description: Internal server error
+  /races/race/{raceId}/ships:
+    get:
+      tags:
+        - ship-controller
+      summary: Get ships' suitable for race registration
+      operationId: getShipsForRace
+      parameters:
+        - name: raceId
+          in: path
+          required: true
+          description: Race's ID
+          schema:
+            type: integer
+            format: int32
+      responses:
+        200:
+          description: Ships' info retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CrewDetailListDto'
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        404:
+          description: Race not found
+        500:
+          description: Internal server error
+    post:
+      tags:
+        - ship-controller
+      summary: Sign up ships for the race
+      operationId: signUpShipsForRace
+      parameters:
+        - name: raceId
+          in: path
+          required: true
+          description: Race's ID
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShipSignUpListDto'
+      responses:
+        201:
+          description: Ship successfully registered
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CrewDetailListDto'
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        409:
+          description: Conflict
+        500:
+          description: Internal server error
+
+components:
+  schemas:
+    CreateUpdateRaceDto:
+      properties:
+        name:
+          type: string
+        location:
+          type: string
+        date:
+          type: string
+          format: date
+        signUpUntil:
+          type: string
+          format: date
+        description:
+          type: string
+        isPublic:
+          type: boolean
+    RaceDetailDto:
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+        location:
+          type: string
+        date:
+          type: string
+          format: date
+        signUpUntil:
+          type: string
+          format: date
+        description:
+          type: string
+        isPublic:
+          type: boolean
+        mainOrganizerId:
+          type: integer
+          format: int32
+        mainOrganizerName:
+          type: string
+    RaceDetailListDto:
+      properties:
+        races:
+          type: array
+          items:
+            $ref: '#/components/schemas/RaceDetailDto'
+    UpdateRaceDatesDto:
+      properties:
+        date:
+          type: string
+          format: date
+        signUpUntil:
+          type: string
+          format: date
+    ShipSignUpListDto:
+      properties:
+        ships:
+          type: array
+          items:
+            type: integer
+            format: int32
+    CrewDetailDto:
+      properties:
+        id:
+          type: integer
+          format: int32
+        raceId:
+          type: integer
+          format: int32
+        shipName:
+          type: string
+        shipRegistration:
+          type: string
+        shipOwnerId:
+          type: integer
+          format: int32
+        shipOwnerName:
+          type: string
+        raceName:
+          type: string
+        status:
+          $ref: '#/components/schemas/RegistrationStatusEnum'
+    RegistrationStatusEnum:
+      type: string
+      enum:
+        - APPLIED
+        - REGISTERED
+    CrewDetailListDto:
+      properties:
+        crews:
+          type: array
+          items:
+            $ref: '#/components/schemas/CrewDetailDto'
+    UserRaceInfoDto:
+      properties:
+        id:
+          type: integer
+          format: int32
+        raceId:
+          type: integer
+          format: int32
+        crewId:
+          type: integer
+          format: int32
+        shipName:
+          type: string
+        name:
+          type: string
+        email:
+          type: string
+        status:
+          $ref: '#/components/schemas/RegistrationStatusEnum'
+    CrewResultsDetailDto:
+      properties:
+        id:
+          type: integer
+          format: int32
+        crewName:
+          type: string
+        position:
+          type: integer
+          format: int32
+        time:
+          type: string
+    CrewResultsUpdateDto:
+      properties:
+        position:
+          type: integer
+          format: int32
+        time:
+          type: string
