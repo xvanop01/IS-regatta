@@ -17,6 +17,7 @@ import org.hibernate.annotations.Subselect;
         + "  crew.race_id, "
         + "  ship.name as ship_name, "
         + "  ship.registration as ship_registration, "
+        + "  owner.id as ship_owner_id, "
         + "  IFNULL(owner.full_name, owner.username) as ship_owner_name, "
         + "  race.name as race_name, "
         + "  crew.status "
@@ -37,6 +38,8 @@ public class CrewView {
     private String shipName;
 
     private String shipRegistration;
+
+    private Integer shipOwnerId;
 
     private String shipOwnerName;
 

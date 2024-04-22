@@ -50,6 +50,18 @@ public class RaceController implements RacesApi {
     }
 
     @Override
+    public ResponseEntity<UserRaceInfoDto> acceptUserToCrew(Integer crewUserId) {
+        log.info("acceptUserToCrew: crewUserId: {}", crewUserId);
+        CrewUser crewUser;
+        try {
+            crewUser = raceService.acceptUserToCrew(crewUserId);
+        } catch (HttpException e) {
+            return HttpExceptionHandler.resolve(e);
+        }
+        return ResponseEntity.ok(crewMapper.map(crewUser));
+    }
+
+    @Override
     public ResponseEntity<UserRaceInfoDto> applyToCrew(Integer crewId) {
         log.info("applyToCrew: crewId: {}", crewId);
         CrewUser crewUser;
@@ -134,6 +146,17 @@ public class RaceController implements RacesApi {
         log.info("removeCrewFromRace: crewId: {}", crewId);
         try {
             raceService.removeCrew(crewId);
+        } catch (HttpException e) {
+            return HttpExceptionHandler.resolve(e);
+        }
+        return ResponseEntity.status(HttpStatus.OK).build();
+    }
+
+    @Override
+    public ResponseEntity<Void> removeUserFromCrew(Integer crewUserId) {
+        log.info("removeUserFromCrew: crewUserId: {}", crewUserId);
+        try {
+            raceService.removeUserFromCrew(crewUserId);
         } catch (HttpException e) {
             return HttpExceptionHandler.resolve(e);
         }

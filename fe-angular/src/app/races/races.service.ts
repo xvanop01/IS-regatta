@@ -62,4 +62,12 @@ export class RacesService {
   public leaveCrew(crewId: number): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}/crew/${crewId}/leave`);
   }
+
+  public acceptUserToCrew(crewUserId: number): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/crew-user/${crewUserId}/accept`, null);
+  }
+
+  public declineUserFromCrew(crewUserId: number): Observable<any> {
+    return this.http.delete<any>(`${this.apiUrl}/crew-user/${crewUserId}/remove`);
+  }
 }

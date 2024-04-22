@@ -7,6 +7,7 @@ import {MatSnackBar} from "@angular/material/snack-bar";
 import {NgIf} from "@angular/common";
 import {CrewUsersTableComponent} from "../crew-users-table/crew-users-table.component";
 import {SearchType} from "../../core/support/table/table.model";
+import {LoggedUserService} from "../../users/logged-user.service";
 
 @Component({
   selector: 'app-crew-detail',
@@ -29,11 +30,14 @@ export class CrewDetailScreenComponent implements OnInit {
 
   public filters: Array<any> = [];
 
+  public canManageCrewUsers: boolean = false;
+
   protected readonly RegistrationStatus = RegistrationStatus;
 
   constructor(private route: ActivatedRoute,
               private router: Router,
               private racesService: RacesService,
+              private loggedUserService: LoggedUserService,
               private snackBar: MatSnackBar) {
   }
 
@@ -47,6 +51,19 @@ export class CrewDetailScreenComponent implements OnInit {
     });
     this.racesService.getCrew(crewId).subscribe(crewDetailDto => {
       this.crew = crewDetailDto;
+      this.loggedUserService.getLoggedUser().subscribe(user => {
+        if (crewDetailDto.shipOwnerId === user.id) {
+          this.canManageCrewUsers = true;
+        } else {
+          this.loggedUserService.getLoggedUserRoles().subscribe(roles => {
+            for (let i = 0; i < roles.roles.length; i++) {
+              if (roles.roles.at(i)?.role == 'ADMIN') {
+                this.canManageCrewUsers = true;
+              }
+            }
+          });
+        }
+      });
       this.racesService.getActiveUserRaceInfo(crewDetailDto.raceId).subscribe(userRaceInfoDto => {
         this.userRace = userRaceInfoDto;
       }, error => {

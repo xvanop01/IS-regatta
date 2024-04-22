@@ -200,4 +200,33 @@ public class RaceService {
         }
         crewUserPersistnceService.removeById(crewUser.getId());
     }
+
+    @Transactional(rollbackFor = HttpException.class)
+    public CrewUser acceptUserToCrew(Integer crewUserId) throws HttpException {
+        log.info("acceptUserToCrew: crewUserId: {}", crewUserId);
+        CrewUser crewUser = crewUserPersistnceService.findById(crewUserId);
+        if (crewUser == null) {
+            throw new HttpException(HttpReturnCode.NOT_FOUND, "Crew user not found by id: " + crewUserId);
+        }
+        if (!Objects.equals(crewUser.getCrew().getShip().getOwner().getId(), PrincipalService.getPrincipalId())
+                && !securityService.isAdmin()) {
+            throw new HttpException(HttpReturnCode.FORBIDDEN, "You do not have permission to accept a user.");
+        }
+        crewUser.setStatus(RegistrationStatus.REGISTERED);
+        return crewUserPersistnceService.persist(crewUser);
+    }
+
+    @Transactional(rollbackFor = HttpException.class)
+    public void removeUserFromCrew(Integer crewUserId) throws HttpException {
+        log.info("removeUserFromCrew: crewUserId: {}", crewUserId);
+        CrewUser crewUser = crewUserPersistnceService.findById(crewUserId);
+        if (crewUser == null) {
+            throw new HttpException(HttpReturnCode.NOT_FOUND, "Crew user not found by id: " + crewUserId);
+        }
+        if (!Objects.equals(crewUser.getCrew().getShip().getOwner().getId(), PrincipalService.getPrincipalId())
+                && !securityService.isAdmin()) {
+            throw new HttpException(HttpReturnCode.FORBIDDEN, "You do not have permission to remove a user.");
+        }
+        crewUserPersistnceService.removeById(crewUser.getId());
+    }
 }

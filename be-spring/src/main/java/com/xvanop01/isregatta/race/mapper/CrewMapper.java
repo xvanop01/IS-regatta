@@ -21,6 +21,7 @@ public abstract class CrewMapper {
             @Mapping(target = "shipName", source = "ship.name"),
             @Mapping(target = "shipRegistration", source = "ship.registration"),
             @Mapping(target = "raceName", source = "race.name"),
+            @Mapping(target = "shipOwnerId", source = "ship.owner.id"),
             @Mapping(target = "shipOwnerName", expression = "java(crew.getShip().getOwner().getFullName() == null ||"
                     + " crew.getShip().getOwner().getFullName().isEmpty() ? "
                             + "crew.getShip().getOwner().getUsername() : crew.getShip().getOwner().getFullName())")

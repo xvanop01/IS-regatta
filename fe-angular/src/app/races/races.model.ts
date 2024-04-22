@@ -34,6 +34,7 @@ export interface CrewDetailDto {
   raceId: number;
   shipName: string;
   shipRegistration: string;
+  shipOwnerId: number;
   shipOwnerName: string;
   raceName: string;
   status: RegistrationStatusEnum;
