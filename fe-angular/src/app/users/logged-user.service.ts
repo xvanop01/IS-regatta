@@ -10,14 +10,14 @@ import { RoleListDto, UserDetailDto } from "./users.model";
   protected apiUrl;
 
   constructor(protected http: HttpClient) {
-    this.apiUrl = 'http://localhost:8080/api';
+    this.apiUrl = '/api';
   }
 
   public getLoggedUser(): Observable<UserDetailDto> {
-    return this.http.get<UserDetailDto>(`${this.apiUrl}/user`, {withCredentials: true});
+    return this.http.get<UserDetailDto>(`${this.apiUrl}/user`);
   }
 
   public getLoggedUserRoles(): Observable<RoleListDto> {
-    return this.http.get<RoleListDto>(`${this.apiUrl}/user/roles`, {withCredentials: true});
+    return this.http.get<RoleListDto>(`${this.apiUrl}/user/roles`);
   }
 }

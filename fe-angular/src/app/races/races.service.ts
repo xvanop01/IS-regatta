@@ -16,7 +16,7 @@ export class RacesService {
   protected apiUrl;
 
   constructor(protected http: HttpClient) {
-    this.apiUrl = 'http://localhost:8080/api/races';
+    this.apiUrl = '/api/races';
   }
 
   public createRace(createRaceDto: CreateUdateRaceDto): Observable<RaceDetailDto> {

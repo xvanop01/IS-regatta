@@ -11,7 +11,7 @@ export class ShipsService {
   protected apiUrl;
 
   constructor(protected http: HttpClient) {
-    this.apiUrl = 'http://localhost:8080/api/ships';
+    this.apiUrl = '/api/ships';
   }
 
   public getShip(shipId: number): Observable<ShipDetailDto> {

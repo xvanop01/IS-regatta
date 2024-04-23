@@ -97,7 +97,7 @@ export class UserDetailScreenComponent implements OnInit {
         }
       },
       error => {
-        let snackBarRef = this.snackBar.open(error.status + ': ' + error.error, 'X');
+        this.router.navigate(['/login']);
       });
     if (userId != null) {
       this.filters.push({

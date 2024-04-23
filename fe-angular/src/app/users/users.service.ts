@@ -15,7 +15,7 @@ export class UsersService {
   protected apiUrl;
 
   constructor(protected http: HttpClient) {
-    this.apiUrl = 'http://localhost:8080/api/users';
+    this.apiUrl = '/api/users';
   }
 
   public register(credentials: any): Observable<UserDetailDto> {

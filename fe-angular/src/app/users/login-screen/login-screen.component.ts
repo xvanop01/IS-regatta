@@ -1,12 +1,11 @@
 import {Component, ElementRef, OnInit, ViewChild} from "@angular/core";
-import {ActivatedRoute, RouterLink} from "@angular/router";
+import {ActivatedRoute, Router, RouterLink} from "@angular/router";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {MatIconModule} from "@angular/material/icon";
 import {MatButtonModule} from "@angular/material/button";
 import {FormControl, FormGroup, ReactiveFormsModule} from "@angular/forms";
-import {UsersService} from "../users.service";
 
 enum VisiblePassword {
   Hide = 'password',
@@ -43,8 +42,8 @@ export class LoginScreenComponent implements OnInit {
   public fg: FormGroup;
 
   constructor(private activatedRoute: ActivatedRoute,
-              private snackBar: MatSnackBar,
-              private usersService: UsersService) {
+              private router: Router,
+              private snackBar: MatSnackBar) {
     this.fg = new FormGroup({
       username: new FormControl(''),
       password: new FormControl('')

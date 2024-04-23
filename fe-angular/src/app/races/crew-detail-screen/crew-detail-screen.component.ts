@@ -4,7 +4,7 @@ import {MatButtonModule} from "@angular/material/button";
 import {ActivatedRoute, Router} from "@angular/router";
 import {RacesService} from "../races.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
-import {NgIf} from "@angular/common";
+import {formatDate, NgIf} from "@angular/common";
 import {CrewUsersTableComponent} from "../crew-users-table/crew-users-table.component";
 import {SearchType} from "../../core/support/table/table.model";
 import {LoggedUserService} from "../../users/logged-user.service";
@@ -32,6 +32,8 @@ export class CrewDetailScreenComponent implements OnInit {
 
   public canManageCrewUsers: boolean = false;
 
+  public isOpenForRegistration: boolean = false;
+
   protected readonly RegistrationStatus = RegistrationStatus;
 
   constructor(private route: ActivatedRoute,
@@ -51,6 +53,10 @@ export class CrewDetailScreenComponent implements OnInit {
     });
     this.racesService.getCrew(crewId).subscribe(crewDetailDto => {
       this.crew = crewDetailDto;
+      this.racesService.getRace(crewDetailDto.raceId).subscribe(raceDetailDto => {
+        this.isOpenForRegistration = formatDate(new Date(), 'yyyy-MM-dd', 'en_US')
+          <= formatDate(raceDetailDto.signUpUntil, 'yyyy-MM-dd', 'en_US');
+      })
       this.loggedUserService.getLoggedUser().subscribe(user => {
         if (crewDetailDto.shipOwnerId === user.id) {
           this.canManageCrewUsers = true;

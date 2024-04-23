@@ -31,8 +31,6 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .cors()
-                .and()
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
@@ -58,6 +56,7 @@ public class WebSecurityConfig {
                 .and()
                 .formLogin()
                 .loginPage("/login")
+                .loginProcessingUrl("/authenticate")
                 .defaultSuccessUrl("/", true)
                 .failureHandler(getAuthenticationFailureHandler())
                 .permitAll()
@@ -94,8 +93,6 @@ public class WebSecurityConfig {
     }
 
     private LogoutSuccessHandler getLogoutSuccessHandler() {
-        return (request, response, authentication) -> {
-            response.setStatus(HttpStatus.OK.value());
-        };
+        return (request, response, authentication) -> response.setStatus(HttpStatus.OK.value());
     }
 }

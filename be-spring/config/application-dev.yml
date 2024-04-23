@@ -1,7 +1,7 @@
 dev:
   tempDir: "dev-tmp"
 
-public-url: https://localhost:8080
+public-url: http://localhost:8080
 
 spring:
   datasource:
