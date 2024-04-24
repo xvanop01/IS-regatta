@@ -52,6 +52,9 @@ public class WebSecurityConfig {
                 .requestMatchers("/login").permitAll()
                 .and()
                 .authorizeHttpRequests()
+                .requestMatchers("/api/user").permitAll()
+                .and()
+                .authorizeHttpRequests()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
@@ -63,6 +66,7 @@ public class WebSecurityConfig {
                 .and()
                 .logout()
                 .logoutSuccessHandler(getLogoutSuccessHandler())
+                .logoutSuccessUrl("/login")
                 .permitAll();
         return httpSecurity.build();
     }

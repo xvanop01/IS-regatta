@@ -58,10 +58,7 @@ export class UserDetailScreenComponent implements OnInit {
     this.loggedUserService.getLoggedUser().subscribe(
       result => {
         if (result == null) {
-          let snackBarRef = this.snackBar.open('User unauthorised', 'Log In');
-          snackBarRef.afterDismissed().subscribe(
-            () => this.router.navigate(['/login'])
-          );
+          this.router.navigate(['/login']);
         } else {
           if (userId == null) {
             this.user = result;
