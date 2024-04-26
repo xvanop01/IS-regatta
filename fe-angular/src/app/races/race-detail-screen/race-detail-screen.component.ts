@@ -14,6 +14,7 @@ import {CrewsTableComponent} from "../crews-table/crews-table.component";
 import {RegistrationStatus, UserRaceInfoDto} from "../races.model";
 import {ParticipantsTableComponent} from "../participants-table/participants-table.component";
 import {ResultsTableComponent} from "../results-table/results-table.component";
+import {MapComponent} from "../../core/support/map/map.component";
 
 @Component({
   selector: 'app-race-detail',
@@ -28,7 +29,8 @@ import {ResultsTableComponent} from "../results-table/results-table.component";
     MatTabsModule,
     CrewsTableComponent,
     ParticipantsTableComponent,
-    ResultsTableComponent
+    ResultsTableComponent,
+    MapComponent
   ]
 })
 export class RaceDetailScreenComponent implements OnInit {

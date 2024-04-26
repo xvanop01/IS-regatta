@@ -42,6 +42,11 @@
   </div>
 
   <mat-tab-group animationDuration="0ms">
+    <mat-tab label="Map">
+      <ng-template matTabContent>
+        <app-map></app-map>
+      </ng-template>
+    </mat-tab>
     <mat-tab label="Crews">
       <ng-template matTabContent>
         <app-crews-table #crewsTable [staticFilters]="filters" [canManageCrews]="canDoChanges" [isAfterRace]="isAfterRace" [isPrivate]="!(race?.isPublic)"></app-crews-table>
