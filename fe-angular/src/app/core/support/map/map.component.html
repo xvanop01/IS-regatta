@@ -1,3 +1,13 @@
 <div class="table-wrapper">
   <div id="map" class="map"></div>
+  <div class="controls">
+    <button mat-flat-button color="primary" (click)="placeCourseClicked()">{{placingCourse ? 'Remove course' : 'Place course'}}</button>
+    <ng-container *ngIf="placingCourse">
+      <mat-form-field>
+        <mat-label>Wind angle</mat-label>
+        <input type="number" matInput min="0" max="359" [formControl]="angleFormControl" (change)="angleChanged()">
+        <mat-error *ngIf="angleFormControl.errors != null">Value must be between 0 and 359</mat-error>
+      </mat-form-field>
+    </ng-container>
+  </div>
 </div>
