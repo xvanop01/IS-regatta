@@ -78,3 +78,20 @@ CREATE TABLE race_crew_user (
     CONSTRAINT FK_race_crew_user__user_id FOREIGN KEY (`user_id`) REFERENCES `user_user` (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
+
+CREATE TABLE race_race_course (
+    `race_id` int(10) NOT NULL,
+    `buoy1long` decimal(20, 10) DEFAULT NULL,
+    `buoy1lat` decimal(20, 10) DEFAULT NULL,
+    `buoy2long` decimal(20, 10) DEFAULT NULL,
+    `buoy2lat` decimal(20, 10) DEFAULT NULL,
+    `buoy3long` decimal(20, 10) DEFAULT NULL,
+    `buoy3lat` decimal(20, 10) DEFAULT NULL,
+    `center_long` decimal(20, 10) DEFAULT NULL,
+    `center_lat` decimal(20, 10) DEFAULT NULL,
+    `zoom` int(10) DEFAULT NULL,
+    `wind_angle` int(10) DEFAULT NULL,
+    CONSTRAINT PK_race_race_course_id PRIMARY KEY (`race_id`),
+    CONSTRAINT FK_race_race_course__race_id FOREIGN KEY (`race_id`) REFERENCES `race_race` (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4;

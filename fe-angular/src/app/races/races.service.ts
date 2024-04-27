@@ -2,7 +2,8 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import {
-  CreateUdateRaceDto,
+  CourseDetailDto,
+  CreateUdateRaceDto, CreateUpdateCourseDto,
   CrewDetailDto, CrewDetailListDto, CrewResultsDetailDto, CrewResultsUpdateDto,
   RaceDetailDto,
   ShipSignUpListDto, UserRaceInfoDto
@@ -77,5 +78,13 @@ export class RacesService {
 
   public updateCrewResults(crewId: number, dto: CrewResultsUpdateDto): Observable<CrewResultsDetailDto> {
     return this.http.put<CrewResultsDetailDto>(`${this.apiUrl}/crew/${crewId}/results`, dto);
+  }
+
+  public getCourse(raceId: number): Observable<CourseDetailDto> {
+    return this.http.get<CourseDetailDto>(`${this.apiUrl}/race/${raceId}/course`);
+  }
+
+  public createUpdateCourse(raceId: number, dto: CreateUpdateCourseDto): Observable<CourseDetailDto> {
+    return this.http.post<CourseDetailDto>(`${this.apiUrl}/race/${raceId}/course`, dto);
   }
 }

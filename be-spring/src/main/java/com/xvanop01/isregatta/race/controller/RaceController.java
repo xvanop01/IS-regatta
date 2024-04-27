@@ -1,6 +1,8 @@
 package com.xvanop01.isregatta.race.controller;
 
 import com.xvanop01.isregatta.api.race.RacesApi;
+import com.xvanop01.isregatta.api.race.model.CourseDetailDto;
+import com.xvanop01.isregatta.api.race.model.CreateUpdateCourseDto;
 import com.xvanop01.isregatta.api.race.model.CreateUpdateRaceDto;
 import com.xvanop01.isregatta.api.race.model.CrewDetailDto;
 import com.xvanop01.isregatta.api.race.model.CrewDetailListDto;
@@ -16,6 +18,7 @@ import com.xvanop01.isregatta.base.security.SecurityService;
 import com.xvanop01.isregatta.race.mapper.RaceMapper;
 import com.xvanop01.isregatta.race.model.CrewUser;
 import com.xvanop01.isregatta.race.model.Race;
+import com.xvanop01.isregatta.race.model.RaceCourse;
 import com.xvanop01.isregatta.race.service.RaceService;
 import com.xvanop01.isregatta.race.mapper.CrewMapper;
 import com.xvanop01.isregatta.race.model.Crew;
@@ -89,6 +92,21 @@ public class RaceController implements RacesApi {
     }
 
     @Override
+    public ResponseEntity<CourseDetailDto> createUpdateRacesCourse(Integer raceId,
+            CreateUpdateCourseDto createUpdateCourseDto) {
+        log.info("createUpdateRacesCourse: raceId: {}, createUpdateCourseDto: {}", raceId, createUpdateCourseDto);
+        boolean isNew;
+        RaceCourse raceCourse = raceMapper.map(createUpdateCourseDto);
+        try {
+            isNew = raceService.getRaceCourse(raceId) == null;
+            raceCourse = raceService.createUpdateRaceCourse(raceId, raceCourse);
+        } catch (HttpException e) {
+            return HttpExceptionHandler.resolve(e);
+        }
+        return ResponseEntity.status(isNew ? HttpStatus.CREATED : HttpStatus.OK).body(raceMapper.map(raceCourse));
+    }
+
+    @Override
     public ResponseEntity<UserRaceInfoDto> getActiveUserRaceInfo(Integer raceId) {
         log.info("getActiveUserRaceInfo: raceId: {}", raceId);
         CrewUser crewUser = raceService.getCrewForActive(raceId);
@@ -129,6 +147,13 @@ public class RaceController implements RacesApi {
             return HttpExceptionHandler.resolve(e);
         }
         return ResponseEntity.ok(raceMapper.map(race));
+    }
+
+    @Override
+    public ResponseEntity<CourseDetailDto> getRacesCourse(Integer raceId) {
+        log.info("getRacesCourse: raceId: {}", raceId);
+        RaceCourse raceCourse = raceService.getRaceCourse(raceId);
+        return ResponseEntity.ok(raceMapper.map(raceCourse));
     }
 
     @Override

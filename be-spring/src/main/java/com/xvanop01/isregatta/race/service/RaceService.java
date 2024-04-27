@@ -6,6 +6,7 @@ import com.xvanop01.isregatta.base.security.PrincipalService;
 import com.xvanop01.isregatta.base.security.SecurityService;
 import com.xvanop01.isregatta.race.model.Crew;
 import com.xvanop01.isregatta.race.model.CrewUser;
+import com.xvanop01.isregatta.race.model.RaceCourse;
 import com.xvanop01.isregatta.race.model.RegistrationStatus;
 import com.xvanop01.isregatta.race.model.Race;
 import com.xvanop01.isregatta.ship.model.Ship;
@@ -30,6 +31,7 @@ public class RaceService {
     private final CrewPersistenceService crewPersistenceService;
     private final CrewUserPersistnceService crewUserPersistnceService;
     private final ShipPersistenceService shipPersistenceService;
+    private final RaceCoursePersistenceService raceCoursePersistenceService;
     private final SecurityService securityService;
     private final UserService userService;
 
@@ -250,5 +252,21 @@ public class RaceService {
         crew.setPosition(results.getPosition());
         crew.setFinishingTime(results.getFinishingTime());
         return crewPersistenceService.persist(crew);
+    }
+
+    public RaceCourse getRaceCourse(Integer raceId) {
+        log.info("getRaceCourse: raceId: {}", raceId);
+        return raceCoursePersistenceService.findById(raceId);
+    }
+
+    @Transactional(rollbackFor = HttpException.class)
+    public RaceCourse createUpdateRaceCourse(Integer raceId, RaceCourse raceCourse) throws HttpException {
+        log.info("createUpdateRaceCourse: raceId: {}, raceCourse: {}", raceId, raceCourse);
+        Race race = racePersistenceService.findById(raceId);
+        if (race == null) {
+            throw new HttpException(HttpReturnCode.NOT_FOUND, "Race not found by id: " + raceId);
+        }
+        raceCourse.setRaceId(raceId);
+        return raceCoursePersistenceService.persist(raceCourse);
     }
 }

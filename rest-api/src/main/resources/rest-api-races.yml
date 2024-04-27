@@ -140,6 +140,146 @@ paths:
           description: Race not found
         500:
           description: Internal server error
+  /races/race/{raceId}/ships:
+    get:
+      tags:
+        - race-controller
+      summary: Get ships' suitable for race registration
+      operationId: getShipsForRace
+      parameters:
+        - name: raceId
+          in: path
+          required: true
+          description: Race's ID
+          schema:
+            type: integer
+            format: int32
+      responses:
+        200:
+          description: Ships' info retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CrewDetailListDto'
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        404:
+          description: Race not found
+        500:
+          description: Internal server error
+    post:
+      tags:
+        - race-controller
+      summary: Sign up ships for the race
+      operationId: signUpShipsForRace
+      parameters:
+        - name: raceId
+          in: path
+          required: true
+          description: Race's ID
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShipSignUpListDto'
+      responses:
+        201:
+          description: Ship successfully registered
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CrewDetailListDto'
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        409:
+          description: Conflict
+        500:
+          description: Internal server error
+  /races/race/{raceId}/course:
+    get:
+      tags:
+        - race-controller
+      summary: Get race's course
+      operationId: getRacesCourse
+      parameters:
+        - name: raceId
+          in: path
+          required: true
+          description: Race's ID
+          schema:
+            type: integer
+            format: int32
+      responses:
+        200:
+          description: Course's info retrieved
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CourseDetailDto'
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        404:
+          description: Race not found
+        500:
+          description: Internal server error
+    post:
+      tags:
+        - race-controller
+      summary: Create or update race's course
+      operationId: createUpdateRacesCourse
+      parameters:
+        - name: raceId
+          in: path
+          required: true
+          description: Race's ID
+          schema:
+            type: integer
+            format: int32
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUpdateCourseDto'
+      responses:
+        200:
+          description: Course successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CourseDetailDto'
+        201:
+          description: Course successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CourseDetailDto'
+        400:
+          description: Bad request
+        401:
+          description: Unauthorized
+        403:
+          description: Forbidden
+        409:
+          description: Conflict
+        500:
+          description: Internal server error
   /races/crew/{crewId}:
     get:
       tags:
@@ -412,73 +552,6 @@ paths:
           description: Conflict
         500:
           description: Internal server error
-  /races/race/{raceId}/ships:
-    get:
-      tags:
-        - ship-controller
-      summary: Get ships' suitable for race registration
-      operationId: getShipsForRace
-      parameters:
-        - name: raceId
-          in: path
-          required: true
-          description: Race's ID
-          schema:
-            type: integer
-            format: int32
-      responses:
-        200:
-          description: Ships' info retrieved
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CrewDetailListDto'
-        400:
-          description: Bad request
-        401:
-          description: Unauthorized
-        403:
-          description: Forbidden
-        404:
-          description: Race not found
-        500:
-          description: Internal server error
-    post:
-      tags:
-        - ship-controller
-      summary: Sign up ships for the race
-      operationId: signUpShipsForRace
-      parameters:
-        - name: raceId
-          in: path
-          required: true
-          description: Race's ID
-          schema:
-            type: integer
-            format: int32
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ShipSignUpListDto'
-      responses:
-        201:
-          description: Ship successfully registered
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CrewDetailListDto'
-        400:
-          description: Bad request
-        401:
-          description: Unauthorized
-        403:
-          description: Forbidden
-        409:
-          description: Conflict
-        500:
-          description: Internal server error
 
 components:
   schemas:
@@ -613,3 +686,42 @@ components:
           format: int32
         time:
           type: string
+    CoordinatesDto:
+      properties:
+        longitude:
+          type: number
+        latitude:
+          type: number
+    CreateUpdateCourseDto:
+      properties:
+        buoy1:
+          $ref: '#/components/schemas/CoordinatesDto'
+        buoy2:
+          $ref: '#/components/schemas/CoordinatesDto'
+        buoy3:
+          $ref: '#/components/schemas/CoordinatesDto'
+        center:
+          $ref: '#/components/schemas/CoordinatesDto'
+        zoom:
+          type: number
+        windAngle:
+          type: integer
+          format: int32
+    CourseDetailDto:
+      properties:
+        raceId:
+          type: integer
+          format: int32
+        buoy1:
+          $ref: '#/components/schemas/CoordinatesDto'
+        buoy2:
+          $ref: '#/components/schemas/CoordinatesDto'
+        buoy3:
+          $ref: '#/components/schemas/CoordinatesDto'
+        center:
+          $ref: '#/components/schemas/CoordinatesDto'
+        zoom:
+          type: number
+        windAngle:
+          type: integer
+          format: int32
