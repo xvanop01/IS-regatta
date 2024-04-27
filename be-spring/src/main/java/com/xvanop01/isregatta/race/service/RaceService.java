@@ -266,6 +266,10 @@ public class RaceService {
         if (race == null) {
             throw new HttpException(HttpReturnCode.NOT_FOUND, "Race not found by id: " + raceId);
         }
+        if (!Objects.equals(race.getOrganizer().getId(), PrincipalService.getPrincipalId())
+                && !securityService.isAdmin()) {
+            throw new HttpException(HttpReturnCode.FORBIDDEN, "You do not have permission to update a race's course.");
+        }
         raceCourse.setRaceId(raceId);
         return raceCoursePersistenceService.persist(raceCourse);
     }
