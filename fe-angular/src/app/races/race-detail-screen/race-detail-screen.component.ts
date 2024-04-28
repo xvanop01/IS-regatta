@@ -53,6 +53,8 @@ export class RaceDetailScreenComponent implements OnInit {
 
   public isOpenForRegistration: boolean = false;
 
+  public isCourse: boolean = false;
+
   public filters: Array<any> = [];
 
   protected readonly RegistrationStatus = RegistrationStatus;
@@ -107,6 +109,11 @@ export class RaceDetailScreenComponent implements OnInit {
       this.userRace = result;
     }, error => {
       let snackBarRef = this.snackBar.open(error.status + ': ' + error.error, 'X');
+    })
+    this.racesService.getCourse(raceId).subscribe(result => {
+      if (result) {
+        this.isCourse = true;
+      }
     })
   }
 

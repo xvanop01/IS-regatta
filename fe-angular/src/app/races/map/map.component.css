@@ -8,3 +8,8 @@
   top: 5px;
   right: 5px;
 }
+
+.controls div * {
+  margin-bottom: 5px;
+  float: right;
+}

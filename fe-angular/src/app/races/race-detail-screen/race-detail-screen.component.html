@@ -42,11 +42,6 @@
   </div>
 
   <mat-tab-group animationDuration="0ms">
-    <mat-tab label="Map">
-      <ng-template matTabContent>
-        <app-map></app-map>
-      </ng-template>
-    </mat-tab>
     <mat-tab label="Crews">
       <ng-template matTabContent>
         <app-crews-table #crewsTable [staticFilters]="filters" [canManageCrews]="canDoChanges" [isAfterRace]="isAfterRace" [isPrivate]="!(race?.isPublic)"></app-crews-table>
@@ -60,6 +55,11 @@
     <mat-tab label="Results">
       <ng-template matTabContent>
         <app-results-table #resultsTable [staticFilters]="filters"></app-results-table>
+      </ng-template>
+    </mat-tab>
+    <mat-tab *ngIf="isCourse || canDoChanges" label="Map">
+      <ng-template matTabContent>
+        <app-map [canEdit]="canDoChanges"></app-map>
       </ng-template>
     </mat-tab>
   </mat-tab-group>

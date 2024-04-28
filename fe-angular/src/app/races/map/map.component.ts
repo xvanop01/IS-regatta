@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import 'ol/ol.css';
 import Map from 'ol/Map';
 import View from 'ol/View';
@@ -8,7 +8,7 @@ import {ATTRIBUTION} from "ol/source/OSM";
 import {fromLonLat} from "ol/proj";
 import VectorSource from "ol/source/Vector";
 import VectorLayer from "ol/layer/Vector";
-import {Fill, Stroke, Style} from "ol/style";
+import {Fill, Icon, Stroke, Style} from "ol/style";
 import {MatButton} from "@angular/material/button";
 import {LineString, MultiPoint, Point, Polygon} from "ol/geom";
 import {Feature} from "ol";
@@ -41,19 +41,6 @@ const courseStyles = [
   })
 ];
 
-const positionStyle = new Style({
-  image: new CircleStyle({
-    radius: 7,
-    fill: new Fill({
-      color: '#3f51b5',
-    }),
-    stroke: new Stroke({
-      color: 'white',
-      width: 2,
-    })
-  })
-});
-
 @Component({
   selector: 'app-map',
   standalone: true,
@@ -70,11 +57,18 @@ const positionStyle = new Style({
 })
 export class MapComponent implements OnInit{
 
+  @Input()
+  public canEdit: boolean = false;
+
   public map!: Map;
 
   public editingCourse: boolean = false;
 
+  public navigating: boolean = false;
+
   public trackVector: VectorSource = new VectorSource({features: []});
+
+  public navVector: VectorSource = new VectorSource({features: []});
 
   public angleFormControl: FormControl = new FormControl(0, [Validators.min(0), Validators.max(359)]);
 
@@ -113,24 +107,8 @@ export class MapComponent implements OnInit{
       maxZoom: 18,
       zoomFactor: 2
     })
-    const geolocation = new Geolocation({
-      trackingOptions: {
-        enableHighAccuracy: true,
-      },
-      projection: view.getProjection(),
-      tracking: true
-    });
-    geolocation.on('change:position', function () {
-      const coordinates = geolocation.getPosition();
-      geoFeature.setGeometry(coordinates ? new Point(coordinates) : undefined);
-    });
-    geolocation.on('error', function (error) {
-      console.error('Location error: ' + error.message);
-    });
-    const geoFeature = new Feature();
-    geoFeature.setStyle(positionStyle);
     const navigationLayer = new VectorLayer({
-      source: new VectorSource({features: [geoFeature]})
+      source: this.navVector
     });
     this.map = new Map({
       layers: [
@@ -261,5 +239,46 @@ export class MapComponent implements OnInit{
       this.map.getView().setCenter(center);
       this.map.getView().setZoom(this.savedCourse.zoom);
     }
+  }
+
+  public navigate(): void {
+    if (this.navigating) {
+      this.navVector.clear();
+    } else {
+      let icon = new Icon({
+        src: '../../../assets/navigation-position.svg',
+        scale: 0.4,
+        rotateWithView: true
+      });
+      const positionStyle = new Style({
+        image: icon
+      });
+      let view = this.map.getView();
+      const geoFeature = new Feature();
+      geoFeature.setStyle(positionStyle);
+      const geolocation = new Geolocation({
+        trackingOptions: {
+          enableHighAccuracy: true,
+        },
+        projection: view.getProjection(),
+        tracking: true
+      });
+      geolocation.on('change:heading', function () {
+        const heading = geolocation.getHeading();
+        if (heading) {
+          icon.setRotation(heading);
+        }
+      });
+      geolocation.on('change:position', function () {
+        const coordinates = geolocation.getPosition();
+        geoFeature.setGeometry(coordinates ? new Point(coordinates) : undefined);
+        view.setCenter(coordinates);
+      });
+      geolocation.on('error', function (error) {
+        console.error('Location error: ' + error.message);
+      });
+      this.navVector.addFeature(geoFeature);
+    }
+    this.navigating = !this.navigating;
   }
 }

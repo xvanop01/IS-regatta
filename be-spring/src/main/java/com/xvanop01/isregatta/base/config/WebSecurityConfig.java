@@ -62,7 +62,7 @@ public class WebSecurityConfig {
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login")
+                .loginPage(tunelUrl + "/login")
                 .loginProcessingUrl("/authenticate")
                 .defaultSuccessUrl(tunelUrl + "/", true)
                 .failureHandler(getAuthenticationFailureHandler())
