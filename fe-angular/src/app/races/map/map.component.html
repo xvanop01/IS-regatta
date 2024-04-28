@@ -11,7 +11,7 @@
     <div *ngIf="editingCourse">
       <button mat-flat-button color="primary" (click)="saveCourse()">Save course</button>
     </div>
-    <div *ngIf="canEdit">
+    <div *ngIf="canEdit && !navigating">
       <button mat-flat-button color="primary" (click)="editCourseClicked()">{{editingCourse ? 'Cancel editing' : 'Edit course'}}</button>
     </div>
     <div *ngIf="!editingCourse && canEdit">

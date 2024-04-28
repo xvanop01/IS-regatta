@@ -23,6 +23,7 @@ import {CourseDetailDto, CreateUpdateCourseDto} from "../races.model";
 import {ActivatedRoute} from "@angular/router";
 import {RacesService} from "../races.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
+import Text from 'ol/style/Text.js';
 
 const courseStyles = [
   new Style({
@@ -40,6 +41,29 @@ const courseStyles = [
     })
   })
 ];
+
+const courseLabelStyle = [
+  new Style({
+    stroke: new Stroke({
+      color: 'blue',
+      width: 1,
+    }),
+    text: new Text({
+      font: '12px Arial',
+      stroke: new Stroke({color: 'white', width: 1}),
+      text: ''
+    })})
+]
+
+const formatDistance = function (distance: number): string {
+  if (distance > 1000) {
+    distance = Math.round(distance / 10) / 100;
+    return distance + ' ' + 'km';
+  } else {
+    distance = Math.round(distance * 10) / 10;
+    return distance + ' ' + 'm';
+  }
+}
 
 @Component({
   selector: 'app-map',
@@ -66,7 +90,9 @@ export class MapComponent implements OnInit{
 
   public navigating: boolean = false;
 
-  public trackVector: VectorSource = new VectorSource({features: []});
+  public courseLabelVector: VectorSource = new VectorSource({features: []});
+
+  public courseVector: VectorSource = new VectorSource({features: []});
 
   public navVector: VectorSource = new VectorSource({features: []});
 
@@ -94,9 +120,13 @@ export class MapComponent implements OnInit{
 
   ngOnInit(): void {
     const courseLayer = new VectorLayer({
-      source: this.trackVector,
+      source: this.courseVector,
       style: courseStyles
     });
+    const courseLabelLayer = new VectorLayer({
+      source: this.courseLabelVector,
+      style: courseLabelStyle
+    })
     const seaLayer = new TileLayer({
       source: new OSM({
         attributions: [
@@ -110,7 +140,6 @@ export class MapComponent implements OnInit{
     const view = new View({
       center: fromLonLat([17, 49.4]),
       zoom: 7,
-      maxZoom: 18,
       zoomFactor: 2
     });
     this.geolocation.setProjection(view.getProjection());
@@ -123,6 +152,7 @@ export class MapComponent implements OnInit{
           source: new OSM(),
         }),
         seaLayer,
+        courseLabelLayer,
         courseLayer,
         navigationLayer
       ],
@@ -151,7 +181,8 @@ export class MapComponent implements OnInit{
 
   public refresh(): void {
     if (this.editingCourse) {
-      this.trackVector.clear();
+      this.courseVector.clear();
+      this.courseLabelVector.clear();
       this.renderCourse();
     }
   }
@@ -181,10 +212,22 @@ export class MapComponent implements OnInit{
       if (this.lastValidAngle != 0) {
         polygon.rotate(- this.lastValidAngle * Math.PI / 180, coord);
       }
-      this.trackVector.addFeature(new Feature({
-        geometry: polygon
+      const text = courseLabelStyle[0].getText()
+      if (text instanceof Text) {
+        text.setText(formatDistance(
+          new LineString([polygon.getCoordinates()[0][0], polygon.getCoordinates()[0][1]]).getLength()
+        ));
+      }
+      this.courseLabelVector.addFeature(new Feature({
+        geometry: new LineString([polygon.getCoordinates()[0][0], polygon.getCoordinates()[0][1]])
       }));
-      this.trackVector.addFeature(new Feature({
+      this.courseLabelVector.addFeature(new Feature({
+        geometry: new LineString([polygon.getCoordinates()[0][1], polygon.getCoordinates()[0][2]])
+      }));
+      this.courseLabelVector.addFeature(new Feature({
+        geometry: new LineString([polygon.getCoordinates()[0][2], polygon.getCoordinates()[0][0]])
+      }));
+      this.courseVector.addFeature(new Feature({
         geometry: new MultiPoint(polygon.getCoordinates()[0])
       }));
     }
@@ -192,7 +235,8 @@ export class MapComponent implements OnInit{
 
   public editCourseClicked(): void {
     this.editingCourse = !this.editingCourse;
-    this.trackVector.clear();
+    this.courseVector.clear();
+    this.courseLabelVector.clear();
     if (this.editingCourse) {
       if (this.savedCourse) {
         this.map.getView().setCenter([this.savedCourse.center.longitude, this.savedCourse.center.latitude])
@@ -220,6 +264,7 @@ export class MapComponent implements OnInit{
       this.racesService.createUpdateCourse(this.raceId, dto).subscribe(result => {
         this.savedCourse = result;
         this.editingCourse = false;
+        this.renderSaved();
       }, (error) => {
         this.snackBar.open(error.status + ': ' + error.error, 'X');
       })
@@ -228,6 +273,8 @@ export class MapComponent implements OnInit{
 
   public renderSaved(): void {
     if (this.savedCourse) {
+      this.courseVector.clear();
+      this.courseLabelVector.clear();
       const polygon = new Polygon([[
         [this.savedCourse.buoy1.longitude, this.savedCourse.buoy1.latitude],
         [this.savedCourse.buoy2.longitude, this.savedCourse.buoy2.latitude],
@@ -237,10 +284,10 @@ export class MapComponent implements OnInit{
       if (this.savedCourse.windAngle != 0) {
         polygon.rotate(- this.savedCourse.windAngle * Math.PI / 180, center);
       }
-      this.trackVector.addFeature(new Feature({
+      this.courseVector.addFeature(new Feature({
         geometry: polygon
       }));
-      this.trackVector.addFeature(new Feature({
+      this.courseVector.addFeature(new Feature({
         geometry: new MultiPoint(polygon.getCoordinates()[0])
       }));
       this.map.getView().setCenter(center);
