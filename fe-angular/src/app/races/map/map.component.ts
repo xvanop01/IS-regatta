@@ -70,6 +70,12 @@ export class MapComponent implements OnInit{
 
   public navVector: VectorSource = new VectorSource({features: []});
 
+  public geolocation: Geolocation = new Geolocation({
+    trackingOptions: {
+      enableHighAccuracy: true,
+    }
+  });
+
   public angleFormControl: FormControl = new FormControl(0, [Validators.min(0), Validators.max(359)]);
 
   public lastValidAngle: number = 0;
@@ -106,7 +112,8 @@ export class MapComponent implements OnInit{
       zoom: 7,
       maxZoom: 18,
       zoomFactor: 2
-    })
+    });
+    this.geolocation.setProjection(view.getProjection());
     const navigationLayer = new VectorLayer({
       source: this.navVector
     });
@@ -243,8 +250,10 @@ export class MapComponent implements OnInit{
 
   public navigate(): void {
     if (this.navigating) {
+      this.geolocation.setTracking(false);
       this.navVector.clear();
     } else {
+      this.geolocation.setTracking(true);
       let icon = new Icon({
         src: '../../../assets/navigation-position.svg',
         scale: 0.4,
@@ -256,13 +265,7 @@ export class MapComponent implements OnInit{
       let view = this.map.getView();
       const geoFeature = new Feature();
       geoFeature.setStyle(positionStyle);
-      const geolocation = new Geolocation({
-        trackingOptions: {
-          enableHighAccuracy: true,
-        },
-        projection: view.getProjection(),
-        tracking: true
-      });
+      const geolocation = this.geolocation;
       geolocation.on('change:heading', function () {
         const heading = geolocation.getHeading();
         if (heading) {
