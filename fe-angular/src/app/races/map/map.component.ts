@@ -56,6 +56,15 @@ const courseLabelStyle = [
   })
 ];
 
+const positionStyle = new Style({
+  image: new Icon({
+    src: '../../../assets/navigation-position.svg',
+    scale: 0.4,
+    rotateWithView: true,
+    displacement: [0, 4]
+  })
+});
+
 const navigateDistanceStyle = new Style({
   stroke: new Stroke({
     color: 'dimgrey',
@@ -77,6 +86,25 @@ const formatDistance = function (distance: number): string {
     distance = Math.round(distance * 10) / 10;
     return distance + ' ' + 'm';
   }
+}
+
+const createNavigationFeature = function (center: Array<number>,
+                                    position: Array<number>,
+                                    coordinates: CoordinatesDto,
+                                    windAngle: number): Feature {
+  let buoy = new Point([coordinates.longitude, coordinates.latitude]);
+  buoy.rotate(- windAngle * Math.PI / 180, center);
+  const style = navigateDistanceStyle.clone();
+  const text = style.getText();
+  const line = new LineString([position, buoy.getCoordinates()]);
+  if (text) {
+    text.setText(formatDistance(line.getLength()));
+  }
+  const feature = new Feature({
+    geometry: line
+  })
+  feature.setStyle(style);
+  return feature;
 }
 
 @Component({
@@ -109,8 +137,6 @@ export class MapComponent implements OnInit{
   public courseVector: VectorSource = new VectorSource({features: []});
 
   public navVector: VectorSource = new VectorSource({features: []});
-
-  public navDistanceVector: VectorSource = new VectorSource({features: []});
 
   public geolocation: Geolocation = new Geolocation({
     trackingOptions: {
@@ -162,16 +188,12 @@ export class MapComponent implements OnInit{
     const navigationLayer = new VectorLayer({
       source: this.navVector
     });
-    const navDistanceLayer = new VectorLayer({
-      source: this.navDistanceVector
-    });
     this.map = new Map({
       layers: [
         new TileLayer({
           source: new OSM(),
         }),
         seaLayer,
-        navDistanceLayer,
         navigationLayer,
         courseLabelLayer,
         courseLayer
@@ -226,7 +248,7 @@ export class MapComponent implements OnInit{
       const c1: Array<number> = [coord[0] + l2, coord[1] + l3];
       const c2: Array<number> = [coord[0] - l1, coord[1]];
       const c3: Array<number> = [coord[0] + l2, coord[1] - l3];
-      const track: Array<Array<number>> = [c1, c2, c3];
+      const track: Array<Array<number>> = [c1, c2, c3, c1];
       this.untransformedCoordinates = track;
       const polygon = new Polygon([track]);
       if (this.lastValidAngle != 0) {
@@ -234,19 +256,13 @@ export class MapComponent implements OnInit{
       }
       const text = courseLabelStyle[0].getText()
       if (text instanceof Text) {
-        text.setText(formatDistance(
-          new LineString([polygon.getCoordinates()[0][0], polygon.getCoordinates()[0][1]]).getLength()
-        ));
+        text.setText(formatDistance(l3 * 2));
       }
-      this.courseLabelVector.addFeature(new Feature({
-        geometry: new LineString([polygon.getCoordinates()[0][0], polygon.getCoordinates()[0][1]])
-      }));
-      this.courseLabelVector.addFeature(new Feature({
-        geometry: new LineString([polygon.getCoordinates()[0][1], polygon.getCoordinates()[0][2]])
-      }));
-      this.courseLabelVector.addFeature(new Feature({
-        geometry: new LineString([polygon.getCoordinates()[0][2], polygon.getCoordinates()[0][0]])
-      }));
+      for (let i = 0; i < 3; i++) {
+        this.courseLabelVector.addFeature(new Feature({
+          geometry: new LineString([polygon.getCoordinates()[0][i], polygon.getCoordinates()[0][i + 1]])
+        }));
+      }
       this.courseVector.addFeature(new Feature({
         geometry: new MultiPoint(polygon.getCoordinates()[0])
       }));
@@ -319,83 +335,45 @@ export class MapComponent implements OnInit{
     if (this.navigating) {
       this.geolocation.setTracking(false);
       this.navVector.clear();
-      this.navDistanceVector.clear();
     } else {
       this.geolocation.setTracking(true);
-      let icon = new Icon({
-        src: '../../../assets/navigation-position.svg',
-        scale: 0.4,
-        rotateWithView: true,
-        displacement: [0, 4]
-      });
-      const positionStyle = new Style({
-        image: icon
-      });
-      let view = this.map.getView();
-      const geoFeature = new Feature();
-      geoFeature.setStyle(positionStyle);
-      const geolocation = this.geolocation;
-      const navDistanceVector = this.navDistanceVector;
-      const savedCourse = this.savedCourse;
-      geolocation.on('change:heading', function () {
-        const heading = geolocation.getHeading();
-        if (heading) {
-          icon.setRotation(heading);
-        }
-      });
-      geolocation.on('change:position', function () {
-        const coordinates = geolocation.getPosition();
-        geoFeature.setGeometry(coordinates ? new Point(coordinates) : undefined);
-        view.setCenter(coordinates);
-        if (savedCourse && coordinates) {
-          navDistanceVector.clear();
-          let center = [savedCourse.center.longitude, savedCourse.center.latitude];
-          let buoy1 = new Point([savedCourse.buoy1.longitude, savedCourse.buoy1.latitude]);
-          buoy1.rotate(- savedCourse.windAngle * Math.PI / 180, center);
-          let buoy2 = new Point([savedCourse.buoy2.longitude, savedCourse.buoy2.latitude]);
-          buoy2.rotate(- savedCourse.windAngle * Math.PI / 180, center);
-          let buoy3 = new Point([savedCourse.buoy3.longitude, savedCourse.buoy3.latitude]);
-          buoy3.rotate(- savedCourse.windAngle * Math.PI / 180, center);
-          const style1 = navigateDistanceStyle.clone();
-          const text1 = style1.getText();
-          const line1 = new LineString([coordinates, buoy1.getCoordinates()]);
-          if (text1) {
-            text1.setText(formatDistance(line1.getLength()));
-          }
-          const feature1 = new Feature({
-            geometry: line1
-          })
-          feature1.setStyle(style1);
-          navDistanceVector.addFeature(feature1);
-          const style2 = navigateDistanceStyle.clone();
-          const text2 = style2.getText();
-          const line2 = new LineString([coordinates, buoy2.getCoordinates()]);
-          if (text2) {
-            text2.setText(formatDistance(line2.getLength()));
-          }
-          const feature2 = new Feature({
-            geometry: line2
-          })
-          feature2.setStyle(style2);
-          navDistanceVector.addFeature(feature2);
-          const style3 = navigateDistanceStyle.clone();
-          const text3 = style3.getText();
-          const line3 = new LineString([coordinates, buoy3.getCoordinates()]);
-          if (text3) {
-            text3.setText(formatDistance(line3.getLength()));
-          }
-          const feature3 = new Feature({
-            geometry: line3
-          })
-          feature3.setStyle(style3);
-          navDistanceVector.addFeature(feature3);
-        }
-      });
-      geolocation.on('error', function (error) {
-        console.error('Location error: ' + error.message);
-      });
-      this.navVector.addFeature(geoFeature);
+      this.setGeolocation();
     }
     this.navigating = !this.navigating;
+  }
+
+  public setGeolocation(): void {
+    const view = this.map.getView();
+    const geolocation = this.geolocation;
+    const navVector = this.navVector;
+    const savedCourse = this.savedCourse;
+
+    this.geolocation.on('change:heading', function () {
+      const heading = geolocation.getHeading();
+      const icon = positionStyle.getImage();
+      if (heading && icon) {
+        icon.setRotation(heading);
+      }
+    });
+
+    this.geolocation.on('change:position', function () {
+      navVector.clear();
+      const position = geolocation.getPosition();
+      const geoFeature = new Feature();
+      geoFeature.setStyle(positionStyle);
+      navVector.addFeature(geoFeature);
+      geoFeature.setGeometry(position ? new Point(position) : undefined);
+      view.setCenter(position);
+      if (savedCourse && position) {
+        let center = [savedCourse.center.longitude, savedCourse.center.latitude];
+        navVector.addFeature(createNavigationFeature(center, position, savedCourse.buoy1, savedCourse.windAngle));
+        navVector.addFeature(createNavigationFeature(center, position, savedCourse.buoy2, savedCourse.windAngle));
+        navVector.addFeature(createNavigationFeature(center, position, savedCourse.buoy3, savedCourse.windAngle));
+      }
+    });
+
+    this.geolocation.on('error', function (error) {
+      console.error('Location error: ' + error.message);
+    })
   }
 }
