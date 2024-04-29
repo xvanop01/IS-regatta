@@ -59,7 +59,7 @@ const courseLabelStyle = [
 const positionStyle = new Style({
   image: new Icon({
     src: '../../../assets/navigation-position.svg',
-    scale: 0.4,
+    scale: 0.5,
     rotateWithView: true,
     displacement: [0, 4]
   })

@@ -67,6 +67,8 @@ a, a:visited {
   justify-content: space-between;
   border-bottom: 1px solid darkgrey;
   padding: 5px;
+  overflow-x: scroll;
+  overflow-y: hidden;
 }
 
 .detail-header-wrapper {
@@ -76,21 +78,28 @@ a, a:visited {
 }
 
 .detail-header-info {
+  display: none;
   color: white;
   background-color: green;
   padding: 5px;
   border-radius: 5px;
+  margin-top: 10px;
 }
 
 .detail-text-wrapper {
   margin-top: auto;
   margin-bottom: auto;
+  min-width: 150px;
 }
 
 .detail-button-wrapper {
   display: flex;
   align-items: flex-end;
   gap: 5px;
+}
+
+.detail-button-wrapper button {
+  min-width: 175px;
 }
 
 .detail-text-wrapper label {
@@ -103,7 +112,7 @@ a, a:visited {
 
 mat-tab-group {
   position: absolute;
-  top: 107px;
+  top: 102px;
   bottom: 0;
   width: 100%;
 }
@@ -111,4 +120,14 @@ mat-tab-group {
 .mat-mdc-tab-body-wrapper {
   height: 100%;
   padding-top: 10px;
+}
+
+.mat-mdc-tab {
+  min-width: 150px !important;
+}
+
+@media only screen and (min-width: 500px) {
+  .detail-header-info {
+    display: inline;
+  }
 }

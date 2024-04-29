@@ -1,6 +1,6 @@
 .dialog-template {
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: auto;
   gap: 5px;
 }
 
@@ -20,4 +20,10 @@ mat-form-field {
 
 mat-dialog-actions {
   justify-content: right;
+}
+
+@media only screen and (min-width: 600px) {
+  .dialog-template {
+    grid-template-columns: auto auto;
+  }
 }

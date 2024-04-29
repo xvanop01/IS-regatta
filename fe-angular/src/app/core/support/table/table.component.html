@@ -1,35 +1,35 @@
 <div class="table-component-wrapper">
-  <ng-container *ngIf="searchColumns.length > 0">
     <div class="table-search-wrapper">
-      <ng-container *ngFor="let search of searchColumns">
-        <ng-container *ngIf="search.type === SearchType.STRING">
-          <mat-form-field>
-            <mat-label>{{search?.title}}</mat-label>
-            <input matInput type="text" [formControl]="search.fc">
-          </mat-form-field>
+      <ng-container *ngIf="searchColumns.length > 0">
+        <ng-container *ngFor="let search of searchColumns">
+          <ng-container *ngIf="search.type === SearchType.STRING">
+            <mat-form-field>
+              <mat-label>{{search?.title}}</mat-label>
+              <input matInput type="text" [formControl]="search.fc">
+            </mat-form-field>
+          </ng-container>
+          <ng-container *ngIf="search.type === SearchType.MONTH">
+            <mat-form-field>
+              <mat-label>{{search?.title}}</mat-label>
+              <input matInput [matDatepicker]="datepicker" [formControl]="search.fc" (blur)="setDateFilter(search.column)">
+              <mat-hint>MM-YYYY</mat-hint>
+              <mat-datepicker-toggle matIconSuffix [for]="datepicker"></mat-datepicker-toggle>
+              <mat-datepicker #datepicker
+                              startView="multi-year"
+                              (monthSelected)="setMonthAndYear($event, datepicker, search.column)">
+              </mat-datepicker>
+            </mat-form-field>
+          </ng-container>
         </ng-container>
-        <ng-container *ngIf="search.type === SearchType.MONTH">
-          <mat-form-field>
-            <mat-label>{{search?.title}}</mat-label>
-            <input matInput [matDatepicker]="datepicker" [formControl]="search.fc" (blur)="setDateFilter(search.column)">
-            <mat-hint>MM-YYYY</mat-hint>
-            <mat-datepicker-toggle matIconSuffix [for]="datepicker"></mat-datepicker-toggle>
-            <mat-datepicker #datepicker
-                            startView="multi-year"
-                            (monthSelected)="setMonthAndYear($event, datepicker, search.column)">
-            </mat-datepicker>
-          </mat-form-field>
-        </ng-container>
+        <button mat-stroked-button color="primary" (click)="doFilter()" class="search-button">Filter</button>
       </ng-container>
-      <button mat-stroked-button color="primary" (click)="doFilter()" class="search-button">Filter</button>
     </div>
-  </ng-container>
 
   <div id="table-pager-wrapper" class="table-pager-wrapper" style="top: {{(searchColumns.length > 0) ? 75 : 0}}px;">
     <table>
       <tr class="table-header-row">
         <ng-container *ngFor="let column of columns">
-          <th (click)="onHeaderClick(column?.field)" class="table-header-column" width="{{column?.width}}">
+          <th (click)="onHeaderClick(column?.field)" class="table-header-column" width="{{column?.width}}" style="min-width: {{column?.width === 'auto' ? (column?.isButton ? 50 : 150) : column?.width}}px">
             <i class="fa-solid fa-arrow-up" style="display: inline; visibility: hidden"></i><!-- for title center -->
             {{column?.title}}
             <i id="{{column?.field}}-placeholder" class="fa-solid fa-arrow-up" style="display: inline; visibility: hidden"></i>
@@ -41,7 +41,7 @@
 
       <!-- Data container -->
       <ng-container *ngFor="let row of rows; let i = index" class="table-data-container">
-        <tr style="width: 100%; height: 50px;" [class]="(i % 2) === 0 ? 'even-row' : 'odd-row'">
+        <tr class="{{(i % 2) === 0 ? 'even-row' : 'odd-row'}} table-row">
           <ng-container *ngFor="let column of columns">
             <ng-container *ngIf="column?.isButton; else field">
               <th [width]="50">
@@ -83,12 +83,12 @@
           <i class="fa-solid fa-angle-left"></i>
         </button>
         <ng-container *ngIf="pageSpecs.pageNumber - 2 >= 0">
-          <button mat-icon-button (click)="showPage(pageSpecs.pageNumber - 2)" style="transform: scale(0.65);">
+          <button class="pager-numbers-navigation" mat-icon-button (click)="showPage(pageSpecs.pageNumber - 2)" style="transform: scale(0.65);">
             {{pageSpecs.pageNumber - 1}}
           </button>
         </ng-container>
         <ng-container *ngIf="pageSpecs.pageNumber - 1 >= 0">
-          <button mat-icon-button (click)="showPage(pageSpecs.pageNumber - 1)" style="transform: scale(0.65);">
+          <button class="pager-numbers-navigation" mat-icon-button (click)="showPage(pageSpecs.pageNumber - 1)" style="transform: scale(0.65);">
             {{pageSpecs.pageNumber}}
           </button>
         </ng-container>
@@ -96,12 +96,12 @@
           <b>{{pageSpecs.pageNumber + 1}}</b>
         </button>
         <ng-container *ngIf="pageSpecs.pageNumber + 1 < totalPages">
-          <button mat-icon-button (click)="showPage(pageSpecs.pageNumber + 1)" style="transform: scale(0.65);">
+          <button class="pager-numbers-navigation" mat-icon-button (click)="showPage(pageSpecs.pageNumber + 1)" style="transform: scale(0.65);">
             {{pageSpecs.pageNumber + 2}}
           </button>
         </ng-container>
         <ng-container *ngIf="pageSpecs.pageNumber + 2 < totalPages">
-          <button mat-icon-button (click)="showPage(pageSpecs.pageNumber + 2)" style="transform: scale(0.65);">
+          <button class="pager-numbers-navigation" mat-icon-button (click)="showPage(pageSpecs.pageNumber + 2)" style="transform: scale(0.65);">
             {{pageSpecs.pageNumber + 3}}
           </button>
         </ng-container>
@@ -127,7 +127,9 @@
       </div>
 
       <div class="table-total-items">
-        <p>Total items: {{totalItems}}</p>
+        <p class="total-items-long">Total items: {{totalItems}}</p>
+        <p class="total-items-medium">Total: {{totalItems}}</p>
+        <p class="total-items-short">{{totalItems}}</p>
       </div>
     </div>
   </div>
