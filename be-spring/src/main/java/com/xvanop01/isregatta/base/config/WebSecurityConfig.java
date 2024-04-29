@@ -5,6 +5,7 @@ import static org.springframework.security.web.util.matcher.RegexRequestMatcher.
 import com.xvanop01.isregatta.user.service.UserDetailsServiceImpl;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,9 @@ import org.springframework.security.web.authentication.logout.LogoutSuccessHandl
 @Slf4j
 public class WebSecurityConfig {
 
+    @Value("${tunel-url}")
+    private String tunelUrl;
+
     private final UserDetailsServiceImpl userDetailsService;
 
     public WebSecurityConfig(UserDetailsServiceImpl userDetailsService) {
@@ -31,8 +35,6 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                .cors()
-                .and()
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
@@ -54,16 +56,21 @@ public class WebSecurityConfig {
                 .requestMatchers("/login").permitAll()
                 .and()
                 .authorizeHttpRequests()
+                .requestMatchers("/api/user").permitAll()
+                .and()
+                .authorizeHttpRequests()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login")
-                .defaultSuccessUrl("/", true)
+                .loginPage(tunelUrl + "/login")
+                .loginProcessingUrl("/authenticate")
+                .defaultSuccessUrl(tunelUrl + "/", true)
                 .failureHandler(getAuthenticationFailureHandler())
                 .permitAll()
                 .and()
                 .logout()
                 .logoutSuccessHandler(getLogoutSuccessHandler())
+                .logoutSuccessUrl(tunelUrl + "/login")
                 .permitAll();
         return httpSecurity.build();
     }
@@ -89,13 +96,11 @@ public class WebSecurityConfig {
     private AuthenticationFailureHandler getAuthenticationFailureHandler() {
         return (request, response, exception) -> {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.sendRedirect("/login?error=" + exception.getMessage());
+            response.sendRedirect(tunelUrl + "/login?error=" + exception.getMessage());
         };
     }
 
     private LogoutSuccessHandler getLogoutSuccessHandler() {
-        return (request, response, authentication) -> {
-            response.setStatus(HttpStatus.OK.value());
-        };
+        return (request, response, authentication) -> response.setStatus(HttpStatus.OK.value());
     }
 }

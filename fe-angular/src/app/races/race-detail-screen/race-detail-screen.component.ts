@@ -14,6 +14,7 @@ import {CrewsTableComponent} from "../crews-table/crews-table.component";
 import {RegistrationStatus, UserRaceInfoDto} from "../races.model";
 import {ParticipantsTableComponent} from "../participants-table/participants-table.component";
 import {ResultsTableComponent} from "../results-table/results-table.component";
+import {MapComponent} from "../map/map.component";
 
 @Component({
   selector: 'app-race-detail',
@@ -28,7 +29,8 @@ import {ResultsTableComponent} from "../results-table/results-table.component";
     MatTabsModule,
     CrewsTableComponent,
     ParticipantsTableComponent,
-    ResultsTableComponent
+    ResultsTableComponent,
+    MapComponent
   ]
 })
 export class RaceDetailScreenComponent implements OnInit {
@@ -50,6 +52,8 @@ export class RaceDetailScreenComponent implements OnInit {
   public isAfterRace: boolean = false;
 
   public isOpenForRegistration: boolean = false;
+
+  public isCourse: boolean = false;
 
   public filters: Array<any> = [];
 
@@ -105,6 +109,11 @@ export class RaceDetailScreenComponent implements OnInit {
       this.userRace = result;
     }, error => {
       let snackBarRef = this.snackBar.open(error.status + ': ' + error.error, 'X');
+    })
+    this.racesService.getCourse(raceId).subscribe(result => {
+      if (result) {
+        this.isCourse = true;
+      }
     })
   }
 

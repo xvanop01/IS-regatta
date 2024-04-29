@@ -58,10 +58,7 @@ export class UserDetailScreenComponent implements OnInit {
     this.loggedUserService.getLoggedUser().subscribe(
       result => {
         if (result == null) {
-          let snackBarRef = this.snackBar.open('User unauthorised', 'Log In');
-          snackBarRef.afterDismissed().subscribe(
-            () => this.router.navigate(['/login'])
-          );
+          this.router.navigate(['/login']);
         } else {
           if (userId == null) {
             this.user = result;
@@ -97,7 +94,7 @@ export class UserDetailScreenComponent implements OnInit {
         }
       },
       error => {
-        let snackBarRef = this.snackBar.open(error.status + ': ' + error.error, 'X');
+        this.router.navigate(['/login']);
       });
     if (userId != null) {
       this.filters.push({

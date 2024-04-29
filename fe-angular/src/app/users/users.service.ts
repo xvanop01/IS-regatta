@@ -15,11 +15,11 @@ export class UsersService {
   protected apiUrl;
 
   constructor(protected http: HttpClient) {
-    this.apiUrl = 'http://localhost:8080/api/users';
+    this.apiUrl = '/api/users';
   }
 
   public register(credentials: any): Observable<UserDetailDto> {
-    return this.http.post<UserDetailDto>(`http://localhost:8080/register`, credentials, {headers: {'Content-Type': 'application/x-www-form-urlencoded'}});
+    return this.http.post<UserDetailDto>(`/register`, credentials, {headers: {'Content-Type': 'application/x-www-form-urlencoded'}});
   }
 
   public getUser(userId: number): Observable<UserDetailDto> {

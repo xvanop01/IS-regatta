@@ -57,5 +57,10 @@
         <app-results-table #resultsTable [staticFilters]="filters"></app-results-table>
       </ng-template>
     </mat-tab>
+    <mat-tab *ngIf="isCourse || canDoChanges" label="Map">
+      <ng-template matTabContent>
+        <app-map [canEdit]="canDoChanges"></app-map>
+      </ng-template>
+    </mat-tab>
   </mat-tab-group>
 </ng-container>

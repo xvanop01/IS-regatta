@@ -48,7 +48,7 @@ export class ToolbarComponent {
 
   protected redirectToLogout(): void {
     localStorage.removeItem('token');
-    this.http.post(`http://localhost:8080/logout`, {withCredentials: true}).subscribe(
+    this.http.post(`/logout`, null).subscribe(
       result => {
         location.reload();
       }

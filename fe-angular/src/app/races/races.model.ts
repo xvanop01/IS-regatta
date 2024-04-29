@@ -65,3 +65,27 @@ export interface CrewResultsUpdateDto {
   position: number;
   time: string;
 }
+
+export interface CoordinatesDto {
+  longitude: number;
+  latitude: number;
+}
+
+export interface CourseDetailDto {
+  raceId: number;
+  buoy1: CoordinatesDto;
+  buoy2: CoordinatesDto;
+  buoy3: CoordinatesDto;
+  center: CoordinatesDto;
+  zoom: number;
+  windAngle: number;
+}
+
+export interface CreateUpdateCourseDto {
+  buoy1: CoordinatesDto;
+  buoy2: CoordinatesDto;
+  buoy3: CoordinatesDto;
+  center: CoordinatesDto;
+  zoom: number;
+  windAngle: number;
+}

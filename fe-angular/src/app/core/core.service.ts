@@ -11,7 +11,7 @@ export class CoreService {
   protected apiUrl;
 
   constructor(protected http: HttpClient) {
-    this.apiUrl = 'http://localhost:8080/api/'
+    this.apiUrl = '/api'
   }
 
   public getTableData(serviceName: string, pageSpecs: PageSpecs, sortSpecs: SortSpecs | null,
@@ -27,6 +27,6 @@ export class CoreService {
     }
     let params = new HttpParams()
       .set('tableDataRequestDto', JSON.stringify(paramObject));
-    return this.http.get<any>(`${this.apiUrl}table-data-service/${serviceName}`, {params: params});
+    return this.http.get<any>(`${this.apiUrl}/table-data-service/${serviceName}`, {params: params});
   }
 }

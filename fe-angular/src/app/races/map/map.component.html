@@ -1,0 +1,21 @@
+<div class="table-wrapper">
+  <div id="map" class="map"></div>
+  <div class="controls">
+    <div *ngIf="editingCourse">
+      <mat-form-field>
+        <mat-label>Wind angle</mat-label>
+        <input type="number" matInput min="0" max="359" [formControl]="angleFormControl" (change)="angleChanged()">
+        <mat-error *ngIf="angleFormControl.errors != null">Value must be between 0 and 359</mat-error>
+      </mat-form-field>
+    </div>
+    <div *ngIf="editingCourse">
+      <button mat-flat-button color="primary" (click)="saveCourse()">Save course</button>
+    </div>
+    <div *ngIf="canEdit && !navigating">
+      <button mat-flat-button color="primary" (click)="editCourseClicked()">{{editingCourse ? 'Cancel editing' : 'Edit course'}}</button>
+    </div>
+    <div *ngIf="!editingCourse && canEdit && savedCourse">
+      <button mat-flat-button color="primary" (click)="navigate()">{{navigating ? 'Stop navigation' : 'Start navigation'}}</button>
+    </div>
+  </div>
+</div>
