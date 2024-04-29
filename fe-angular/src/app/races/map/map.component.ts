@@ -194,9 +194,9 @@ export class MapComponent implements OnInit{
           source: new OSM(),
         }),
         seaLayer,
-        navigationLayer,
         courseLabelLayer,
-        courseLayer
+        courseLayer,
+        navigationLayer
       ],
       target: 'map',
       view: view
