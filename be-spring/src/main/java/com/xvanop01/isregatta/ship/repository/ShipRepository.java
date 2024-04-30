@@ -15,7 +15,7 @@ public interface ShipRepository extends JpaRepository<Ship, Integer>, JpaSpecifi
             + "    SELECT * "
             + "    FROM race_crew crew "
             + "    WHERE ship.id = crew.ship_id "
-            + "      AND race_id = 1 "
+            + "      AND race_id = ?2 "
             + "  )", nativeQuery = true)
     List<Ship> findAllByUserNotInRace(Integer userId, Integer raceId);
 }

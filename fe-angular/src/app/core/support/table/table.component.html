@@ -1,31 +1,31 @@
 <div class="table-component-wrapper">
-    <div class="table-search-wrapper">
-      <ng-container *ngIf="searchColumns.length > 0">
-        <ng-container *ngFor="let search of searchColumns">
-          <ng-container *ngIf="search.type === SearchType.STRING">
-            <mat-form-field>
-              <mat-label>{{search?.title}}</mat-label>
-              <input matInput type="text" [formControl]="search.fc">
-            </mat-form-field>
-          </ng-container>
-          <ng-container *ngIf="search.type === SearchType.MONTH">
-            <mat-form-field>
-              <mat-label>{{search?.title}}</mat-label>
-              <input matInput [matDatepicker]="datepicker" [formControl]="search.fc" (blur)="setDateFilter(search.column)">
-              <mat-hint>MM-YYYY</mat-hint>
-              <mat-datepicker-toggle matIconSuffix [for]="datepicker"></mat-datepicker-toggle>
-              <mat-datepicker #datepicker
-                              startView="multi-year"
-                              (monthSelected)="setMonthAndYear($event, datepicker, search.column)">
-              </mat-datepicker>
-            </mat-form-field>
-          </ng-container>
+  <div class="table-search-wrapper">
+    <ng-container *ngIf="searchColumns.length > 0">
+      <ng-container *ngFor="let search of searchColumns">
+        <ng-container *ngIf="search.type === SearchType.STRING">
+          <mat-form-field>
+            <mat-label>{{search?.title}}</mat-label>
+            <input matInput type="text" [formControl]="search.fc">
+          </mat-form-field>
         </ng-container>
-        <button mat-stroked-button color="primary" (click)="doFilter()" class="search-button">Filter</button>
+        <ng-container *ngIf="search.type === SearchType.MONTH">
+          <mat-form-field>
+            <mat-label>{{search?.title}}</mat-label>
+            <input matInput [matDatepicker]="datepicker" [formControl]="search.fc" (blur)="setDateFilter(search.column)">
+            <mat-hint>MM-YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="datepicker"></mat-datepicker-toggle>
+            <mat-datepicker #datepicker
+                            startView="multi-year"
+                            (monthSelected)="setMonthAndYear($event, datepicker, search.column)">
+            </mat-datepicker>
+          </mat-form-field>
+        </ng-container>
       </ng-container>
-    </div>
+      <button mat-stroked-button color="primary" (click)="doFilter()" class="search-button">Filter</button>
+    </ng-container>
+  </div>
 
-  <div id="table-pager-wrapper" class="table-pager-wrapper" style="top: {{(searchColumns.length > 0) ? 75 : 0}}px;">
+  <div id="table-wrapper" class="table-wrapper" style="top: {{(searchColumns.length > 0) ? 75 : 0}}px;">
     <table>
       <tr class="table-header-row">
         <ng-container *ngFor="let column of columns">
@@ -45,8 +45,7 @@
           <ng-container *ngFor="let column of columns">
             <ng-container *ngIf="column?.isButton; else field">
               <th [width]="50">
-                <button *ngIf="(!column?.ifField) || (row[column?.ifField] == column?.ifValue)"
-                        mat-icon-button (click)="onClick(row, column?.field)" style="transform: scale(0.75);">
+                <button mat-icon-button (click)="onClick(row, column?.field)" style="transform: scale(0.75);" [disabled]="!(row[column?.ifField] == column?.ifValue)">
                   <i class="{{column?.icon}}"></i>
                 </button>
               </th>
@@ -70,67 +69,67 @@
         </ng-container>
       </ng-container>
     </table>
+  </div>
 
-    <!-- Pager -->
-    <div class="row-2c table-pager-container">
-      <div style="align-content: center;">
-        <button mat-icon-button (click)="showPage(0)" style="transform: scale(0.65);"
-                disabled="{{pageSpecs.pageNumber <= 0}}">
-          <i class="fa-solid fa-angles-left"></i>
+  <!-- Pager -->
+  <div class="row-2c pager-container">
+    <div style="align-content: center;">
+      <button mat-icon-button (click)="showPage(0)" style="transform: scale(0.65);"
+              disabled="{{pageSpecs.pageNumber <= 0}}">
+        <i class="fa-solid fa-angles-left"></i>
+      </button>
+      <button mat-icon-button (click)="showPage(pageSpecs.pageNumber - 1)" style="transform: scale(0.65);"
+              disabled="{{pageSpecs.pageNumber <= 0}}">
+        <i class="fa-solid fa-angle-left"></i>
+      </button>
+      <ng-container *ngIf="pageSpecs.pageNumber - 2 >= 0">
+        <button class="pager-numbers-navigation" mat-icon-button (click)="showPage(pageSpecs.pageNumber - 2)" style="transform: scale(0.65);">
+          {{pageSpecs.pageNumber - 1}}
         </button>
-        <button mat-icon-button (click)="showPage(pageSpecs.pageNumber - 1)" style="transform: scale(0.65);"
-                disabled="{{pageSpecs.pageNumber <= 0}}">
-          <i class="fa-solid fa-angle-left"></i>
+      </ng-container>
+      <ng-container *ngIf="pageSpecs.pageNumber - 1 >= 0">
+        <button class="pager-numbers-navigation" mat-icon-button (click)="showPage(pageSpecs.pageNumber - 1)" style="transform: scale(0.65);">
+          {{pageSpecs.pageNumber}}
         </button>
-        <ng-container *ngIf="pageSpecs.pageNumber - 2 >= 0">
-          <button class="pager-numbers-navigation" mat-icon-button (click)="showPage(pageSpecs.pageNumber - 2)" style="transform: scale(0.65);">
-            {{pageSpecs.pageNumber - 1}}
-          </button>
-        </ng-container>
-        <ng-container *ngIf="pageSpecs.pageNumber - 1 >= 0">
-          <button class="pager-numbers-navigation" mat-icon-button (click)="showPage(pageSpecs.pageNumber - 1)" style="transform: scale(0.65);">
-            {{pageSpecs.pageNumber}}
-          </button>
-        </ng-container>
-        <button mat-icon-button style="transform: scale(0.75);">
-          <b>{{pageSpecs.pageNumber + 1}}</b>
+      </ng-container>
+      <button mat-icon-button style="transform: scale(0.75);">
+        <b>{{pageSpecs.pageNumber + 1}}</b>
+      </button>
+      <ng-container *ngIf="pageSpecs.pageNumber + 1 < totalPages">
+        <button class="pager-numbers-navigation" mat-icon-button (click)="showPage(pageSpecs.pageNumber + 1)" style="transform: scale(0.65);">
+          {{pageSpecs.pageNumber + 2}}
         </button>
-        <ng-container *ngIf="pageSpecs.pageNumber + 1 < totalPages">
-          <button class="pager-numbers-navigation" mat-icon-button (click)="showPage(pageSpecs.pageNumber + 1)" style="transform: scale(0.65);">
-            {{pageSpecs.pageNumber + 2}}
-          </button>
-        </ng-container>
-        <ng-container *ngIf="pageSpecs.pageNumber + 2 < totalPages">
-          <button class="pager-numbers-navigation" mat-icon-button (click)="showPage(pageSpecs.pageNumber + 2)" style="transform: scale(0.65);">
-            {{pageSpecs.pageNumber + 3}}
-          </button>
-        </ng-container>
-        <button mat-icon-button (click)="showPage(pageSpecs.pageNumber + 1)" style="transform: scale(0.65);"
-                disabled="{{pageSpecs.pageNumber + 1 >= totalPages}}">
-          <i class="fa-solid fa-angle-right"></i>
+      </ng-container>
+      <ng-container *ngIf="pageSpecs.pageNumber + 2 < totalPages">
+        <button class="pager-numbers-navigation" mat-icon-button (click)="showPage(pageSpecs.pageNumber + 2)" style="transform: scale(0.65);">
+          {{pageSpecs.pageNumber + 3}}
         </button>
-        <button mat-icon-button (click)="showPage(totalPages - 1)" style="transform: scale(0.65);"
-                disabled="{{pageSpecs.pageNumber + 1 >= totalPages}}">
-          <i class="fa-solid fa-angles-right"></i>
-        </button>
+      </ng-container>
+      <button mat-icon-button (click)="showPage(pageSpecs.pageNumber + 1)" style="transform: scale(0.65);"
+              disabled="{{pageSpecs.pageNumber + 1 >= totalPages}}">
+        <i class="fa-solid fa-angle-right"></i>
+      </button>
+      <button mat-icon-button (click)="showPage(totalPages - 1)" style="transform: scale(0.65);"
+              disabled="{{pageSpecs.pageNumber + 1 >= totalPages}}">
+        <i class="fa-solid fa-angles-right"></i>
+      </button>
 
-        <mat-form-field style="transform: scale(0.85);">
-          <mat-label>Page size</mat-label>
-          <mat-select [(ngModel)]="pageSpecs.pageSize" (valueChange)="setPageSize($event)" name="size">
-            <mat-option [value]="10">10</mat-option>
-            <mat-option [value]="15">15</mat-option>
-            <mat-option [value]="25">25</mat-option>
-            <mat-option [value]="50">50</mat-option>
-            <mat-option [value]="100">100</mat-option>
-          </mat-select>
-        </mat-form-field>
-      </div>
+      <mat-form-field style="transform: scale(0.85);">
+        <mat-label>Page size</mat-label>
+        <mat-select [(ngModel)]="pageSpecs.pageSize" (valueChange)="setPageSize($event)" name="size">
+          <mat-option [value]="10">10</mat-option>
+          <mat-option [value]="15">15</mat-option>
+          <mat-option [value]="25">25</mat-option>
+          <mat-option [value]="50">50</mat-option>
+          <mat-option [value]="100">100</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
 
-      <div class="table-total-items">
-        <p class="total-items-long">Total items: {{totalItems}}</p>
-        <p class="total-items-medium">Total: {{totalItems}}</p>
-        <p class="total-items-short">{{totalItems}}</p>
-      </div>
+    <div class="table-total-items">
+      <p class="total-items-long">Total items: {{totalItems}}</p>
+      <p class="total-items-medium">Total: {{totalItems}}</p>
+      <p class="total-items-short">{{totalItems}}</p>
     </div>
   </div>
 </div>

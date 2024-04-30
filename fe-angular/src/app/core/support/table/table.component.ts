@@ -212,7 +212,7 @@ export class TableComponent implements OnInit {
   }
 
   protected isScrollActivated(): boolean {
-    let tableScrollArea = document.getElementById('table-pager-wrapper');
+    let tableScrollArea = document.getElementById('table-wrapper');
     if (tableScrollArea != null) {
       return tableScrollArea.scrollHeight >= tableScrollArea.clientHeight;
     }

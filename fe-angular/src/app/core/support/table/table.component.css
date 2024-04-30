@@ -23,20 +23,17 @@ mat-form-field {
   height: 56px;
 }
 
-.table-pager-wrapper {
+.table-wrapper {
   position: absolute;
-  bottom: 0;
+  bottom: 56px;
   width: 100%;
-  display: grid;
-  grid-template-columns: 100%;
-  grid-template-rows: auto 56px;
-  overflow: auto
+  overflow: auto;
 }
 
 table {
   height: 100%;
   width: 100%;
-  overflow:auto;
+  overflow: auto;
   top: 0;
   bottom: 0;
 }
@@ -69,9 +66,10 @@ table {
   padding-left: 10px;
 }
 
-.table-pager-container {
-  position: sticky;
+.pager-container {
+  position: absolute;
   bottom: 0;
+  height: 56px;
   z-index: 1;
   background-color: white;
 }
@@ -150,19 +148,19 @@ table {
 }
 
 @media only screen and (max-width: 749px) {
-  .table-pager-wrapper {
+  .table-wrapper {
     top: 0 !important;
   }
 }
 
 @media only screen and (max-height: 449px) {
-  .table-pager-wrapper {
+  .table-wrapper {
     top: 0 !important;
   }
 }
 
 @media only screen and (max-width: 775px) {
-  .table-pager-container mat-form-field {
+  .pager-container mat-form-field {
     display: none;
   }
 }
