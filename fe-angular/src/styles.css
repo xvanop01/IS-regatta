@@ -67,7 +67,7 @@ a, a:visited {
   justify-content: space-between;
   border-bottom: 1px solid darkgrey;
   padding: 5px;
-  overflow-x: scroll;
+  overflow-x: auto;
   overflow-y: hidden;
 }
 
@@ -112,7 +112,7 @@ a, a:visited {
 
 mat-tab-group {
   position: absolute;
-  top: 102px;
+  top: 105px;
   bottom: 0;
   width: 100%;
 }
