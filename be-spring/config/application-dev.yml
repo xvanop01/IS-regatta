@@ -15,6 +15,7 @@ spring:
       ddl-auto: validate
     open-in-view: true
   flyway:
+    locations: filesystem:src/main/resources/db/migration
     enabled: true
 
 server:
