@@ -168,7 +168,7 @@ export class MapComponent implements OnInit{
     const courseLabelLayer = new VectorLayer({
       source: this.courseLabelVector,
       style: courseLabelStyle
-    })
+    });
     const seaLayer = new TileLayer({
       source: new OSM({
         attributions: [
