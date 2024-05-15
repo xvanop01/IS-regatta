@@ -29,6 +29,9 @@ CREATE TABLE user_user_role (
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
+INSERT INTO user_user (id, username, password) VALUES (1, 'admin', '');
+INSERT INTO user_user_role (user_id, role_id) VALUES (1, 1);
+
 CREATE TABLE race_race (
     `id` int(10) NOT NULL AUTO_INCREMENT,
     `name` varchar(50) NOT NULL,
