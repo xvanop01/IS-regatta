@@ -1,11 +1,12 @@
 services:
   mariadb:
-    image: mariadb
+    image: mariadb:10.6
     container_name: is-regatta
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: root
+      MARIADB_ROOT_PASSWORD: root
+      MARIADB_DATABASE: is-regatta
     ports:
       - 3306:3306
     volumes:
-        - ./mariadb_data_volume:/var/lib/mysql
+        - ./mariadb_data_volume:/var/lib/mariadb
