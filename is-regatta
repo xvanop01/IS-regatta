@@ -1,0 +1,38 @@
+#!/bin/sh
+
+case $1 in
+	'build')
+		echo Building app
+		cd fe-angular
+		npm install
+		cd ..
+		mvn clean install;;
+	'run')
+		echo Starting DB
+		cd docker
+		sudo docker compose up -d
+		sleep 5
+		echo Starting Spring
+		cd ../be-spring
+		gnome-terminal -- sh -c "bash -c \"mvn spring-boot:run -Dspring-boot.run.profiles=dev\""
+		echo Starting Angular
+		cd ../fe-angular
+		gnome-terminal -- sh -c "bash -c \"npm run start\"";;
+	'docker-stop')
+		echo Stopping DB
+		cd docker
+		sudo docker compose down;;
+	'clean')
+		./is-regatta docker-stop
+		sudo rm -rf docker/mariadb_data_volume
+		rm -rf be-spring/dev-tmp
+		rm -rf fe-angular/.angular
+		rm -rf fe-angular/node
+		rm -rf fe-angular/node_modules
+		mvn clean;;
+	*)
+		echo build       - zostavi aplikaciu do stavu na spustenie
+		echo run         - spusti zostavenu aplikaciu
+		echo docker-stop - zastavi kontajner s aplikaciou
+		echo clean       - odtrani vsetky vygenerovane subory;;
+esac
