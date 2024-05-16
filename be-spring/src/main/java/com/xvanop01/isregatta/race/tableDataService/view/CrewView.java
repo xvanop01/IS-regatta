@@ -11,6 +11,11 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Immutable;
 import org.hibernate.annotations.Subselect;
 
+/**
+ * CrewView
+ * Neperzistovana entita zdruzujuca informacie pre CrewTableDataService
+ * @author 2024 Peter Vano
+ */
 @Entity
 @Immutable
 @Subselect("SELECT crew.id, "
@@ -18,7 +23,7 @@ import org.hibernate.annotations.Subselect;
         + "  ship.name as ship_name, "
         + "  ship.registration as ship_registration, "
         + "  owner.id as ship_owner_id, "
-        + "  IFNULL(owner.full_name, owner.username) as ship_owner_name, "
+        + "  IFNULL(owner.full_name, owner.username) as ship_owner_name, " // pouzije username, ak nema ulozene civilne meno
         + "  race.name as race_name, "
         + "  crew.status "
         + "FROM race_crew crew "

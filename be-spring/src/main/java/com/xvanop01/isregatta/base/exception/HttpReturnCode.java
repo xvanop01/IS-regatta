@@ -1,5 +1,10 @@
 package com.xvanop01.isregatta.base.exception;
 
+/**
+ * HttpReturnCode
+ * Podporovane chybove http navratove kody, mozne doplnat
+ * @author 2024 Peter Vano
+ */
 public enum HttpReturnCode {
 
     BAD_REQUEST(400),

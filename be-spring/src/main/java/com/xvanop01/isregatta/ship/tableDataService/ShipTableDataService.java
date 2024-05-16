@@ -15,6 +15,11 @@ import java.util.Objects;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+/**
+ * ShipTableDataService
+ * Servis pre tabulky s lodami
+ * @author 2024 Peter Vano
+ */
 @TableData("ship-table")
 public class ShipTableDataService extends TableDataService<ShipView, ShipViewRepository, ShipTableDataFilter,
         ShipDetailDto, ShipTableDataMapper> {
@@ -27,6 +32,12 @@ public class ShipTableDataService extends TableDataService<ShipView, ShipViewRep
         this.securityService = securityService;
     }
 
+    /**
+     * Prepisuje metodu pre naplnanie znacky, ci moze upravovat informacie o lodiach
+     * @param pageable definicia parametrov strany
+     * @param filter inicializovany filter
+     * @return strana udajov podla specifikacie
+     */
     protected Page<ShipView> fetch(Pageable pageable, Object filter) {
         final Integer userId = PrincipalService.getPrincipalId();
         boolean isAdmin;
@@ -38,7 +49,7 @@ public class ShipTableDataService extends TableDataService<ShipView, ShipViewRep
         final boolean isAdminFinal = isAdmin;
         Page<ShipView> shipViews = repository.findAll(getSpecification(), pageable);
         shipViews.forEach(shipView -> {
-            if (isAdminFinal || shipView.getUserId().equals(userId)) {
+            if (isAdminFinal || shipView.getUserId().equals(userId)) { // ak admin, alebo majitel lode
                 shipView.setCanChange(true);
             }
         });
@@ -48,23 +59,27 @@ public class ShipTableDataService extends TableDataService<ShipView, ShipViewRep
     @Override
     protected void doFilter(Object filter) {
         if (filter instanceof ShipTableDataFilter f) {
+            // filtrovanie podla id majitela
             if (f.userId != null) {
                 specAnd(((root, query, criteriaBuilder) ->
                         criteriaBuilder.equal(root.get(ShipView_.userId), f.userId))
                 );
             }
+            // filtrovanie podla mena lode
             if (f.name != null && !f.name.isEmpty()) {
                 String searchFormatted = "%" + f.name.toLowerCase() + "%";
                 specAnd((root, query, criteriaBuilder) ->
                         criteriaBuilder.like(root.get(ShipView_.name), searchFormatted)
                 );
             }
+            // filtrovanie podla registracie lode
             if (f.registration != null && !f.registration.isEmpty()) {
                 String searchFormatted = "%" + f.registration.toLowerCase() + "%";
                 specAnd((root, query, criteriaBuilder) ->
                         criteriaBuilder.like(root.get(ShipView_.registration), searchFormatted)
                 );
             }
+            // filtrovanie podla civilneho mena majitela / pouzivatelskeho mena
             if (f.ownerName != null && !f.ownerName.isEmpty()) {
                 String searchFormatted = "%" + f.ownerName.toLowerCase() + "%";
                 specAnd((root, query, criteriaBuilder) ->

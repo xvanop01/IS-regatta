@@ -12,6 +12,11 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
+/**
+ * RaceMapper
+ * Zabezpecuje mapovanie pretekov
+ * @author 2024 Peter Vano
+ */
 @Mapper(componentModel = "spring")
 public abstract class RaceMapper extends TableDataResponseMapper<Race, RaceDetailDto> {
 

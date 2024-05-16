@@ -8,6 +8,11 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Immutable;
 import org.hibernate.annotations.Subselect;
 
+/**
+ * ResultView
+ * Neperzistovana entita zdruzujuca informacie pre ResultTableDataService
+ * @author 2024 Peter Vano
+ */
 @Entity
 @Immutable
 @Subselect("SELECT crew.id, "

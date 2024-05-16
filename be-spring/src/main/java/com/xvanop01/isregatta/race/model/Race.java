@@ -15,6 +15,11 @@ import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
+/**
+ * Race
+ * Trieda Pretekov
+ * @author 2024 Peter Vano
+ */
 @Entity
 @Table(name = "race_race")
 @NoArgsConstructor

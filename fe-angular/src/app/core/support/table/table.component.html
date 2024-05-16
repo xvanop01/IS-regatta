@@ -2,12 +2,15 @@
   <div class="table-search-wrapper">
     <ng-container *ngIf="searchColumns.length > 0">
       <ng-container *ngFor="let search of searchColumns">
+        <!-- definicia policka filtra s typom STRING -->
         <ng-container *ngIf="search.type === SearchType.STRING">
           <mat-form-field>
             <mat-label>{{search?.title}}</mat-label>
             <input matInput type="text" [formControl]="search.fc">
           </mat-form-field>
         </ng-container>
+
+        <!-- definicia policka filtra s typom MONTH -->
         <ng-container *ngIf="search.type === SearchType.MONTH">
           <mat-form-field>
             <mat-label>{{search?.title}}</mat-label>
@@ -27,6 +30,7 @@
 
   <div id="table-wrapper" class="table-wrapper" style="top: {{(searchColumns.length > 0) ? 75 : 0}}px;">
     <table>
+      <!-- Hlavicka tabulky -->
       <tr class="table-header-row">
         <ng-container *ngFor="let column of columns">
           <th (click)="onHeaderClick(column?.field)" class="table-header-column" width="{{column?.width}}" style="min-width: {{column?.width === 'auto' ? (column?.isButton ? 50 : 150) : column?.width}}px">
@@ -57,7 +61,7 @@
         </tr>
       </ng-container>
 
-      <!-- Fill the table placeholder -->
+      <!-- Naplni zvysok tabulky pre vyplnenie stranky -->
       <ng-container *ngIf="scrollActivated">
         <ng-container *ngFor="let column of columns">
           <ng-container *ngIf="column?.isButton">
@@ -74,6 +78,7 @@
   <!-- Pager -->
   <div class="row-2c pager-container">
     <div style="align-content: center;">
+      <!-- Navigacne policka -->
       <button mat-icon-button (click)="showPage(0)" style="transform: scale(0.65);"
               disabled="{{pageSpecs.pageNumber <= 0}}">
         <i class="fa-solid fa-angles-left"></i>
@@ -114,6 +119,7 @@
         <i class="fa-solid fa-angles-right"></i>
       </button>
 
+      <!-- volba velkosti strany -->
       <mat-form-field style="transform: scale(0.85);">
         <mat-label>Page size</mat-label>
         <mat-select [(ngModel)]="pageSpecs.pageSize" (valueChange)="setPageSize($event)" name="size">
@@ -126,6 +132,7 @@
       </mat-form-field>
     </div>
 
+    <!-- celkovy pocet poloziek -->
     <div class="table-total-items">
       <p class="total-items-long">Total items: {{totalItems}}</p>
       <p class="total-items-medium">Total: {{totalItems}}</p>

@@ -1,3 +1,7 @@
+# applcation-dev.yml
+# Definuje profil 'dev' pre aplikaciu
+# Autor: 2024 Peter Vano
+
 dev:
   tempDir: "dev-tmp"
 

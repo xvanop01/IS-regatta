@@ -6,6 +6,11 @@ import com.xvanop01.isregatta.race.repository.CrewUserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+/**
+ * CrewUserPersistnceService
+ * Spracovanie udajov registracii pouzivatela z DB
+ * @author 2024 Peter Vano
+ */
 @Service
 @Slf4j
 public class CrewUserPersistnceService extends PersistenceService<CrewUser, CrewUserRepository> {

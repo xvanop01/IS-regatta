@@ -8,6 +8,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+/**
+ * PersistenceService
+ * Predloha pre perzistencne servisy implementujuca najcastejsie metody
+ * @param <E> entita, pre ktoru je servis
+ * @param <R> reposzitar pre pracu s entitou
+ * @author 2024 Peter Vano
+ */
 @RequiredArgsConstructor
 @Slf4j
 public abstract class PersistenceService<E, R extends JpaRepository<E, Integer> & JpaSpecificationExecutor<E>> {

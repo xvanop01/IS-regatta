@@ -15,6 +15,11 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
+/**
+ * CrewMapper
+ * Zabezpecuje mapovanie medzi uzivatelmi, poadkami a lodami
+ * @author 2024 Peter vano
+ */
 @Mapper(componentModel = "spring")
 public abstract class CrewMapper {
 

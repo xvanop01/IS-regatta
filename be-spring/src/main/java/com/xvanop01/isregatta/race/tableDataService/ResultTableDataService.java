@@ -10,6 +10,11 @@ import com.xvanop01.isregatta.race.tableDataService.viewRepository.ResultViewRep
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
+/**
+ * ResultTableDataService
+ * Servis pre tabulky s vysledkami
+ * @author 2024 Peter Vano
+ */
 @TableData("result-table")
 public class ResultTableDataService extends TableDataService<ResultView, ResultViewRepository, ResultTableDataFilter,
         CrewResultsDetailDto, ResultTableDataMapper> {
@@ -21,6 +26,7 @@ public class ResultTableDataService extends TableDataService<ResultView, ResultV
     @Override
     protected Page<ResultView> fetch(Pageable pageable, Object filter) {
         if (filter instanceof ResultTableDataFilter f) {
+            // filtrovanie podla id pretekov
             return repository.findAllByRaceIdOrderByPosition(f.raceId, pageable);
         }
         return super.fetch(pageable, filter);

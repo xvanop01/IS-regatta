@@ -21,6 +21,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * UserController
+ * Zabezpecuje funkcionalitu pre pouzivatelov
+ * @author 2024 Peter Vano
+ */
 @RestController
 @Slf4j
 @RequestMapping("/api")
@@ -33,6 +38,10 @@ public class UserController implements UsersApi {
     private final UserMapper userMapper;
     private final RoleMapper roleMapper;
 
+    /**
+     * Ziska zoznam vsetkych roli v systeme
+     * @return zoznam roli
+     */
     @Override
     public ResponseEntity<RoleListDto> getRoles() {
         log.info("getRoles");
@@ -58,6 +67,11 @@ public class UserController implements UsersApi {
         return ResponseEntity.ok(userMapper.map(user));
     }
 
+    /**
+     * Ziska zoznam roli pouzivatela
+     * @param userId id pouzivatela (required)
+     * @return zoznam roli pouzivatela
+     */
     @Override
     public ResponseEntity<RoleListDto> getUserRoles(Integer userId) {
         log.info("getUserRoles: {}", userId);
@@ -85,6 +99,12 @@ public class UserController implements UsersApi {
         return ResponseEntity.ok(userMapper.map(user));
     }
 
+    /**
+     * Upravi role pouzivatela podla zoznamu roli
+     * @param userId id pouzivatela (required)
+     * @param roleListDto cielovy zoznam roli (required)
+     * @return nove role pouzivatela
+     */
     @Override
     public ResponseEntity<RoleListDto> updateUserRoles(Integer userId, RoleListDto roleListDto) {
         log.info("updateUserRoles: userId: {}, roleListDto: {}", userId, roleListDto);

@@ -9,6 +9,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Role
+ * Trieda role
+ * @author 2024 Peter Vano
+ */
 @Entity
 @Table(name = "user_role")
 @NoArgsConstructor

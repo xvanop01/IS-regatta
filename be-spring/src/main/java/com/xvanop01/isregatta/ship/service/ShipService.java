@@ -11,6 +11,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * ShipService
+ * Servis zabezpecujuci aplikacnu logiku pre lode
+ * @author 2024 Peter Vano
+ */
 @Service
 @Slf4j
 @RequiredArgsConstructor

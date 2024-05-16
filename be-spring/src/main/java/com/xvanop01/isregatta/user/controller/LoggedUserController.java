@@ -16,6 +16,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.security.Principal;
 
+/**
+ * LoggedUserController
+ * Zabezpecuje funkcionalitu ziskavania informacii o aktualne prihlasenom pouzivatelovi
+ * @author 2024 Peter Vano
+ */
 @Controller
 @RequestMapping("/api")
 @Slf4j
@@ -27,6 +32,11 @@ public class LoggedUserController {
     private final UserMapper userMapper;
     private final RoleMapper roleMapper;
 
+    /**
+     * Ziska informacie o aktualne prihlasenom pouzivatelovi
+     * @param principal Springom doplnene informacie o pouzivatelovi zo security contextu
+     * @return detail informacii o pouzivatelovi
+     */
     @RequestMapping(value = "/user", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<UserDetailDto> currentUserDetail(Principal principal) {
@@ -37,6 +47,11 @@ public class LoggedUserController {
         return ResponseEntity.ok(userMapper.map(userPersistenceService.findByUsername(principal.getName())));
     }
 
+    /**
+     * Ziska zoznam roli aktualne prihlaseneho pouzivatela
+     * @param principal Springom doplnene informacie o pouzivatelovi zo security contextu
+     * @return zoznam pouzivatelovych roli
+     */
     @RequestMapping(value = "/user/roles", method = RequestMethod.GET)
     @ResponseBody
     public ResponseEntity<RoleListDto> Roles(Principal principal) {

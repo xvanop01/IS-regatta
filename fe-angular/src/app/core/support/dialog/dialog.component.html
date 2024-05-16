@@ -3,6 +3,7 @@
   <div class="dialog-template">
     <ng-container *ngFor="let field of fields">
 
+      <!-- definicia policka formularov s typom STRING a NUMBER -->
       <ng-container *ngIf="field.type === DialogFieldType.STRING || field.type === DialogFieldType.NUMBER">
         <div class="field-wrapper">
           <mat-form-field>
@@ -14,6 +15,7 @@
         </div>
       </ng-container>
 
+      <!-- definicia checkboxu vo formularoch -->
       <ng-container *ngIf="field.type === DialogFieldType.BOOLEAN">
         <div class="field-wrapper">
           <mat-checkbox color="primary" [formControl]="field.fc">{{field?.title}}</mat-checkbox>
@@ -21,6 +23,7 @@
         </div>
       </ng-container>
 
+      <!-- definicia policka formulaov pre vyber polozky a poloziek -->
       <ng-container *ngIf="field.type === DialogFieldType.ENUM || field.type === DialogFieldType.ENUM_MULTIPLE">
         <div class="field-wrapper">
           <mat-form-field>
@@ -35,6 +38,7 @@
         </div>
       </ng-container>
 
+      <!-- definicia policka formulaov s typom DATE -->
       <ng-container *ngIf="field.type == DialogFieldType.DATE">
         <div class="datepicker-wrapper">
           <mat-form-field>
@@ -48,6 +52,7 @@
         </div>
       </ng-container>
 
+      <!-- definicia policka formulaov s typom STRING s moznostou skrytia textu -->
       <ng-container *ngIf="field.type == DialogFieldType.PASSWORD">
         <div class="field-wrapper">
           <mat-form-field>

@@ -16,6 +16,7 @@ CREATE TABLE user_role (
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
+# naplnenie zoznamu roli
 INSERT INTO user_role (id, role) VALUES (1, 'ADMIN');
 INSERT INTO user_role (id, role) VALUES (2, 'ORGANIZER');
 INSERT INTO user_role (id, role) VALUES (3, 'USER');
@@ -29,6 +30,9 @@ CREATE TABLE user_user_role (
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
+# pridanie prveho pouzivatela, vklada uz zasifrovanu verziu hesla
+# username: admin
+# password: admin
 INSERT INTO user_user (id, username, password) VALUES (1, 'admin', '$2a$10$CV7w6SmJPUzpuxy6ZhKQe.bGXRCSLY8FnXSCrYKOSqwuVm84EIQDi');
 INSERT INTO user_user_role (user_id, role_id) VALUES (1, 1);
 

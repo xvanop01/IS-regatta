@@ -12,6 +12,11 @@ import org.springframework.stereotype.Service;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
+/**
+ * UserDetailsServiceImpl
+ * Implementacia servisu pre security context na pracu s aktualne prihlasenymi pouzivatelmi
+ * @author 2024 Peter Vano
+ */
 @Service
 @Slf4j
 public class UserDetailsServiceImpl implements UserDetailsService {

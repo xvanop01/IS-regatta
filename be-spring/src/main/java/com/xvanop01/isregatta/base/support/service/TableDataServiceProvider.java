@@ -11,6 +11,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+/**
+ * TableDataServiceProvider
+ * Servis pre zistenie serisu podla mena a ziskanie odpovede
+ * @implNote servis pouziva reflexiu
+ * @author 2024 Peter Vano
+ */
 @Service
 @Slf4j
 @RequiredArgsConstructor
