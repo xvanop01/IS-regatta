@@ -18,6 +18,10 @@ case $1 in
 		echo Starting Angular
 		cd ../fe-angular
 		gnome-terminal -- sh -c "bash -c \"npm run start\"";;
+	'run-jar')
+		echo Starting pre-build application
+		cd be-spring
+		java -jar isregatta-webapp-0.0.1-SNAPSHOT.jar --spring.profiles.active=dev;;
 	'docker-stop')
 		echo Stopping DB
 		cd docker
@@ -33,6 +37,7 @@ case $1 in
 	*)
 		echo build       - zostavi aplikaciu do stavu na spustenie
 		echo run         - spusti zostavenu aplikaciu
+		echo run-jar     - spusti jar bez potreby zostavovania aplikacie
 		echo docker-stop - zastavi kontajner s aplikaciou
 		echo clean       - odtrani vsetky vygenerovane subory;;
 esac
