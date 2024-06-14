@@ -27,7 +27,7 @@ case $1 in
 		cd docker
 		sudo docker compose down;;
 	'clean')
-		./is-regatta docker-stop
+		sh ./is-regatta docker-stop
 		sudo rm -rf docker/mariadb_data_volume
 		rm -rf be-spring/dev-tmp
 		rm -rf fe-angular/.angular
