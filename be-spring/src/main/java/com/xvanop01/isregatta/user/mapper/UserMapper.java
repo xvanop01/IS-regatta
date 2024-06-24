@@ -10,6 +10,11 @@ import java.util.List;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
+/**
+ * UserMapper
+ * Mapper zabezpecujuci mapovanie pouzivatelov (aj pre UserTableDataService)
+ * @author 2024 Peter Vano
+ */
 @Mapper(componentModel = "spring")
 public abstract class UserMapper extends TableDataResponseMapper<User, UserDetailDto> {
 

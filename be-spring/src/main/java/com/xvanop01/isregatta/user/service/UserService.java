@@ -14,6 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * UserService
+ * Servis zabezpecujuci aplikacnu logiku pre pouzivatelov
+ * @author 2024 Peter Vano
+ */
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -44,6 +49,7 @@ public class UserService {
                 || user.getPassword().isEmpty()) {
             throw new HttpException(HttpReturnCode.BAD_REQUEST, "User must have username and password defined.");
         }
+        // kontrola, ci je uz pouzivatlske meno zabrate
         User existingUser = userPersistenceService.findByUsername(user.getUsername());
         if (existingUser != null) {
             throw new HttpException(HttpReturnCode.CONFLICT,
@@ -65,16 +71,19 @@ public class UserService {
         }
         if (updateUser.getUsername() != null && !updateUser.getUsername().isEmpty()) {
             User userByUsername = userPersistenceService.findByUsername(updateUser.getUsername());
+            // kontrola, ci je uz pouzivatlske meno zabrate
             if (userByUsername != null && !userByUsername.getId().equals(userId)) {
                 throw new HttpException(HttpReturnCode.CONFLICT,
                         String.format("User with username '%s' already exists.", updateUser.getUsername()));
             }
+            // kontrola, ci pouzivatel meni sam sebe meno
             if (!PrincipalService.getPrincipalId().equals(userId)
                     && !updateUser.getUsername().equals(user.getUsername())) {
                 throw new HttpException(HttpReturnCode.CONFLICT, "Only user can change his own username.");
             }
             user.setUsername(updateUser.getUsername());
         }
+        // zasifrovanie hesla, ak bolo zadane na zmenu
         if (updateUser.getPassword() != null && !updateUser.getPassword().isEmpty()) {
             user.setPassword(passwordEncoder.encode(updateUser.getPassword()));
         }
@@ -106,13 +115,16 @@ public class UserService {
         if (user == null) {
             throw new HttpException(HttpReturnCode.NOT_FOUND, "User not found by id: " + userId);
         }
+        // ziskanie id roli pouzivatele
         List<Integer> userRolesIds = rolePersistenceService.getRolesByUserId(userId).stream().map(Role::getId).toList();
         List<Integer> allRolesIds = rolePersistenceService.findAll().stream().map(Role::getId).toList();
+        // odstranenie roli, ktore nie su v novom zozname
         for (Integer id : userRolesIds) {
             if (!rolesIds.contains(id)) {
                 rolePersistenceService.removeRoleFromUser(userId, id);
             }
         }
+        // pridanie novych roli
         for (Integer id : rolesIds) {
             if (!allRolesIds.contains(id)) {
                 throw new HttpException(HttpReturnCode.NOT_FOUND, "Role not found by id: " + id);

@@ -7,6 +7,11 @@ import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+/**
+ * ShipPersistenceService
+ * Spracovanie udajov o lodiach z DB
+ * @author 2024 Peter Vano
+ */
 @Service
 @Slf4j
 public class ShipPersistenceService extends PersistenceService<Ship, ShipRepository> {

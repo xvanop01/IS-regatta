@@ -22,6 +22,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * RaceService
+ * Servis zabezpecujuci aplikacnu logiku pre preteky
+ * @author 2024 Peter Vano
+ */
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -89,6 +94,12 @@ public class RaceService {
         return racePersistenceService.persist(race);
     }
 
+    /**
+     * Ziska lode, ktore moze aktualny pouzvatel registrovat na preteky
+     * @param raceId id pretekov
+     * @return zoznam lodi
+     * @throws HttpException chybajuce udaje
+     */
     @Transactional(rollbackFor = HttpException.class)
     public List<Ship> getShipsForRace(Integer raceId) throws HttpException {
         log.info("getShipsForRace: raceId: {}", raceId);
@@ -102,9 +113,17 @@ public class RaceService {
         return shipPersistenceService.findAllByUserIdNotInRace(userId, raceId);
     }
 
+    /**
+     * Prihlasi zoznam lodi na preteky vytvorenim posadok
+     * @param raceId id pretekov
+     * @param shipsIds id lodi
+     * @return vytvorene posadky
+     * @throws HttpException posadky nevytvorene
+     */
     @Transactional(rollbackFor = HttpException.class)
     public List<Crew> signUpShipsForRace(Integer raceId, List<Integer> shipsIds) throws HttpException {
         log.info("signUpShipsForRace: raceId: {}, shipIds: {}", raceId, shipsIds);
+        // overovanie
         if (crewPersistenceService.existsByRaceIdAndShipIdIn(raceId, shipsIds)) {
             throw new HttpException(HttpReturnCode.CONFLICT, "One of the ships already registered.");
         }
@@ -120,6 +139,7 @@ public class RaceService {
         if (race.getSignUpUntil() == null || race.getSignUpUntil().isBefore(LocalDate.now())) {
             throw new HttpException(HttpReturnCode.CONFLICT, "Registration is closed.");
         }
+        // vytvranie posadok
         RegistrationStatus status = race.getIsPublic() ? RegistrationStatus.REGISTERED : RegistrationStatus.APPLIED;
         List<Crew> crews = new ArrayList<>();
         for (Integer shipId : shipsIds) {
@@ -149,6 +169,12 @@ public class RaceService {
         return crew;
     }
 
+    /**
+     * Schvali registraciu posadky do pretekov
+     * @param crewId id posadky
+     * @return detail posadky
+     * @throws HttpException nenajdeny, nema opravnenie
+     */
     @Transactional(rollbackFor = HttpException.class)
     public Crew acceptCrew(Integer crewId) throws HttpException {
         log.info("acceptCrew: crewId: {}", crewId);
@@ -157,13 +183,19 @@ public class RaceService {
             throw new HttpException(HttpReturnCode.NOT_FOUND, "Crew not found by id: " + crewId);
         }
         if (!Objects.equals(crew.getRace().getOrganizer().getId(), PrincipalService.getPrincipalId())
-                && !securityService.isAdmin()) {
+                && !securityService.isAdmin()) { // iba organizator danych pretekov a admin mozu
             throw new HttpException(HttpReturnCode.FORBIDDEN, "You do not have permission to accept a crew.");
         }
         crew.setStatus(RegistrationStatus.REGISTERED);
         return crewPersistenceService.persist(crew);
     }
 
+    /**
+     * Zamietne registraciu do pretekov a zrusi posadku
+     * @param crewId id posadky
+     * @return detail posadky
+     * @throws HttpException nenajdeny, nema opravnenie
+     */
     @Transactional(rollbackFor = HttpException.class)
     public void removeCrew(Integer crewId) throws HttpException {
         log.info("removeCrew: crewId: {}", crewId);
@@ -173,12 +205,17 @@ public class RaceService {
                     "Crew not found by id: " + crewId);
         }
         if (!Objects.equals(crew.getRace().getOrganizer().getId(), PrincipalService.getPrincipalId())
-                && !securityService.isAdmin()) {
+                && !securityService.isAdmin()) { // iba organizator danych pretekov a admin mozu
             throw new HttpException(HttpReturnCode.FORBIDDEN, "You do not have permission to remove a crew.");
         }
         crewPersistenceService.removeById(crewId);
     }
 
+    /**
+     * Ziska posadku pre aktivne pouzivatela, ak je clenom nejakej na danych pretekoch
+     * @param raceId id pretekov
+     * @return detail registracie
+     */
     public CrewUser getCrewForActive(Integer raceId) {
         log.info("getCrewForActive: raceId: {}", raceId);
         Integer userId = PrincipalService.getPrincipalId();
@@ -210,6 +247,12 @@ public class RaceService {
         crewUserPersistnceService.removeById(crewUser.getId());
     }
 
+    /**
+     * Schvalenie registracie pouzivatela do posadky
+     * @param crewUserId id registracie
+     * @return detail registracie
+     * @throws HttpException nenajdeny, nema opravnenie
+     */
     @Transactional(rollbackFor = HttpException.class)
     public CrewUser acceptUserToCrew(Integer crewUserId) throws HttpException {
         log.info("acceptUserToCrew: crewUserId: {}", crewUserId);
@@ -218,13 +261,18 @@ public class RaceService {
             throw new HttpException(HttpReturnCode.NOT_FOUND, "Crew user not found by id: " + crewUserId);
         }
         if (!Objects.equals(crewUser.getCrew().getShip().getOwner().getId(), PrincipalService.getPrincipalId())
-                && !securityService.isAdmin()) {
+                && !securityService.isAdmin()) { // iba majitel danej lode a admin mozu
             throw new HttpException(HttpReturnCode.FORBIDDEN, "You do not have permission to accept a user.");
         }
         crewUser.setStatus(RegistrationStatus.REGISTERED);
         return crewUserPersistnceService.persist(crewUser);
     }
 
+    /**
+     * Zrusi alebo zamietne registraciu pouzivatela do posadky
+     * @param crewUserId id registracie
+     * @throws HttpException nenajdeny, nema opravnenie
+     */
     @Transactional(rollbackFor = HttpException.class)
     public void removeUserFromCrew(Integer crewUserId) throws HttpException {
         log.info("removeUserFromCrew: crewUserId: {}", crewUserId);
@@ -233,7 +281,7 @@ public class RaceService {
             throw new HttpException(HttpReturnCode.NOT_FOUND, "Crew user not found by id: " + crewUserId);
         }
         if (!Objects.equals(crewUser.getCrew().getShip().getOwner().getId(), PrincipalService.getPrincipalId())
-                && !securityService.isAdmin()) {
+                && !securityService.isAdmin()) { // iba majitel danej lode a admin mozu
             throw new HttpException(HttpReturnCode.FORBIDDEN, "You do not have permission to remove a user.");
         }
         crewUserPersistnceService.removeById(crewUser.getId());
@@ -267,7 +315,7 @@ public class RaceService {
             throw new HttpException(HttpReturnCode.NOT_FOUND, "Race not found by id: " + raceId);
         }
         if (!Objects.equals(race.getOrganizer().getId(), PrincipalService.getPrincipalId())
-                && !securityService.isAdmin()) {
+                && !securityService.isAdmin()) { // iba organizator danych pretekov a admin mozu
             throw new HttpException(HttpReturnCode.FORBIDDEN, "You do not have permission to update a race's course.");
         }
         raceCourse.setRaceId(raceId);

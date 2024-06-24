@@ -5,16 +5,15 @@
 
 .table-search-wrapper {
   position: absolute;
-  display: table-cell;
+  display: none;
   top: 0;
-  height: 75px;
   width: 100%;
 }
 
 .search-button {
   position: absolute;
   transform: scale(0.85);
-  bottom: 5px;
+  bottom: 15px;
   right: 5px;
   width: 100px;
 }
@@ -24,20 +23,17 @@ mat-form-field {
   height: 56px;
 }
 
-.table-pager-wrapper {
+.table-wrapper {
   position: absolute;
-  bottom: 0;
+  bottom: 56px;
   width: 100%;
-  display: grid;
-  grid-template-columns: 100%;
-  grid-template-rows: auto 56px;
-  overflow: auto
+  overflow: auto;
 }
 
 table {
   height: 100%;
   width: 100%;
-  overflow:auto;
+  overflow: auto;
   top: 0;
   bottom: 0;
 }
@@ -70,9 +66,10 @@ table {
   padding-left: 10px;
 }
 
-.table-pager-container {
-  position: sticky;
+.pager-container {
+  position: absolute;
   bottom: 0;
+  height: 56px;
   z-index: 1;
   background-color: white;
 }
@@ -84,10 +81,86 @@ table {
   padding-right: 10px;
 }
 
+.table-total-items p {
+  margin-top: 14px;
+  margin-bottom: 14px;
+}
+
+.table-row {
+  width: 100%;
+  height: 50px;
+}
+
+.pager-numbers-navigation {
+  display: none;
+}
+
 .odd-row {
   background-color: rgba(0, 0, 0, 0.20);
 }
 
 .even-row {
   background-color: rgba(0, 0, 0, 0.10);
+}
+
+.total-items-long {
+  display: none;
+}
+
+.total-items-medium {
+  display: none;
+}
+
+.total-items-short {
+}
+
+@media only screen and (min-width: 312px) {
+  .total-items-medium {
+    display: block;
+  }
+
+  .total-items-short {
+    display: none;
+  }
+}
+
+@media only screen and (min-width: 355px) {
+  .total-items-long {
+    display: block;
+  }
+
+  .total-items-medium {
+    display: none;
+  }
+}
+
+@media only screen and (min-width: 560px) {
+  .pager-numbers-navigation {
+    display: inline-block;
+  }
+}
+
+@media only screen and (min-width: 750px) and (min-height: 450px) {
+  .table-search-wrapper {
+    display: table-cell;
+    height: 75px;
+  }
+}
+
+@media only screen and (max-width: 749px) {
+  .table-wrapper {
+    top: 0 !important;
+  }
+}
+
+@media only screen and (max-height: 449px) {
+  .table-wrapper {
+    top: 0 !important;
+  }
+}
+
+@media only screen and (max-width: 775px) {
+  .pager-container mat-form-field {
+    display: none;
+  }
 }

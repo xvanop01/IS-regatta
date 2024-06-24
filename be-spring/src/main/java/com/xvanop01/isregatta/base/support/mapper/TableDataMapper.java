@@ -14,11 +14,22 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 
+/**
+ * TableDataMapper
+ * Mapper pre formatovanie vyzadovanych udajov a odpovede
+ * @author 2024 Peter Vano
+ */
 @Mapper(componentModel = "spring")
 public abstract class TableDataMapper {
 
     private static final String DIR_ASC = "ASC";
 
+    /**
+     * Mapovanie parametrov stranky
+     * @param tableDataRequestDto dodana specifikacia
+     * @return naformatovana poziadavka
+     * @throws HttpException zly format
+     */
     public PageRequest map(TableDataRequestDto tableDataRequestDto) throws HttpException {
         if (tableDataRequestDto == null) {
             throw new HttpException(HttpReturnCode.BAD_REQUEST, "Empty request body.");
@@ -36,6 +47,11 @@ public abstract class TableDataMapper {
 
     public abstract TableDataResponseDto map(TableDataResponse tableDataResponse);
 
+    /**
+     * Formatovanie odpovede
+     * @param page pozadovane data
+     * @return data vo formate pre odpoved
+     */
     public TableDataResponseDto map(Page<?> page) {
         TableDataResponse response = new TableDataResponse();
         response.setData(page.toList());

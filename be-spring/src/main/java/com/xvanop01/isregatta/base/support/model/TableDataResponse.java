@@ -4,6 +4,11 @@ import lombok.Data;
 
 import java.util.List;
 
+/**
+ * TableDataResponse
+ * Format dat tabuliek pre FE
+ * @author 2024 Peter Vano
+ */
 @Data
 public class TableDataResponse {
 

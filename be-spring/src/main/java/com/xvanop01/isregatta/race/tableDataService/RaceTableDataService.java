@@ -15,6 +15,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Order;
 
+/**
+ * RaceTableDataService
+ * Servis pre tabulky s pretekami
+ * @author 2024 Peter Vano
+ */
 @TableData("race-table")
 public class RaceTableDataService
         extends TableDataService<Race, RaceRepository, RaceTableDataFilter, RaceDetailDto, RaceMapper> {
@@ -26,12 +31,14 @@ public class RaceTableDataService
     @Override
     protected void doFilter(Object filter) {
         if (filter instanceof RaceTableDataFilter f) {
+            // filtrovanie podla nazvu pretekov
             if (f.name != null && !f.name.isEmpty()) {
                 String searchFormatted = "%" + f.name.toLowerCase() + "%";
                 specAnd((root, query, criteriaBuilder) ->
                         criteriaBuilder.like(root.get(Race_.name), searchFormatted)
                 );
             }
+            // filtrovanie podla mesiaca preteku
             if (f.date != null) {
                 specAnd((root, query, criteriaBuilder) -> criteriaBuilder.and(
                         criteriaBuilder.greaterThanOrEqualTo(
@@ -47,6 +54,7 @@ public class RaceTableDataService
     protected Page<Race> fetch(Pageable pageable, Object filter) {
         if (filter instanceof RaceTableDataFilter f) {
             if (f.userId != null) {
+                // specialna poziadavka na DB ak je filtrovanie podla pouzivatela
                 Order order = pageable.getSort().iterator().next();
                 if (order.getProperty().equals("signUpUntil")) {
                     Sort sort = Sort.by(order.getDirection(), "sign_up_until");

@@ -6,6 +6,11 @@ import com.xvanop01.isregatta.race.repository.RaceCourseRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+/**
+ * RaceCoursePersistenceService
+ * Spracovanie udajov o trati pretekov z DB
+ * @author 2024 Peter Vano
+ */
 @Service
 @Slf4j
 public class RaceCoursePersistenceService extends PersistenceService<RaceCourse, RaceCourseRepository> {

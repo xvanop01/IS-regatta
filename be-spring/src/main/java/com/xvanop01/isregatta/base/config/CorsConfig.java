@@ -10,6 +10,11 @@ import org.springframework.web.filter.CorsFilter;
 
 import java.util.Arrays;
 
+/**
+ * CorsConfig
+ * Definuje pravidla pre Cross-Origin Resource Sharing
+ * @author 2024 Peter Vano
+ */
 @Configuration
 public class CorsConfig {
 

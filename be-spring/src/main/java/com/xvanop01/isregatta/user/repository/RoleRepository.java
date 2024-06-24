@@ -7,8 +7,18 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
+/**
+ * RoleRepository
+ * Repozitar pre pracu s rolami v DB
+ * @author 2024 Peter Vano
+ */
 public interface RoleRepository extends JpaRepository<Role, Integer>, JpaSpecificationExecutor<Role> {
 
+    /**
+     * Najde vsetky role pouzivatela
+     * @param userId id pouzivatela
+     * @return zoznam roli
+     */
     @Query(value = "SELECT \n" +
             " r.id, \n" +
             " r.role \n" +
@@ -17,6 +27,11 @@ public interface RoleRepository extends JpaRepository<Role, Integer>, JpaSpecifi
             "WHERE ur.user_id = ?1 ", nativeQuery = true)
     List<Role> findAllByUserId(Integer userId);
 
+    /**
+     * Najde vsetky role pouzivatela
+     * @param username pouzivatelske meno pouzivatela
+     * @return zoznam roli
+     */
     @Query(value = "SELECT \n" +
             " r.id, \n" +
             " r.role \n" +
@@ -26,9 +41,19 @@ public interface RoleRepository extends JpaRepository<Role, Integer>, JpaSpecifi
             "WHERE u.username = ?1 ", nativeQuery = true)
     List<Role> findAllByUsername(String username);
 
+    /**
+     * Prida rolu pouzivatelovi
+     * @param userId id pouzivatela
+     * @param roleId id role
+     */
     @Query(value = "INSERT INTO user_user_role (`user_id`, `role_id`) VALUES(?1, ?2) ", nativeQuery = true)
     void addRoleToUser(Integer userId, Integer roleId);
 
+    /**
+     * Odstrani pouzivatelovi rolu, ak ju ma
+     * @param userId id pouzivatela
+     * @param roleId id role
+     */
     @Query(value = "DELETE FROM user_user_role \n" +
             "WHERE user_id = ?1 AND role_id = ?2 ", nativeQuery = true)
     void removeRoleFromUser(Integer userId, Integer roleId);

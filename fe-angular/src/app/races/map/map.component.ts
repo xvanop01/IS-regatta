@@ -25,6 +25,9 @@ import {RacesService} from "../races.service";
 import {MatSnackBar} from "@angular/material/snack-bar";
 import Text from 'ol/style/Text.js';
 
+/**
+ * Definicia stylu vykreslovania trate
+ */
 const courseStyles = [
   new Style({
     stroke: new Stroke({
@@ -42,6 +45,9 @@ const courseStyles = [
   })
 ];
 
+/**
+ * definicia popiskov trate
+ */
 const courseLabelStyle = [
   new Style({
     stroke: new Stroke({
@@ -56,15 +62,21 @@ const courseLabelStyle = [
   })
 ];
 
+/**
+ * definicia vyzoru navygacnej ikony
+ */
 const positionStyle = new Style({
   image: new Icon({
     src: '../../../assets/navigation-position.svg',
-    scale: 0.4,
+    scale: 0.5,
     rotateWithView: true,
     displacement: [0, 4]
   })
 });
 
+/**
+ * definicia vyzoru navigacie
+ */
 const navigateDistanceStyle = new Style({
   stroke: new Stroke({
     color: 'dimgrey',
@@ -78,6 +90,10 @@ const navigateDistanceStyle = new Style({
   })
 });
 
+/**
+ * Formatuje vzdialenost do citatelnej formy
+ * @param distance vzdialenost v metroch
+ */
 const formatDistance = function (distance: number): string {
   if (distance > 1000) {
     distance = Math.round(distance / 10) / 100;
@@ -88,6 +104,13 @@ const formatDistance = function (distance: number): string {
   }
 }
 
+/**
+ * Feature zabezpecujuca zobrazenie navigacie
+ * @param center stred trate
+ * @param position aktualna pozicia
+ * @param coordinates pozicia boje
+ * @param windAngle uhol vetra
+ */
 const createNavigationFeature = function (center: Array<number>,
                                     position: Array<number>,
                                     coordinates: CoordinatesDto,
@@ -161,6 +184,7 @@ export class MapComponent implements OnInit{
   }
 
   ngOnInit(): void {
+    // inicializa vrstiev mapy
     const courseLayer = new VectorLayer({
       source: this.courseVector,
       style: courseStyles
@@ -168,7 +192,7 @@ export class MapComponent implements OnInit{
     const courseLabelLayer = new VectorLayer({
       source: this.courseLabelVector,
       style: courseLabelStyle
-    })
+    });
     const seaLayer = new TileLayer({
       source: new OSM({
         attributions: [
@@ -179,15 +203,19 @@ export class MapComponent implements OnInit{
         url: 'https://tiles.openseamap.org/seamark/{z}/{x}/{y}.png'
       })
     });
+
+    // inicializacia view
     const view = new View({
       center: fromLonLat([17, 49.4]),
       zoom: 7,
       zoomFactor: 2
     });
+    // nastavenie navigacie do jej vrstvy
     this.geolocation.setProjection(view.getProjection());
     const navigationLayer = new VectorLayer({
       source: this.navVector
     });
+    // naplnenie mapy vrstvami
     this.map = new Map({
       layers: [
         new TileLayer({
@@ -202,10 +230,12 @@ export class MapComponent implements OnInit{
       view: view
     });
 
+    // konfiguracia zmeny view
     this.map.on('moveend', () => {
       this.refresh();
     });
 
+    // vykreslenie trate
     this.racesService.getCourse(this.raceId).subscribe(result => {
       if (result) {
         this.savedCourse = result;
@@ -214,6 +244,9 @@ export class MapComponent implements OnInit{
     });
   }
 
+  /**
+   * Funkcia pre zmenu smeru vetra
+   */
   public angleChanged(): void {
     if (this.angleFormControl.errors == null) {
       this.lastValidAngle = this.angleFormControl.value;
@@ -221,6 +254,9 @@ export class MapComponent implements OnInit{
     }
   }
 
+  /**
+   * Presunutie trate pri editacii
+   */
   public refresh(): void {
     if (this.editingCourse) {
       this.courseVector.clear();
@@ -229,10 +265,14 @@ export class MapComponent implements OnInit{
     }
   }
 
+  /**
+   * Zobrazenie trate
+   */
   public renderCourse(): void {
     const coord = this.map.getView().getCenter();
     const mapSize = this.map.getSize();
     if (coord && mapSize) {
+      // vypocitanie vzdialenosti v trojuholniku
       const width = new LineString([
         this.map.getCoordinateFromPixel([0, mapSize[1]/2]),
         this.map.getCoordinateFromPixel([mapSize[0], mapSize[1]/2])
@@ -245,19 +285,23 @@ export class MapComponent implements OnInit{
       const l1: number = radius;
       const l2: number = radius/2;
       const l3: number = Math.sqrt((radius * radius) - ((radius/2)*(radius/2)));
+      // umiestnenie boji pri uhle vetra 0 stupnov
       const c1: Array<number> = [coord[0] + l2, coord[1] + l3];
       const c2: Array<number> = [coord[0] - l1, coord[1]];
       const c3: Array<number> = [coord[0] + l2, coord[1] - l3];
       const track: Array<Array<number>> = [c1, c2, c3, c1];
       this.untransformedCoordinates = track;
       const polygon = new Polygon([track]);
+      // otocenie trate podla vetra
       if (this.lastValidAngle != 0) {
         polygon.rotate(- this.lastValidAngle * Math.PI / 180, coord);
       }
+      // popisok vzdialenosti boji na trati
       const text = courseLabelStyle[0].getText()
       if (text instanceof Text) {
         text.setText(formatDistance(l3 * 2));
       }
+      // vykreslenie trate
       for (let i = 0; i < 3; i++) {
         this.courseLabelVector.addFeature(new Feature({
           geometry: new LineString([polygon.getCoordinates()[0][i], polygon.getCoordinates()[0][i + 1]])
@@ -269,22 +313,28 @@ export class MapComponent implements OnInit{
     }
   }
 
+  /**
+   * Zaciatok a koniec editacie trate
+   */
   public editCourseClicked(): void {
     this.editingCourse = !this.editingCourse;
     this.courseVector.clear();
     this.courseLabelVector.clear();
-    if (this.editingCourse) {
+    if (this.editingCourse) { // spustenie editacie
       if (this.savedCourse) {
         this.map.getView().setCenter([this.savedCourse.center.longitude, this.savedCourse.center.latitude])
         this.angleFormControl.patchValue(this.savedCourse.windAngle);
         this.angleChanged();
       }
       this.renderCourse();
-    } else {
+    } else { // vykreslenie ulozenej trate
       this.renderSaved();
     }
   }
 
+  /**
+   * Ulozenie trate na BE
+   */
   public saveCourse(): void {
     const center = this.map.getView().getCenter();
     const zoom = this.map.getView().getZoom();
@@ -307,19 +357,25 @@ export class MapComponent implements OnInit{
     }
   }
 
+  /**
+   * Zobrazenie ulozenj trate
+   */
   public renderSaved(): void {
     if (this.savedCourse) {
       this.courseVector.clear();
       this.courseLabelVector.clear();
+      // definovanie trate
       const polygon = new Polygon([[
         [this.savedCourse.buoy1.longitude, this.savedCourse.buoy1.latitude],
         [this.savedCourse.buoy2.longitude, this.savedCourse.buoy2.latitude],
         [this.savedCourse.buoy3.longitude, this.savedCourse.buoy3.latitude],
       ]]);
       const center = [this.savedCourse.center.longitude, this.savedCourse.center.latitude];
+      // natocenie trate podla vetra
       if (this.savedCourse.windAngle != 0) {
         polygon.rotate(- this.savedCourse.windAngle * Math.PI / 180, center);
       }
+      // vykreslenie trate
       this.courseVector.addFeature(new Feature({
         geometry: polygon
       }));
@@ -331,23 +387,30 @@ export class MapComponent implements OnInit{
     }
   }
 
+  /**
+   * Spustenie a vypnutie navigacie
+   */
   public navigate(): void {
-    if (this.navigating) {
+    if (this.navigating) { // vypnutie navgacie
       this.geolocation.setTracking(false);
       this.navVector.clear();
-    } else {
+    } else { // zapnutie navigacie
       this.geolocation.setTracking(true);
       this.setGeolocation();
     }
     this.navigating = !this.navigating;
   }
 
+  /**
+   * Inicializovanie navigacie
+   */
   public setGeolocation(): void {
     const view = this.map.getView();
     const geolocation = this.geolocation;
     const navVector = this.navVector;
     const savedCourse = this.savedCourse;
 
+    // nastavenie zmeny orientacie zariadenie
     this.geolocation.on('change:heading', function () {
       const heading = geolocation.getHeading();
       const icon = positionStyle.getImage();
@@ -356,6 +419,7 @@ export class MapComponent implements OnInit{
       }
     });
 
+    // nastavenie zmeny pozicie zariadenia
     this.geolocation.on('change:position', function () {
       navVector.clear();
       const position = geolocation.getPosition();
@@ -364,6 +428,7 @@ export class MapComponent implements OnInit{
       navVector.addFeature(geoFeature);
       geoFeature.setGeometry(position ? new Point(position) : undefined);
       view.setCenter(position);
+      // vykreslenie navigacie
       if (savedCourse && position) {
         let center = [savedCourse.center.longitude, savedCourse.center.latitude];
         navVector.addFeature(createNavigationFeature(center, position, savedCourse.buoy1, savedCourse.windAngle));

@@ -10,6 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * RolePersistenceService
+ * Spracovanie udajov o roliach z DB
+ * @author 2024 Peter Vano
+ */
 @Service
 @Slf4j
 public class RolePersistenceService extends PersistenceService<Role, RoleRepository> {
@@ -18,6 +23,11 @@ public class RolePersistenceService extends PersistenceService<Role, RoleReposit
         super(repository);
     }
 
+    /**
+     * Ziska vsetky role pouzivatela
+     * @param userId id pouzivatela
+     * @return zoznam roli
+     */
     public List<Role> getRolesByUserId(Integer userId) {
         log.info("getRolesByUserId: {}", userId);
         if (userId != null) {
@@ -26,6 +36,11 @@ public class RolePersistenceService extends PersistenceService<Role, RoleReposit
         return new ArrayList<>();
     }
 
+    /**
+     * Ziska vsetky role pouzivatela
+     * @param username pouzivatelske meno
+     * @return zoznam roli
+     */
     public List<Role> getRolesByUsername(String username) {
         log.info("getRolesByUsername: {}", username);
         if (username != null) {

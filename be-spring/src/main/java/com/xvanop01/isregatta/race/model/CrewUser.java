@@ -14,6 +14,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * CrewUser
+ * Trieda Clen posadky
+ * @author 2024 Peter Vano
+ */
 @Entity
 @Table(name = "race_crew_user")
 @NoArgsConstructor

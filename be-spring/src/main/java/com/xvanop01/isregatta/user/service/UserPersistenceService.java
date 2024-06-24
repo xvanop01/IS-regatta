@@ -6,6 +6,11 @@ import com.xvanop01.isregatta.user.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+/**
+ * UserPersistenceService
+ * Spracovanie udajov o pouzivatelovi z DB
+ * @author 2024 Peter Vano
+ */
 @Service
 @Slf4j
 public class UserPersistenceService extends PersistenceService<User, UserRepository> {

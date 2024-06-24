@@ -8,6 +8,11 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Immutable;
 import org.hibernate.annotations.Subselect;
 
+/**
+ * ShipView
+ * Neperzistovana entita zdruzujuca informacie pre ShipTableDataService
+ * @author 2024 Peter Vano
+ */
 @Entity
 @Immutable
 @Subselect("SELECT ship.id, "
@@ -15,7 +20,7 @@ import org.hibernate.annotations.Subselect;
         + "  false as can_change, "
         + "  ship.name, "
         + "  ship.registration, "
-        + "  IFNULL(owner.full_name, owner.username) as owner_name "
+        + "  IFNULL(owner.full_name, owner.username) as owner_name "  // pouzije username, ak nema ulozene civilne meno
         + "FROM ship_ship ship "
         + "  LEFT JOIN user_user owner ON ship.owner_id = owner.id ")
 @NoArgsConstructor

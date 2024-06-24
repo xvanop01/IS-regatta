@@ -7,6 +7,11 @@ import org.springframework.security.core.userdetails.User;
 
 import java.util.Collection;
 
+/**
+ * UserLogin
+ * Trieda pre Spring security a pre security context
+ * @author 2024 Peter vano
+ */
 @Getter
 @Setter
 public class UserLogin extends User {

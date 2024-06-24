@@ -8,6 +8,11 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
+/**
+ * ShipMapper
+ * Mapper zabezpecujuci mapovanie lodi
+ * @author 2024 Peter Vano
+ */
 @Mapper(componentModel = "spring")
 public abstract class ShipMapper extends TableDataResponseMapper<Ship, ShipDetailDto> {
 
@@ -18,6 +23,7 @@ public abstract class ShipMapper extends TableDataResponseMapper<Ship, ShipDetai
     public abstract Ship map(CreateUpdateShipDto dto);
 
     @Mappings({
+            // ziskanie civilneho mena, ak nie je tak pouziavatelskeho mena
             @Mapping(target = "ownerName", expression =
                     "java(ship.getOwner().getFullName() == null || ship.getOwner().getFullName().isEmpty() ? "
                             + "ship.getOwner().getUsername() : ship.getOwner().getFullName())"),

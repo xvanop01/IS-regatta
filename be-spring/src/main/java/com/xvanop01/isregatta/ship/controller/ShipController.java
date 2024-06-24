@@ -17,6 +17,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * ShipController
+ * Zabezpecuje funkcionalitu spravovannia lodi
+ * @author 2024 Peter Vano
+ */
 @RestController
 @Slf4j
 @RequestMapping("/api")
@@ -27,6 +32,11 @@ public class ShipController implements ShipsApi {
     private final SecurityService securityService;
     private final ShipMapper shipMapper;
 
+    /**
+     * Vytvori novu lod
+     * @param createUpdateShipDto predloha pre lod (required)
+     * @return vytvorena lod
+     */
     @Override
     public ResponseEntity<ShipDetailDto> createShip(CreateUpdateShipDto createUpdateShipDto) {
         log.info("createShip: {}", createUpdateShipDto);
@@ -39,6 +49,11 @@ public class ShipController implements ShipsApi {
         return ResponseEntity.status(HttpStatus.CREATED).body(shipMapper.map(ship));
     }
 
+    /**
+     * Ziska detail lode
+     * @param shipId id lode (required)
+     * @return detail lode
+     */
     @Override
     public ResponseEntity<ShipDetailDto> getShip(Integer shipId) {
         log.info("getShip: shipId: {}", shipId);
@@ -51,6 +66,12 @@ public class ShipController implements ShipsApi {
         return ResponseEntity.ok(shipMapper.map(ship));
     }
 
+    /**
+     * Upravi detail lode
+     * @param shipId id lode (required)
+     * @param createUpdateShipDto upravene informacie (required)
+     * @return detail upravenej lode
+     */
     @Override
     public ResponseEntity<ShipDetailDto> updateShip(Integer shipId, CreateUpdateShipDto createUpdateShipDto) {
         log.info("updateShip: shipId: {}, dto: {}", shipId, createUpdateShipDto);

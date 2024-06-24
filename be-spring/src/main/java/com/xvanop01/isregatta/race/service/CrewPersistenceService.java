@@ -9,6 +9,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * CrewPersistenceService
+ * Spracovanie udajov o posadke z DB
+ * @author 2024 Peter Vano
+ */
 @Service
 @Slf4j
 public class CrewPersistenceService extends PersistenceService<Crew, CrewRepository> {
@@ -28,6 +33,11 @@ public class CrewPersistenceService extends PersistenceService<Crew, CrewReposit
         return repository.saveAll(crews);
     }
 
+    /**
+     * Schvalenie vsetkych registracii pri zmene typu pretekov na verene dostupny
+     * @param raceId id pretekov
+     * @return zoznam schvalenych posadok
+     */
     @Transactional
     public List<Crew> acceptAllByRaceId(Integer raceId) {
         log.info("acceptAllByRaceId: raceId: {}", raceId);

@@ -50,7 +50,7 @@ export class ToolbarComponent {
     localStorage.removeItem('token');
     this.http.post(`/logout`, null).subscribe(
       result => {
-        location.reload();
+        this.router.navigate(['/login']).then(() => location.reload());
       }
     );
   }

@@ -8,6 +8,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * RaceCourse
+ * Trieda Trate pretekov
+ * @author 2024 Peter Vano
+ */
 @Entity
 @Table(name = "race_race_course")
 @NoArgsConstructor

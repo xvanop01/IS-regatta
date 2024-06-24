@@ -1,5 +1,6 @@
 <div class="toolbar">
   <div class="toolbar-wrapper">
+    <!-- Navigacia -->
     <div class="toolbar-left">
       <ng-container *ngIf="authenticated">
         <button mat-icon-button (click)="redirectToHome()">
@@ -16,6 +17,8 @@
         </button>
       </ng-container>
     </div>
+
+    <!-- Nazov, log-in a log-out -->
     <div class="toolbar-right">
       <p>IS Regatta</p>
       <ng-container *ngIf="authenticated; else loginLink">

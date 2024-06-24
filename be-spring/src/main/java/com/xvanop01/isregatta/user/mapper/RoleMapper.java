@@ -8,6 +8,11 @@ import org.mapstruct.Mapper;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * RoleMapper
+ * Mapper zabezpecujuci mapovanie roli
+ * @author 2024 Peter Vano
+ */
 @Mapper(componentModel = "spring")
 public abstract class RoleMapper {
 

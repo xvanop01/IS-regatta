@@ -19,10 +19,18 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
+/**
+ * WebSecurityConfig
+ * Definuje pristupy ku zdrojom a zabezpecenie aplikacie
+ * @author 2024 Peter Vano
+ */
 @Configuration
 @Slf4j
 public class WebSecurityConfig {
 
+    /**
+     * Hodnota sa doplni podla profilu (application-*.yml)
+     */
     @Value("${tunel-url}")
     private String tunelUrl;
 
@@ -32,22 +40,25 @@ public class WebSecurityConfig {
         this.userDetailsService = userDetailsService;
     }
 
+    /**
+     * Definuje povolene a zabezpecene url, registraciu, prihlasovanie, odhlasovanie
+     */
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .csrf()
                 .disable()
                 .authorizeHttpRequests()
-                .requestMatchers("/index.html").permitAll()
+                .requestMatchers("/index.html").permitAll() // povolenie pristupu k FE v monolitnej verzii
                 .and()
                 .authorizeHttpRequests()
-                .requestMatchers(regexMatcher("/.*\\.js")).permitAll()
+                .requestMatchers(regexMatcher("/.*\\.js")).permitAll() // povolenie pristupu k FE v monolitnej verzii
                 .and()
                 .authorizeHttpRequests()
-                .requestMatchers(regexMatcher("/.*\\.css")).permitAll()
+                .requestMatchers(regexMatcher("/.*\\.css")).permitAll() // povolenie pristupu k FE v monolitnej verzii
                 .and()
                 .authorizeHttpRequests()
-                .requestMatchers(regexMatcher("/.*\\.ico")).permitAll()
+                .requestMatchers(regexMatcher("/.*\\.ico")).permitAll() // povolenie pristupu k FE v monolitnej verzii
                 .and()
                 .authorizeHttpRequests()
                 .requestMatchers("/register").permitAll()

@@ -12,6 +12,11 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Ship
+ * Trieda lod
+ * @author 2024 Peter Vano
+ */
 @Entity
 @Table(name = "ship_ship")
 @NoArgsConstructor

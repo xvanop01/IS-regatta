@@ -9,6 +9,11 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.resource.PathResourceResolver;
 
+/**
+ * WebMvcConfig
+ * Definuje umiestnenie suborov k FE, sluzi pre monolitnu versiu
+ * @author 2024 Peter Vano
+ */
 @Configuration
 public class WebMvcConfig implements WebMvcConfigurer {
 

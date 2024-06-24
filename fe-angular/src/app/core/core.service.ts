@@ -14,6 +14,13 @@ export class CoreService {
     this.apiUrl = '/api'
   }
 
+  /**
+   * Zabezpecuje ziskanie zaznamov pre tabulku podla nazvu servisu
+   * @param serviceName nazov servisu
+   * @param pageSpecs specifikacia stranky
+   * @param sortSpecs specifikacia radenia
+   * @param filters specifikacia filtrovania
+   */
   public getTableData(serviceName: string, pageSpecs: PageSpecs, sortSpecs: SortSpecs | null,
                       filters: Array<Filter>): Observable<any> {
     if (sortSpecs?.column === '') {

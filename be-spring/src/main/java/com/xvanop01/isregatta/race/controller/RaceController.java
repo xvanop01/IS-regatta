@@ -31,6 +31,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * RaceController
+ * Zabezpecuje funkcionalitu pretekov
+ * @author 2024 Peter Vano
+ */
 @RestController
 @Slf4j
 @RequestMapping("/api")
@@ -42,6 +47,11 @@ public class RaceController implements RacesApi {
     private final RaceMapper raceMapper;
     private final CrewMapper crewMapper;
 
+    /**
+     * Schvali registraciu posadku do preteku
+     * @param crewId id posadky na schvalenie
+     * @return DTO schvalenej posadky
+     */
     @Override
     public ResponseEntity<CrewDetailDto> acceptCrewToRace(Integer crewId) {
         log.info("acceptCrewToRace: crewId: {}", crewId);
@@ -54,6 +64,11 @@ public class RaceController implements RacesApi {
         return ResponseEntity.ok(crewMapper.map(crew));
     }
 
+    /**
+     * Schali registraciu pouziatela do posadky
+     * @param crewUserId id registracie uzivatela do posadky
+     * @return DTO schvaleneho pouzivatela
+     */
     @Override
     public ResponseEntity<UserRaceInfoDto> acceptUserToCrew(Integer crewUserId) {
         log.info("acceptUserToCrew: crewUserId: {}", crewUserId);
@@ -66,6 +81,11 @@ public class RaceController implements RacesApi {
         return ResponseEntity.ok(crewMapper.map(crewUser));
     }
 
+    /**
+     * Podanie ziadosti aktualne prihlaseneo pouzivatela do posadky
+     * @param crewId id posadky
+     * @return DTO registracie pouzivatela
+     */
     @Override
     public ResponseEntity<UserRaceInfoDto> applyToCrew(Integer crewId) {
         log.info("applyToCrew: crewId: {}", crewId);
@@ -78,6 +98,11 @@ public class RaceController implements RacesApi {
         return ResponseEntity.status(HttpStatus.CREATED).body(crewMapper.map(crewUser));
     }
 
+    /**
+     * Vytvori nove preteky
+     * @param createRaceDto udaje o pretekoch (required)
+     * @return DTO vytvorenych pretekov
+     */
     @Override
     public ResponseEntity<RaceDetailDto> createRace(CreateUpdateRaceDto createRaceDto) {
         log.info("createRace: {}", createRaceDto);
@@ -91,6 +116,12 @@ public class RaceController implements RacesApi {
         return ResponseEntity.status(HttpStatus.CREATED).body(raceMapper.map(race));
     }
 
+    /**
+     * Vytvori alebo upravy zaznam trate pretekov
+     * @param raceId id pretekov (required)
+     * @param createUpdateCourseDto informacie o trati (required)
+     * @return DTO spracovanych informacii
+     */
     @Override
     public ResponseEntity<CourseDetailDto> createUpdateRacesCourse(Integer raceId,
             CreateUpdateCourseDto createUpdateCourseDto) {
@@ -106,6 +137,11 @@ public class RaceController implements RacesApi {
         return ResponseEntity.status(isNew ? HttpStatus.CREATED : HttpStatus.OK).body(raceMapper.map(raceCourse));
     }
 
+    /**
+     * Ziska informacie o registracii aktualne prihlaseneho pouzivatela ak je registrovany na preteky
+     * @param raceId id pretekov (required)
+     * @return informacie o registracii
+     */
     @Override
     public ResponseEntity<UserRaceInfoDto> getActiveUserRaceInfo(Integer raceId) {
         log.info("getActiveUserRaceInfo: raceId: {}", raceId);
@@ -113,6 +149,11 @@ public class RaceController implements RacesApi {
         return ResponseEntity.ok(crewMapper.map(crewUser));
     }
 
+    /**
+     * Ziska informacie o posadke
+     * @param crewId id posadky (required)
+     * @return DTO posadky
+     */
     @Override
     public ResponseEntity<CrewDetailDto> getCrew(Integer crewId) {
         log.info("getCrew: crewId: {}", crewId);
@@ -125,6 +166,11 @@ public class RaceController implements RacesApi {
         return ResponseEntity.ok(crewMapper.map(crew));
     }
 
+    /**
+     * Ziska vysledky posadky z pretekov
+     * @param crewId id posadky (required)
+     * @return vysleky
+     */
     @Override
     public ResponseEntity<CrewResultsDetailDto> getCrewResults(Integer crewId) {
         log.info("getCrewResults: crewId: {}", crewId);
@@ -137,6 +183,11 @@ public class RaceController implements RacesApi {
         return ResponseEntity.ok(crewMapper.mapResults(crew));
     }
 
+    /**
+     * Ziska informacie o pretekoch
+     * @param raceId id pretekov (required)
+     * @return informacie o pretekoch
+     */
     @Override
     public ResponseEntity<RaceDetailDto> getRace(Integer raceId) {
         log.info("getRace: raceId: {}", raceId);
@@ -149,6 +200,11 @@ public class RaceController implements RacesApi {
         return ResponseEntity.ok(raceMapper.map(race));
     }
 
+    /**
+     * Ziska trat pretekov
+     * @param raceId id pretekov (required)
+     * @return DTO trate
+     */
     @Override
     public ResponseEntity<CourseDetailDto> getRacesCourse(Integer raceId) {
         log.info("getRacesCourse: raceId: {}", raceId);
@@ -156,6 +212,11 @@ public class RaceController implements RacesApi {
         return ResponseEntity.ok(raceMapper.map(raceCourse));
     }
 
+    /**
+     * Ziska lode, ktore moze aktualne prihlaseny pouzivatel prihlasit a preteky
+     * @param raceId id pretekov (required)
+     * @return zoznam lodi
+     */
     @Override
     public ResponseEntity<CrewDetailListDto> getShipsForRace(Integer raceId) {
         log.info("getShipsForRace: raceId: {}", raceId);
@@ -169,6 +230,10 @@ public class RaceController implements RacesApi {
         return ResponseEntity.ok(crewDetailListDto);
     }
 
+    /**
+     * Odstrani aktualne prihlaseneho pouzivatela z posadky
+     * @param crewId id posadky (required)
+     */
     @Override
     public ResponseEntity<Void> leaveCrew(Integer crewId) {
         log.info("leaveCrew: crewId: {}", crewId);
@@ -180,6 +245,10 @@ public class RaceController implements RacesApi {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    /**
+     * Odstranie posadku z pretehov
+     * @param crewId id posadky (required)
+     */
     @Override
     public ResponseEntity<Void> removeCrewFromRace(Integer crewId) {
         log.info("removeCrewFromRace: crewId: {}", crewId);
@@ -191,6 +260,10 @@ public class RaceController implements RacesApi {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    /**
+     * Odstani pouzivatela z posadky
+     * @param crewUserId id registracie do posadky (required)
+     */
     @Override
     public ResponseEntity<Void> removeUserFromCrew(Integer crewUserId) {
         log.info("removeUserFromCrew: crewUserId: {}", crewUserId);
@@ -202,6 +275,12 @@ public class RaceController implements RacesApi {
         return ResponseEntity.status(HttpStatus.OK).build();
     }
 
+    /**
+     * Prihlasi lode do pretekov vytvorenim posadok
+     * @param raceId id pretekov (required)
+     * @param shipSignUpListDto zoznam id lodi (required)
+     * @return zoznam DTO vytvorenych posadok
+     */
     @Override
     public ResponseEntity<CrewDetailListDto> signUpShipsForRace(Integer raceId, ShipSignUpListDto shipSignUpListDto) {
         log.info("signUpShipsForRace: raceId: {}, shipSignUpListDto: {}", raceId, shipSignUpListDto);
@@ -215,6 +294,12 @@ public class RaceController implements RacesApi {
         return ResponseEntity.ok(crewDetailListDto);
     }
 
+    /**
+     * Nahra posadke vysledky
+     * @param crewId id posadky (required)
+     * @param crewResultsUpdateDto vvysledky na ulozenie (required)
+     * @return ulozene vysledky
+     */
     @Override
     public ResponseEntity<CrewResultsDetailDto> updateCrewResults(Integer crewId,
             CrewResultsUpdateDto crewResultsUpdateDto) {
@@ -227,6 +312,12 @@ public class RaceController implements RacesApi {
         return ResponseEntity.ok(crewMapper.mapResults(crew));
     }
 
+    /**
+     * Upravi informacie o pretekoch
+     * @param raceId id pretekov (required)
+     * @param updateRaceDto nove informacie (required)
+     * @return DTO pretekov
+     */
     @Override
     public ResponseEntity<RaceDetailDto> updateRace(Integer raceId, CreateUpdateRaceDto updateRaceDto) {
         log.info("updateRace: raceId: {}, updateRaceDto: {}", raceId, updateRaceDto);

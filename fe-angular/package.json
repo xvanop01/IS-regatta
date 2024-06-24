@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
+    "tunnel": "lt --port 4200 --local-host localhost",
     "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
@@ -24,6 +25,7 @@
     "@types/arcgis-rest-api": "^10.4.8",
     "@types/geojson": "^7946.0.14",
     "@types/topojson-specification": "^1.0.5",
+    "localtunnel": "^2.0.2",
     "moment": "^2.30.1",
     "ol": "^9.1.0",
     "rxjs": "~7.8.0",
